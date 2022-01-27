@@ -1,0 +1,2 @@
+PHP-Unit Xray Reporter [![Release](https://img.shields.io/github/v/release/crasyhorse/PHPUnitXrayReporter)](https://github.com/crasyhorse/PHPUnitXrayReporter/releases/latest) [![Downloads](https://img.shields.io/github/downloads/crasyhorse/PHPUnitXrayReporter/total)](https://github.com/crasyhorse/PHPUnitXrayReporter)
+=========

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor
+        configVersion="3"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://www.phpdoc.org"
+        xsi:noNamespaceSchemaLocation="data/xsd/phpdoc.xsd"
+>
+    <title>CrasyHorse / PHP-Unit Fixture</title>
+    <paths>
+        <output>docs/api</output>
+        <cache>docs/cache</cache>
+    </paths>
+    <version number="0.3.0">
+        <folder>0.3.0</folder>
+        <api format="php">
+            <source dsn=".">
+                <path>src/**/*.php</path>
+            </source>
+            <ignore hidden="true" symlinks="true"></ignore>
+        </api>
+    </version>
+</phpdocumentor>

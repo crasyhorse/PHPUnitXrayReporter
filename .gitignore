@@ -1,0 +1,7 @@
+/vendor
+.phpunit.result.cache
+.editorconfig
+/reports
+.scannerwork/**
+junit.xml
+/docs/cache
