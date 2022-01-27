@@ -4,8 +4,108 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9bbdf75f98eb0e8973040655f65a7796",
-    "packages": [],
+    "content-hash": "9fff755c767176c8e85453b2e3afbe9c",
+    "packages": [
+        {
+            "name": "jasny/php-functions",
+            "version": "v3.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jasny/php-functions.git",
+                "reference": "2dac4273d80f7aadff8e027c8574d61c85a607ac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jasny/php-functions/zipball/2dac4273d80f7aadff8e027c8574d61c85a607ac",
+                "reference": "2dac4273d80f7aadff8e027c8574d61c85a607ac",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "jasny/php-code-quality": "^2.0",
+                "phpunit/phpunit": "^5.7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/array_functions.php",
+                    "src/case_functions.php",
+                    "src/string_functions.php",
+                    "src/server_functions.php",
+                    "src/type_functions.php",
+                    "src/file_functions.php",
+                    "src/func_functions.php",
+                    "src/object_functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Arnold Daniels",
+                    "email": "arnold@jasny.net",
+                    "homepage": "http://www.jasny.net"
+                }
+            ],
+            "description": "A set of useful PHP functions",
+            "support": {
+                "issues": "https://github.com/jasny/php-functions/issues",
+                "source": "https://github.com/jasny/php-functions"
+            },
+            "time": "2018-11-26T11:24:27+00:00"
+        },
+        {
+            "name": "jasny/phpdoc-parser",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jasny/phpdoc-parser.git",
+                "reference": "be5a46f956fc91f704960c534b046629d6833cf7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jasny/phpdoc-parser/zipball/be5a46f956fc91f704960c534b046629d6833cf7",
+                "reference": "be5a46f956fc91f704960c534b046629d6833cf7",
+                "shasum": ""
+            },
+            "require": {
+                "jasny/php-functions": "^3.3",
+                "php": ">=7.4.0"
+            },
+            "require-dev": {
+                "jasny/php-code-quality": "~2.7.0",
+                "phpunit/phpunit": ">= 9.0.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Jasny\\PhpdocParser\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Arnold Daniels",
+                    "email": "arnold@jasny.net",
+                    "homepage": "http://www.jasny.net"
+                }
+            ],
+            "description": "Jasny skeleton library",
+            "support": {
+                "issues": "https://github.com/jasny/phpdoc-parser/issues",
+                "source": "https://github.com/jasny/phpdoc-parser"
+            },
+            "time": "2022-01-05T21:42:39+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "amphp/amp",
@@ -4785,7 +4885,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "jasny/phpdoc-parser": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
