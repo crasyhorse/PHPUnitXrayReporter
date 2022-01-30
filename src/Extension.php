@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CrasyHorse\PhpunitXrayReporter;
+namespace Crasyhorse\PhpunitXrayReporter;
 
 use PHPUnit\Runner\AfterIncompleteTestHook;
 use PHPUnit\Runner\AfterRiskyTestHook;
@@ -13,8 +13,10 @@ use PHPUnit\Runner\AfterTestFailureHook;
 use PHPUnit\Runner\AfterTestHook;
 use PHPUnit\Runner\AfterTestWarningHook;
 use PHPUnit\Runner\BeforeTestHook;
+use Jasny\PhpdocParser\PhpdocParser;
+use Jasny\PhpdocParser\Set\PhpDocumentor;
 use Exception;
-use ReflectionClass;
+use ReflectionMethod;
 use RuntimeException;
 
 /**
@@ -23,7 +25,7 @@ use RuntimeException;
  * @author Florian Weidinger
  * @since 0.1.0
  */
-class Extension implements
+final class Extension implements
     BeforeTestHook,
     AfterSuccessfulTestHook,
     AfterTestFailureHook,
@@ -36,12 +38,11 @@ class Extension implements
 {
     public function executeBeforeTest(string $test): void
     {
-        throw new Exception('Not implemented yet.');
     }
 
     public function executeAfterSuccessfulTest(string $test, float $time): void
     {
-        throw new Exception('Not implemented yet.');
+        $this->parseDocBlock($test);
     }
 
     public function executeAfterTestFailure(string $test, string $message, float $time): void
@@ -76,6 +77,26 @@ class Extension implements
 
     public function executeAfterTest(string $test, float $time): void
     {
-        throw new Exception('Not implemented yet.');
+    }
+
+    /**
+     * Parses the doc block of a test method.
+     *
+     * @param class-string $classMethod
+     *
+     * @return void
+     */
+    private function parseDocBlock(string $classMethod): array
+    {
+        $docBlock = (new ReflectionMethod($classMethod))->getDocComment();
+
+        // $customTags = [
+        //     new FlagTag('important')
+        // ];
+        // $tags = PhpDocumentor::tags()->with($customTags);
+        $tags = PhpDocumentor::tags();
+
+        $parser = new PhpdocParser($tags);
+        return $parser->parse($docBlock);
     }
 }
