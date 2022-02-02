@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Crasyhorse\PhpunitXrayReporter;
 
+use Crasyhorse\PhpunitXrayReporter\Tags\TestExecutionKey;
 use PHPUnit\Runner\AfterIncompleteTestHook;
 use PHPUnit\Runner\AfterRiskyTestHook;
 use PHPUnit\Runner\AfterSkippedTestHook;
@@ -38,11 +39,13 @@ final class Extension implements
 {
     public function executeBeforeTest(string $test): void
     {
+        // Get startDate here
     }
 
     public function executeAfterSuccessfulTest(string $test, float $time): void
     {
-        $this->parseDocBlock($test);
+        $result = $this->parseDocBlock($test);
+        var_dump($result);
     }
 
     public function executeAfterTestFailure(string $test, string $message, float $time): void
@@ -90,11 +93,12 @@ final class Extension implements
     {
         $docBlock = (new ReflectionMethod($classMethod))->getDocComment();
 
-        // $customTags = [
-        //     new FlagTag('important')
-        // ];
-        // $tags = PhpDocumentor::tags()->with($customTags);
-        $tags = PhpDocumentor::tags();
+        $customTags = [
+            new TestExecutionKey()
+        ];
+
+        $tags = PhpDocumentor::tags()->with($customTags);
+        // $tags = PhpDocumentor::tags();
 
         $parser = new PhpdocParser($tags);
         return $parser->parse($docBlock);
