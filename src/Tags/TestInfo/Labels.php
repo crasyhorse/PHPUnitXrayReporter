@@ -8,6 +8,6 @@ class Labels extends ArrayTag
 {
     public function __construct()
     {
-        parent::__construct('XRAY-TESTINFO-labels', '');
+        parent::__construct('XRAY-TESTINFO-labels', 'string');
     }
 }

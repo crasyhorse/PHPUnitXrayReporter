@@ -8,6 +8,6 @@ class RequirementKeys extends ArrayTag
 {
     public function __construct()
     {
-        parent::__construct('XRAY-TESTINFO-requirementKeys', '');
+        parent::__construct('XRAY-TESTINFO-requirementKeys', 'string');
     }
 }
