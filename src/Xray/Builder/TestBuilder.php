@@ -24,9 +24,9 @@ class TestBuilder implements Builder {
     private $defects = [];
 
     /**
-     * @var TestInfo
+     * @var TestInfo|null
      */
-    private $testInfo;
+    private $testInfo = null;
 
     /**
      * @var string
@@ -86,7 +86,10 @@ class TestBuilder implements Builder {
         return $this;
     }
 
-    public function getTestInfo(): TestInfo
+    /**
+     * @return TestInfo|null
+     */
+    public function getTestInfo()
     {
         return $this->testInfo;
     }

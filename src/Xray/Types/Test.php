@@ -28,7 +28,7 @@ class Test implements JsonSerializable, XrayType {
     private $defects;
 
     /**
-     * @var TestInfo
+     * @var TestInfo|null
      */
     private $testInfo;
 
