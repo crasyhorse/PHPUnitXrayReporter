@@ -1,14 +1,16 @@
 <?php
 
-namespace Crasyhorse\PhpunitXrayReporter\Xray;
+namespace Crasyhorse\PhpunitXrayReporter\Xray\Types;
 use JsonSerializable;
+use Crasyhorse\PhpunitXrayReporter\Xray\Types\XrayType;
+use Crasyhorse\PhpunitXrayReporter\Xray\Builder\TestBuilder;
 
 /**
  * Represents a Xray "Test" object.
  * 
  * @author Florian Weidinger
  */
-class Test implements JsonSerializable{
+class Test implements JsonSerializable, XrayType {
 
     /**
      * @var string
@@ -45,18 +47,14 @@ class Test implements JsonSerializable{
      */
     private $status;
 
-    /**
-     * @param array<array-key, string> $defects
-     */
-    public function __construct(string $key, string $comment, array $defects, string $start, string $finish, string $status, TestInfo $testInfo)
+    public function __construct(TestBuilder $testBuilder)
     {
-        $this->key = $key;
-        $this->comment = $comment;
-        $this->defects = $defects;
-        $this->start = $start;
-        $this->finish = $finish;
-        $this->status = $status;
-        $this->testInfo = $testInfo;
+        $this->key = $testBuilder->getKey();
+        $this->comment = $testBuilder->getcomment();
+        $this->defects = $testBuilder->getDefects();
+        $this->start = $testBuilder->getStart();
+        $this->finish = $testBuilder->getFinish();
+        $this->status = $testBuilder->getStatus();
     }
 
     /**
