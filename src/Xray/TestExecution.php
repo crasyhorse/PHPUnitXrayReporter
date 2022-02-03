@@ -12,27 +12,28 @@ class TestExecution {
     /**
      * @var string
      */
-    private $key;
+    private $key = '';
 
     /**
-     * @var Crasyhorse\PhpunitXrayReporter\Xray\Info
+     * @var Info
      */
     private $info;
 
     /**
-     * @var Crasyhorse\PhpunitXrayReporter\Xray\Test[]
+     * @var Test[]
      */
-    private $tests;
+    private $tests = [];
 
     public function __construct(string $key, Info $info) {
         $this->key = $key;
         $this->info = $info;
+        $this->tests;
     }
 
     /**
      * Add a test result to the list.
      * 
-     * @param Crasyhorse\PhpunitXrayReporter\Xray\Test $test
+     * @param Test $test
      * 
      * @return void
      */

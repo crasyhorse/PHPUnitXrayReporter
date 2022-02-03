@@ -8,6 +8,6 @@ class Definition extends DescriptionTag
 {
     public function __construct()
     {
-        parent::__construct('XRAY-TESTINFO-definition', '');
+        parent::__construct('XRAY-TESTINFO-definition');
     }
 }

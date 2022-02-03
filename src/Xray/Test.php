@@ -20,10 +20,13 @@ class Test {
     private $comment;
 
     /**
-     * @var string[]
+     * @var array<array-key, string>
      */
     private $defects;
 
+    /**
+     * @param array<array-key, string> $defects
+     */
     public function __construct(string $key, string $comment, array $defects)
     {
         $this->key = $key;

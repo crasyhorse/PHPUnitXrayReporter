@@ -48,6 +48,9 @@ final class Extension implements BeforeTestHook, AfterSuccessfulTestHook, AfterT
         // Get startDate here
     }
 
+    /**
+     * @param class-string $test
+     */
     public function executeAfterSuccessfulTest(string $test, float $time): void
     {
         $result = $this->parseDocBlock($test);
@@ -93,7 +96,7 @@ final class Extension implements BeforeTestHook, AfterSuccessfulTestHook, AfterT
      *
      * @param class-string $classMethod
      *
-     * @return void
+     * @return array
      */
     private function parseDocBlock(string $classMethod): array
     {
@@ -114,7 +117,6 @@ final class Extension implements BeforeTestHook, AfterSuccessfulTestHook, AfterT
             // TESTS
             new Comment(),
             new Defects(),
-            new Start(),
             new TestKey(),
             // TESTINFO
             new Definition(),

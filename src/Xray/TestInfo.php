@@ -20,12 +20,12 @@ class TestInfo {
     private $testType;
 
     /**
-     * @var string[]
+     * @var array<array-key, string>
      */
     private $requirementsKeys;
 
     /**
-     * @var string[]
+     * @var array<array-key, string>
      */
     private $labels;
 
@@ -34,7 +34,11 @@ class TestInfo {
      */
     private $definition;
 
-    public function __contruct(string $projectKey, string $testType, array $requirementsKeys, array $labels, string $definition)
+    /**
+     * @param array<array-key, string> $requirementsKeys
+     * @param array<array-key, string> $labels
+     */
+    public function __construct(string $projectKey, string $testType, array $requirementsKeys, array $labels, string $definition)
     {
         $this->projectKey = $projectKey;
         $this->testType = $testType;
