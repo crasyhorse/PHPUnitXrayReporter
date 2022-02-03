@@ -1,6 +1,6 @@
 <?php
 
-namespace Crasyhorse\PhpunitXrayReporter\Xray;
+namespace Crasyhorse\PhpunitXrayReporter\Xray\Types;
 use JsonSerializable;
 
 /**
