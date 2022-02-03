@@ -3,7 +3,7 @@
 namespace Crasyhorse\PhpunitXrayReporter\Xray;
 
 /**
- * 
+ * Represents a XRay "Test execution" object.
  * 
  * @author Florian Weidinger
  */
@@ -29,11 +29,23 @@ class TestExecution {
         $this->info = $info;
     }
 
+    /**
+     * Add a test result to the list.
+     * 
+     * @param Crasyhorse\PhpunitXrayReporter\Xray\Test $test
+     * 
+     * @return void
+     */
     public function addTest(Test $test): void
     {
         $this->tests[] = $test;
     }
 
+    /**
+     * Serializes the class into a JSON string.
+     * 
+     * @return string
+     */
     public function toJson(): string
     {
         // code
