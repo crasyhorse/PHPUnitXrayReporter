@@ -20,7 +20,6 @@ use Crasyhorse\PhpunitXrayReporter\Tags\TestInfo\RequirementKeys;
 use Crasyhorse\PhpunitXrayReporter\Tags\TestInfo\TestType;
 use Crasyhorse\PhpunitXrayReporter\Tags\Tests\Comment;
 use Crasyhorse\PhpunitXrayReporter\Tags\Tests\Defects;
-use Crasyhorse\PhpunitXrayReporter\Tags\Tests\Start;
 use Crasyhorse\PhpunitXrayReporter\Tags\Tests\TestKey;
 use Exception;
 use Jasny\PhpdocParser\PhpdocParser;
@@ -49,22 +48,21 @@ final class Extension implements BeforeTestHook, AfterSuccessfulTestHook, AfterT
     }
 
     /**
-     * @param class-string $test
      */
     public function executeAfterSuccessfulTest(string $test, float $time): void
     {
+        /** @var class-string $test */
         $result = $this->parseDocBlock($test);
-        var_dump($result);
     }
 
     public function executeAfterTestFailure(string $test, string $message, float $time): void
     {
-        throw new Exception('Not implemented yet.');
+        // throw new Exception('Not implemented yet.');
     }
 
     public function executeAfterTestError(string $test, string $message, float $time): void
     {
-        throw new Exception('Not implemented yet.');
+        // throw new Exception('Not implemented yet.');
     }
 
     public function executeAfterTestWarning(string $test, string $message, float $time): void
@@ -98,7 +96,7 @@ final class Extension implements BeforeTestHook, AfterSuccessfulTestHook, AfterT
      *
      * @return array
      */
-    private function parseDocBlock(string $classMethod): array
+    private function parseDocBlock($classMethod): array
     {
         $docBlock = (new ReflectionMethod($classMethod))->getDocComment();
 
