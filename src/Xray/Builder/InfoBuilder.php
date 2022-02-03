@@ -45,7 +45,7 @@ class InfoBuilder implements Builder {
     private $testPlanKey = '';
 
     /**
-     * @var array<array-key, string>
+     * @var array<int, string>
      */
     private $testEnvironments = [];    
     
@@ -131,7 +131,7 @@ class InfoBuilder implements Builder {
     }
 
     /**
-     * @return array<array-key, string>
+     * @return array<int, string>
      */
     public function getTestEnvironments()
     {
@@ -139,7 +139,7 @@ class InfoBuilder implements Builder {
     }
     
     /**
-     * @param array<array-key, string> $testEnvironments
+     * @param array<int, string> $testEnvironments
      */
     public function setTestEnvironments(array $testEnvironments): self
     {

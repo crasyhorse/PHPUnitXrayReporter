@@ -53,7 +53,7 @@ class Info implements JsonSerializable, XrayType
     private $testPlanKey;
 
     /**
-     * @var array<array-key, string>
+     * @var array<int, string>
      */
     private $testEnvironments;
 
