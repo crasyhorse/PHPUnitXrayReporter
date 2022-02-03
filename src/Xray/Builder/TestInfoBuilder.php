@@ -10,27 +10,27 @@ class TestInfoBuilder implements Builder {
     /**
      * @var string
      */
-    private $projectKey;
+    private $projectKey = '';
 
     /**
      * @var string
      */
-    private $testType;
+    private $testType = '';
 
     /**
      * @var array<int, string>
      */
-    private $requirementsKeys;
+    private $requirementsKeys = [];
 
     /**
      * @var array<int, string>
      */
-    private $labels;
+    private $labels = [];
 
     /**
      * @var string
      */
-    private $definition;
+    private $definition = '';
 
     
     public function __construct(){
