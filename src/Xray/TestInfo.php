@@ -4,11 +4,11 @@ namespace Crasyhorse\PhpunitXrayReporter\Xray;
 
 /**
  * Represents a Xray "TestInfo" object.
- * 
+ *
  * @author Florian Weidinger
  */
-class TestInfo implements Serializable{
-
+class TestInfo implements Serializable
+{
     /**
      * @var string
      */
@@ -46,14 +46,20 @@ class TestInfo implements Serializable{
         $this->labels = $labels;
         $this->definition = $definition;
     }
-    
+
     /**
      * Serializes the class into a JSON string.
-     * 
+     *
      * @return string
      */
     public function toJson(): string
     {
-        // code
+        return json_encode([
+            'projectKey' => $this->projectKey,
+            'testType' => $this->testType,
+            'requirementsKeys' => $this->requirementsKeys,
+            'labels' => $this->labels,
+            'definition' => $this->definition,
+        ]);
     }
 }
