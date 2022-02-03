@@ -1,14 +1,16 @@
 <?php
 
-namespace Crasyhorse\PhpunitXrayReporter\Xray;
-use JsonSerializable;
+namespace Crasyhorse\PhpunitXrayReporter\Xray\Types;
 
+use JsonSerializable;
+use Crasyhorse\PhpunitXrayReporter\Xray\Types\XrayType;
+use Crasyhorse\PhpunitXrayReporter\Xray\Builder\TestInfoBuilder;
 /**
  * Represents a Xray "TestInfo" object.
  *
  * @author Florian Weidinger
  */
-class TestInfo implements JsonSerializable
+class TestInfo implements JsonSerializable, XrayType
 {
     /**
      * @var string
@@ -21,12 +23,12 @@ class TestInfo implements JsonSerializable
     private $testType;
 
     /**
-     * @var array<array-key, string>
+     * @var array<int, string>
      */
     private $requirementsKeys;
 
     /**
-     * @var array<array-key, string>
+     * @var array<int, string>
      */
     private $labels;
 
@@ -36,16 +38,16 @@ class TestInfo implements JsonSerializable
     private $definition;
 
     /**
-     * @param array<array-key, string> $requirementsKeys
-     * @param array<array-key, string> $labels
+     * @param array<int, string> $requirementsKeys
+     * @param array<int, string> $labels
      */
-    public function __construct(string $projectKey, string $testType, array $requirementsKeys, array $labels, string $definition)
+    public function __construct(TestInfoBuilder $testInfoBuilder)
     {
-        $this->projectKey = $projectKey;
-        $this->testType = $testType;
-        $this->requirementsKeys = $requirementsKeys;
-        $this->labels = $labels;
-        $this->definition = $definition;
+        $this->projectKey = $testInfoBuilder->getProjectKey();
+        $this->testType = $testInfoBuilder->getTestType();
+        $this->requirementsKeys = $testInfoBuilder->getRequirementsKeys();
+        $this->labels = $testInfoBuilder->getLabels();
+        $this->definition = $testInfoBuilder->getDefinition();
     }
 
     /**
