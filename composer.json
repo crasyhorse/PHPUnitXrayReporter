@@ -40,6 +40,7 @@
         "test-f": "vendor/bin/phpunit --filter",
         "test-g": "vendor/bin/phpunit --group",
         "psalm": "vendor/bin/psalm",
+        "psalm-c": "vendor/bin/psalm --clear-cache",
         "psalm-i": "vendor/bin/psalm --show-info=true"
     },
     "minimum-stability": "dev"
