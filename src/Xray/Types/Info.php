@@ -1,14 +1,19 @@
 <?php
 
-namespace Crasyhorse\PhpunitXrayReporter\Xray;
+namespace Crasyhorse\PhpunitXrayReporter\Xray\Types;
+
 use JsonSerializable;
+use Crasyhorse\PhpunitXrayReporter\Xray\Types\XrayType;
+use Crasyhorse\PhpunitXrayReporter\Xray\Builder\InfoBuilder;
 
 /**
  * Represents a Xray "Info" object.
  * 
  * @author Paul Friedemann
+ *
+ * @since 0.1.0
  */
-class Info implements JsonSerializable
+class Info implements JsonSerializable, XrayType
 {
     /**
      * The project key where the test execution will be created.
@@ -48,20 +53,20 @@ class Info implements JsonSerializable
     private $testPlanKey;
 
     /**
-     * @var array
+     * @var array<array-key, string>
      */
     private $testEnvironments;
 
-    public function __construct(string $project, string $summary, string $description, string $version, string $revision, string $user, string $testPlanKey, array $testEnvironments)
+    public function __construct(InfoBuilder $infoBuilder)
     {
-        $this->project = $project;
-        $this->summary = $summary;
-        $this->description = $description;
-        $this->version = $version;
-        $this->revision = $revision;
-        $this->user = $user;
-        $this->testPlanKey = $testPlanKey;
-        $this->testEnvironments = $testEnvironments;
+        $this->project = $infoBuilder->getProject();
+        $this->summary = $infoBuilder->getSummary();
+        $this->description = $infoBuilder->getDescription();
+        $this->version = $infoBuilder->getVersion();
+        $this->revision = $infoBuilder->getRevision();
+        $this->user = $infoBuilder->getUser();
+        $this->testPlanKey = $infoBuilder->getTestPlanKey();
+        $this->testEnvironments = $infoBuilder->getTestEnvironments();
     }
 
     /**
