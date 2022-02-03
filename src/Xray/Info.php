@@ -61,6 +61,15 @@ class Info implements Serializable
 
     public function toJson(): string
     {
-        // to fill
+        return json_encode([
+            'projectKey' => $this->projectKey,
+            'summary' => $this->summary,
+            'description' => $this->description,
+            'version' => $this->version,
+            'revision' => $this->revision,
+            'user' => $this->user,
+            'testPlanKey' => $this->testPlanKey,
+            'testEnvironments' => $this->testEnvironments,
+        ]);
     }
 }
