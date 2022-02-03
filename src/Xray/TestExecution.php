@@ -4,11 +4,11 @@ namespace Crasyhorse\PhpunitXrayReporter\Xray;
 
 /**
  * Represents a XRay "Test execution" object.
- * 
+ *
  * @author Florian Weidinger
  */
-class TestExecution implements Serializable {
-    
+class TestExecution implements Serializable
+{
     /**
      * @var string
      */
@@ -24,7 +24,8 @@ class TestExecution implements Serializable {
      */
     private $tests = [];
 
-    public function __construct(string $key, Info $info) {
+    public function __construct(string $key, Info $info)
+    {
         $this->key = $key;
         $this->info = $info;
         $this->tests;
@@ -32,9 +33,7 @@ class TestExecution implements Serializable {
 
     /**
      * Add a test result to the list.
-     * 
-     * @param Test $test
-     * 
+     *
      * @return void
      */
     public function addTest(Test $test): void
@@ -44,11 +43,23 @@ class TestExecution implements Serializable {
 
     /**
      * Serializes the class into a JSON string.
-     * 
+     *
      * @return string
      */
     public function toJson(): string
     {
-        // code
+        $testsJson = [];
+
+        foreach ($this->tests as $test) {
+            $testsJson[] = $test->toJson();
+        }
+
+        return json_encode([
+            'testExecutionKey' => $this->key,
+            'info' => $this->info->toJson(),
+            'tests' => [
+                $testsJson,
+            ],
+        ]);
     }
 }
