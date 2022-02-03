@@ -7,7 +7,7 @@ namespace Crasyhorse\PhpunitXrayReporter\Xray;
  * 
  * @author Florian Weidinger
  */
-class TestInfo {
+class TestInfo implements Serializable{
 
     /**
      * @var string
@@ -45,5 +45,15 @@ class TestInfo {
         $this->requirementsKeys = $requirementsKeys;
         $this->labels = $labels;
         $this->definition = $definition;
+    }
+    
+    /**
+     * Serializes the class into a JSON string.
+     * 
+     * @return string
+     */
+    public function toJson(): string
+    {
+        // code
     }
 }

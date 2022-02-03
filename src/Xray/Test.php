@@ -7,7 +7,7 @@ namespace Crasyhorse\PhpunitXrayReporter\Xray;
  * 
  * @author Florian Weidinger
  */
-class Test {
+class Test implements Serializable{
 
     /**
      * @var string
@@ -34,8 +34,17 @@ class Test {
         $this->defects = $defects;
     }
 
+    /**
+     * Serializes the class into a JSON string.
+     * 
+     * @return string
+     */
     public function toJson(): string
     {
-        // code
+        return json_encode([
+            'testKey' => $this->key,
+            'comment' => $this->comment,
+            'defects' => $this->defects
+        ]);
     }
 }

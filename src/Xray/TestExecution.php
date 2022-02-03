@@ -7,7 +7,7 @@ namespace Crasyhorse\PhpunitXrayReporter\Xray;
  * 
  * @author Florian Weidinger
  */
-class TestExecution {
+class TestExecution implements Serializable {
     
     /**
      * @var string

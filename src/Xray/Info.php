@@ -5,7 +5,7 @@ namespace Crasyhorse\PhpunitXrayReporter\Xray;
 /**
  * @author Paul Friedemann
  */
-class Info
+class Info implements Serializable
 {
     /**
      * @var string
