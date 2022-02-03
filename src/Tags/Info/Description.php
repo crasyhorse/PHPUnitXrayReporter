@@ -8,6 +8,6 @@ class Description extends DescriptionTag
 {
     public function __construct()
     {
-        parent::__construct('XRAY-INFO-description', '');
+        parent::__construct('XRAY-INFO-description');
     }
 }

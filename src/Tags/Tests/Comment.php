@@ -8,6 +8,6 @@ class Comment extends DescriptionTag
 {
     public function __construct()
     {
-        parent::__construct('XRAY-TESTS-comment', '');
+        parent::__construct('XRAY-TESTS-comment');
     }
 }
