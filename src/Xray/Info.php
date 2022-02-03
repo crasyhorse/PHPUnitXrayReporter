@@ -47,7 +47,7 @@ class Info implements Serializable
      */
     private $testEnvironments;
 
-    public function __construct(string $projectKey, string $summary, string $description, string $version, string $revision, string $user, string $testPlanKey, string $testEnvironments)
+    public function __construct(string $projectKey, string $summary, string $description, string $version, string $revision, string $user, string $testPlanKey, array $testEnvironments)
     {
         $this->projectKey = $projectKey;
         $this->summary = $summary;
