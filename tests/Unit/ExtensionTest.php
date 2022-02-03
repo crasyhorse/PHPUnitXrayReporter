@@ -25,9 +25,8 @@ class ExtensionTest extends TestCase
      * @XRAY-testExecutionKey
      * 
      * @test
-     * @return void
      */
-    public function spec_name(): void
+    public function simple_spec(): void
     {
         $asset = new Asset();
         $expected = 4;
@@ -35,18 +34,43 @@ class ExtensionTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    public function int_provider(): array
+    {
+        return [
+            'a = 2, b = 2' => [
+                2, 2
+            ]
+        ];
+    }
+
     /**
      * This is a test.
      *
      * @test
-     *
+     * @dataProvider int_provider
      * @return void
      */
-    public function spec_name1(): void
+    public function spec_with_simple_provider(int $a, int $b): void
     {
         $asset = new Asset();
-        $expected = 4;
-        $actual = $asset->add(2, 2);
+        $expected = $a + $b;
+        $actual = $asset->add($a, $b);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * This is a test.
+     *
+     * @test
+     * @dataProvider int_provider
+     * @testdox Hallo Welt
+     * @return void
+     */
+    public function spec_with_simple_provider_using_testdox_tag(int $a, int $b): void
+    {
+        $asset = new Asset();
+        $expected = $a + $b;
+        $actual = $asset->add($a, $b);
         $this->assertEquals($expected, $actual);
     }
 }
