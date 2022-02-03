@@ -1,13 +1,14 @@
 <?php
 
 namespace Crasyhorse\PhpunitXrayReporter\Xray;
+use JsonSerializable;
 
 /**
  * Represents a XRay "Test execution" object.
  *
  * @author Florian Weidinger
  */
-class TestExecution implements Serializable
+class TestExecution implements JsonSerializable
 {
     /**
      * @var string
@@ -42,24 +43,16 @@ class TestExecution implements Serializable
     }
 
     /**
-     * Serializes the class into a JSON string.
+     * Defines how this class is serialized into JSON.
      *
-     * @return string
+     * @return mixed
      */
-    public function toJson(): string
+    public function jsonSerialize()
     {
-        $testsJson = [];
-
-        foreach ($this->tests as $test) {
-            $testsJson[] = $test->toJson();
-        }
-
-        return json_encode([
+        return [
             'testExecutionKey' => $this->key,
-            'info' => $this->info->toJson(),
-            'tests' => [
-                $testsJson,
-            ],
-        ]);
+            'info' => $this->info,
+            'tests' => $this->tests
+        ];
     }
 }

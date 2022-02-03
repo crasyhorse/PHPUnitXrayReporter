@@ -1,13 +1,14 @@
 <?php
 
 namespace Crasyhorse\PhpunitXrayReporter\Xray;
+use JsonSerializable;
 
 /**
  * Represents a Xray "Test" object.
  * 
  * @author Florian Weidinger
  */
-class Test implements Serializable{
+class Test implements JsonSerializable{
 
     /**
      * @var string
@@ -47,7 +48,7 @@ class Test implements Serializable{
     /**
      * @param array<array-key, string> $defects
      */
-    public function __construct(string $key, string $comment, array $defects, string $start, string $finish, string $status)
+    public function __construct(string $key, string $comment, array $defects, string $start, string $finish, string $status, TestInfo $testInfo)
     {
         $this->key = $key;
         $this->comment = $comment;
@@ -55,27 +56,24 @@ class Test implements Serializable{
         $this->start = $start;
         $this->finish = $finish;
         $this->status = $status;
-    }
-
-    public function setTestInfo(TestInfo $testInfo): void
-    {
         $this->testInfo = $testInfo;
     }
+
     /**
-     * Serializes the class into a JSON string.
-     * 
-     * @return string
+     * Defines how this class is serialized into JSON.
+     *
+     * @return mixed
      */
-    public function toJson(): string
+    public function jsonSerialize()
     {
-        return json_encode([
+        return [
             'testKey' => $this->key,
             'comment' => $this->comment,
             'defects' => $this->defects,
             'start' => $this->start,
             'finish' => $this->finish,
             'status' => $this->status,
-            'testInfo' => $this->testInfo->toJson()
-        ]);
+            'testInfo' => $this->testInfo
+        ];
     }
 }

@@ -1,16 +1,21 @@
 <?php
 
 namespace Crasyhorse\PhpunitXrayReporter\Xray;
+use JsonSerializable;
 
 /**
+ * Represents a Xray "Info" object.
+ * 
  * @author Paul Friedemann
  */
-class Info implements Serializable
+class Info implements JsonSerializable
 {
     /**
+     * The project key where the test execution will be created.
+     * 
      * @var string
      */
-    private $projectKey;
+    private $project;
 
     /**
      * @var string
@@ -47,9 +52,9 @@ class Info implements Serializable
      */
     private $testEnvironments;
 
-    public function __construct(string $projectKey, string $summary, string $description, string $version, string $revision, string $user, string $testPlanKey, array $testEnvironments)
+    public function __construct(string $project, string $summary, string $description, string $version, string $revision, string $user, string $testPlanKey, array $testEnvironments)
     {
-        $this->projectKey = $projectKey;
+        $this->project = $project;
         $this->summary = $summary;
         $this->description = $description;
         $this->version = $version;
@@ -59,10 +64,15 @@ class Info implements Serializable
         $this->testEnvironments = $testEnvironments;
     }
 
-    public function toJson(): string
+    /**
+     * Defines how this class is serialized into JSON.
+     *
+     * @return mixed
+     */
+    public function jsonSerialize()
     {
-        return json_encode([
-            'projectKey' => $this->projectKey,
+        return [
+            'project' => $this->project,
             'summary' => $this->summary,
             'description' => $this->description,
             'version' => $this->version,
@@ -70,6 +80,6 @@ class Info implements Serializable
             'user' => $this->user,
             'testPlanKey' => $this->testPlanKey,
             'testEnvironments' => $this->testEnvironments,
-        ]);
+        ];
     }
 }
