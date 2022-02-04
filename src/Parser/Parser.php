@@ -45,7 +45,7 @@ final class Parser
      *
      * @var array<array-key, string>
      */
-    private $allowedTags;
+    private $allowedTags = [];
 
     /**
      * List of tags that should not be present in the parsed result.
