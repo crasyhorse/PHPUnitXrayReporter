@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Crasyhorse\PhpunitXrayReporter\Tags\Tests;
 
 use Jasny\PhpdocParser\Tag\WordTag;

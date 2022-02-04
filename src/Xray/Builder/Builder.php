@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Crasyhorse\PhpunitXrayReporter\Xray\Builder;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\XrayType;
 
