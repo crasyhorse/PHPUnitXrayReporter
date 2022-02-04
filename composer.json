@@ -28,7 +28,8 @@
     "require": {
         "php": "^7.4 | ^8.0",
         "ext-json": "*",
-        "jasny/phpdoc-parser": "dev-master"
+        "jasny/phpdoc-parser": "dev-master",
+        "nesbot/carbon": "2.x-dev"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",

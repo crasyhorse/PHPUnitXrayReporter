@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Crasyhorse\PhpunitXrayReporter;
 
+use Carbon\Carbon;
 use Crasyhorse\PhpunitXrayReporter\Tags\Info\Description;
 use Crasyhorse\PhpunitXrayReporter\Tags\Info\Project;
 use Crasyhorse\PhpunitXrayReporter\Tags\Info\Revision;
@@ -42,13 +43,20 @@ use ReflectionMethod;
  */
 final class Extension implements BeforeTestHook, AfterSuccessfulTestHook, AfterTestFailureHook, AfterSkippedTestHook, AfterIncompleteTestHook, AfterTestWarningHook, AfterTestErrorHook, AfterRiskyTestHook, AfterTestHook
 {
-    public function executeBeforeTest(string $test): void
+    /**
+     * @var Carbon
+     */
+    private $start;
+
+    public function __construct()
     {
-        // Get startDate here
+        $this->start = Carbon::now();
     }
 
-    /**
-     */
+    public function executeBeforeTest(string $test): void
+    {
+    }
+
     public function executeAfterSuccessfulTest(string $test, float $time): void
     {
         /** @var class-string $test */
@@ -93,8 +101,6 @@ final class Extension implements BeforeTestHook, AfterSuccessfulTestHook, AfterT
      * Parses the doc block of a test method.
      *
      * @param class-string $classMethod
-     *
-     * @return array
      */
     private function parseDocBlock($classMethod): array
     {
