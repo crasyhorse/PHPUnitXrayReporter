@@ -36,9 +36,10 @@
         "friendsofphp/php-cs-fixer": "3.4.0"
     },
     "scripts": {
-        "test": "vendor/bin/phpunit",
-        "test-f": "vendor/bin/phpunit --filter",
-        "test-g": "vendor/bin/phpunit --group",
+        "test:all": "vendor/bin/phpunit --testsuite Prepare  --no-coverage && vendor/bin/phpunit --no-extensions --testsuite Unit",
+        "test:prepare": "vendor/bin/phpunit --testsuite Prepare --no-coverage",
+        "test:unit": "vendor/bin/phpunit --no-extensions --testsuite Unit",
+        "test:unit-f": "vendor/bin/phpunit --no-extensions --testsuite Unit --filter",
         "psalm": "vendor/bin/psalm",
         "psalm-c": "vendor/bin/psalm --clear-cache",
         "psalm-i": "vendor/bin/psalm --show-info=true"
