@@ -28,6 +28,9 @@ final class Extension implements BeforeTestHook, AfterSuccessfulTestHook, AfterT
      */
     private $start;
 
+    /**
+     * @var Parser
+     */
     private $parser;
 
     public function __construct()
@@ -42,7 +45,6 @@ final class Extension implements BeforeTestHook, AfterSuccessfulTestHook, AfterT
 
     public function executeAfterSuccessfulTest(string $test, float $time): void
     {
-        /** @var class-string $test */
         $result = $this->parser->parse($test);
         var_dump($result);
     }
