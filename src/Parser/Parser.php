@@ -32,7 +32,7 @@ use ReflectionMethod;
  *
  * @since 0.1.0
  */
-class Parser
+final class Parser
 {
     /**
      * @var array<int,string>
@@ -82,13 +82,12 @@ class Parser
     /**
      * Parses the doc block of a method.
      *
-     * @param class-string $classMethod
-     *
      * @return array
      */
-    public function parse($classMethod): array
+    final public function parse(string $test): array
     {
-        $docBlock = (new ReflectionMethod($classMethod))->getDocComment();
+        $testName = $this->sanitize($test);
+        $docBlock = (new ReflectionMethod($testName))->getDocComment();
         $tags = PhpDocumentor::tags()->with($this->customTags);
 
         $parser = new PhpdocParser($tags);
@@ -96,5 +95,31 @@ class Parser
         $metaInformation = $parser->parse($docBlock);
 
         return $metaInformation;
+    }
+
+    /**
+     * Takes the test name and strips off namespace, class name and eventually
+     * existing "with data set" strings.
+     *
+     * @return string
+     */
+    final private function sanitize(string $test): string
+    {
+        $testName = $this->stripOffWithDataSet($test);
+
+        return $testName;
+    }
+
+    /**
+     * Strips off the "with data set ..." string from the test name.
+     *
+     * @return string
+     */
+    final private function stripOffWithDataSet(string $test): string
+    {
+        preg_match_all('/([[:alpha:]][_0-9a-zA-Z:\\\]+)(?!< with data set)/', $test, $matches);
+        $testName = $matches[0][0];
+
+        return $testName;
     }
 }
