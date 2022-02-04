@@ -21,6 +21,7 @@ use Crasyhorse\PhpunitXrayReporter\Tags\TestInfo\TestType;
 use Crasyhorse\PhpunitXrayReporter\Tags\Tests\Comment;
 use Crasyhorse\PhpunitXrayReporter\Tags\Tests\Defects;
 use Crasyhorse\PhpunitXrayReporter\Tags\Tests\TestKey;
+use Crasyhorse\PhpunitXrayReporter\Tags\XrayTag;
 use Jasny\PhpdocParser\PhpdocParser;
 use Jasny\PhpdocParser\Set\PhpDocumentor;
 use ReflectionMethod;
@@ -35,21 +36,30 @@ use ReflectionMethod;
 final class Parser
 {
     /**
-     * @var array<int,string>
+     * @var array<array-key, XrayTag>
      */
     private $customTags;
 
     /**
      * List the tags that are allowed to be inserted into the parser result.
      *
-     * @var array
+     * @var array<array-key, string>
      */
     private $allowedTags;
 
     /**
-     * @param array<int,string> $additionalCustomTags
+     * List of tags that should not be present in the parsed result.
+     *
+     * @var array<array-key, string>
      */
-    public function __construct(array $additionalCustomTags = null)
+    private $blacklistedTags;
+
+    /**
+     * @param array<array-key, XrayTag> $additionalCustomTags Additional Tags of type XrayTag
+     * @param array<array-key, string>  $whitelistedTags      Allow additional tags like @test or @dataProvider
+     * @param array<array-key, string>  $blacklistedTags      Remove tags like @param or @return
+     */
+    public function __construct(array $additionalCustomTags = null, array $whitelistedTags = null, array $blacklistedTags = null)
     {
         $this->customTags = [
             new TestExecutionKey(),
@@ -72,11 +82,26 @@ final class Parser
             new TestType(),
         ];
 
+        $this->blacklistedTags = [
+            'return',
+            'param',
+            'throws',
+            'author',
+            'since',
+            'see',
+        ];
+
         if (is_array($additionalCustomTags)) {
             $this->customTags = array_merge($this->customTags, $additionalCustomTags);
         }
 
-        $this->allowedTags = [];
+        if (is_array($whitelistedTags)) {
+            $this->allowedTags = array_merge($this->allowedTags, $whitelistedTags);
+        }
+
+        if (is_array($blacklistedTags)) {
+            $this->allowedTags = array_diff($this->allowedTags, $blacklistedTags);
+        }
     }
 
     /**
@@ -86,28 +111,15 @@ final class Parser
      */
     final public function parse(string $test): array
     {
-        $testName = $this->sanitize($test);
+        $testName = $this->stripOffWithDataSet($test);
         $docBlock = (new ReflectionMethod($testName))->getDocComment();
-        $tags = PhpDocumentor::tags()->with($this->customTags);
 
+        $tags = PhpDocumentor::tags()->with($this->customTags);
         $parser = new PhpdocParser($tags);
 
         $metaInformation = $parser->parse($docBlock);
 
         return $metaInformation;
-    }
-
-    /**
-     * Takes the test name and strips off namespace, class name and eventually
-     * existing "with data set" strings.
-     *
-     * @return string
-     */
-    final private function sanitize(string $test): string
-    {
-        $testName = $this->stripOffWithDataSet($test);
-
-        return $testName;
     }
 
     /**
