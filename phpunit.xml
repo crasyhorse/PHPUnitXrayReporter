@@ -17,6 +17,9 @@
         <testsuite name="Unit">
             <directory suffix="Test.php">./tests/Unit</directory>
         </testsuite>
+        <testsuite name="Prepare">
+            <directory suffix="Test.php">./tests/Prepare</directory>
+        </testsuite>
     </testsuites>
     <coverage 
         cacheDirectory="/tmp"
@@ -33,9 +36,6 @@
             <clover outputFile="reports/clover/clover.xml"/>
         </report>
     </coverage>
-    <logging>
-        <junit outputFile="junit.xml"/>
-    </logging>
     <extensions>
         <extension class="Crasyhorse\PhpunitXrayReporter\Extension"></extension>
     </extensions>
