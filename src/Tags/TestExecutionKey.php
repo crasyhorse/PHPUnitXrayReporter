@@ -6,7 +6,7 @@ namespace Crasyhorse\PhpunitXrayReporter\Tags;
 
 use Jasny\PhpdocParser\Tag\WordTag;
 
-class TestExecutionKey extends WordTag
+class TestExecutionKey extends WordTag implements XrayTag
 {
     public function __construct()
     {

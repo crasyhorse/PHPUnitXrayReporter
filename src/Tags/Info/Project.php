@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Crasyhorse\PhpunitXrayReporter\Tags\Info;
 
+use Crasyhorse\PhpunitXrayReporter\Tags\XrayTag;
 use Jasny\PhpdocParser\Tag\WordTag;
 
-class Project extends WordTag
+class Project extends WordTag implements XrayTag
 {
     public function __construct()
     {
