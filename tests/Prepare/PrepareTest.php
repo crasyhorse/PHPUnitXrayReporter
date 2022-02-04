@@ -32,7 +32,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Florian Weidinger
  *
- * @since
+ * @since 0.1.0
  */
 class PrepareTest extends TestCase
 {
