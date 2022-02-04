@@ -90,6 +90,49 @@ class PrepareTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    /**
+     * This test fails because 2 + 2 is not 5.
+     *
+     * @test
+     */
+    public function add_adds_two_integers_but_does_not_return_the_expected_result(): void
+    {
+        $asset = new Asset();
+        $expected = 5;
+        $actual = $asset->add(2, 2);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * This test does nothing because it is skipped.
+     *
+     * @test
+     */
+    public function test_does_nothing_because_it_is_skipped(): void
+    {
+        $this->markTestSkipped('Skipped test');
+    }
+
+    /**
+     * This test does nothing because it is incomplete.
+     *
+     * @test
+     */
+    public function test_does_nothing_because_it_is_incomplete(): void
+    {
+        $this->markTestIncomplete('Incomplete test');
+    }
+
+    /**
+     * This test is marked as risky.
+     *
+     * @test
+     */
+    public function risky_test(): void
+    {
+        $this->markAsRisky();
+    }
+
     public function integer_provider(): array
     {
         return [
