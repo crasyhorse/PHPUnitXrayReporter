@@ -40,6 +40,7 @@ class PrepareTest extends TestCase
      * Successful test.
      *
      * @test
+     * @XRAY-testExecutionKey PRTL-666
      */
     public function add_adds_two_integer_values(): void
     {
@@ -55,6 +56,8 @@ class PrepareTest extends TestCase
      *
      * @test
      * @testdox Method add adds two integer values
+     *
+     * @XRAY-testExecutionKey PRTL-667
      */
     public function add_adds_two_integer_values_using_testdox_annotation(): void
     {
@@ -69,6 +72,8 @@ class PrepareTest extends TestCase
      *
      * @test
      * @dataProvider integer_provider
+     *
+     * @XRAY-testExecutionKey PRTL-668
      */
     public function add_adds_two_integers_from_a_list_of_values(int $a, int $b, int $result): void
     {
@@ -81,6 +86,7 @@ class PrepareTest extends TestCase
      * Returns an Error because the first operand $a is a string.
      *
      * @test
+     * @XRAY-testExecutionKey PRTL-669
      */
     public function test_returning_an_error_because_the_first_operand_is_a_string(): void
     {
@@ -94,6 +100,7 @@ class PrepareTest extends TestCase
      * This test fails because 2 + 2 is not 5.
      *
      * @test
+     * @XRAY-testExecutionKey PRTL-670
      */
     public function add_adds_two_integers_but_does_not_return_the_expected_result(): void
     {
@@ -107,6 +114,7 @@ class PrepareTest extends TestCase
      * This test does nothing because it is skipped.
      *
      * @test
+     * @XRAY-testExecutionKey PRTL-671
      */
     public function test_does_nothing_because_it_is_skipped(): void
     {
@@ -117,6 +125,7 @@ class PrepareTest extends TestCase
      * This test does nothing because it is incomplete.
      *
      * @test
+     * @XRAY-testExecutionKey PRTL-672
      */
     public function test_does_nothing_because_it_is_incomplete(): void
     {
@@ -127,6 +136,7 @@ class PrepareTest extends TestCase
      * This test is marked as risky.
      *
      * @test
+     * @XRAY-testExecutionKey PRTL-673
      */
     public function risky_test(): void
     {
