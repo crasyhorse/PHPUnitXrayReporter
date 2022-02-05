@@ -27,9 +27,11 @@ class TestEnvironments extends ArrayTag implements XrayTag
      * consisting of an asterisk and a slash will show up in the list
      * of test environments if this tag is the last one in the doc block.
      *
-     * @param array<array-key, string> $notations
+     * @param array<array-key, mixed> $notations
      *
-     * @return array<array-key, string>
+     * @return non-empty-array<array-key, array<array-key, mixed>|mixed>
+     * @psalm-suppress PossiblyInvalidCast
+     * @psalm-suppress PossiblyInvalidArgument 
      */
     public function process(array $notations, string $value): array
     {
@@ -39,10 +41,7 @@ class TestEnvironments extends ArrayTag implements XrayTag
             return $notations;
         }
 
-        $itemString = $this->stripOffClosingDocBlockComment(
-            $this->stripParentheses($value)
-        );
-
+        $itemString = $this->stripOffClosingDocBlockComment($this->stripParentheses($value));
         $items = $this->splitValue($itemString);
 
         try {
@@ -63,9 +62,12 @@ class TestEnvironments extends ArrayTag implements XrayTag
     /**
      * Removes the closing PHPDoc comment consisting of an asterisk and a slash.
      *
+     * @param string $value
+     *
      * @return string|string[]|null
+     * @psalm-suppress PossiblyInvalidArgument 
      */
-    protected function stripOffClosingDocBlockComment(string $value)
+    protected function stripOffClosingDocBlockComment($value)
     {
         preg_match('/([^\*\/ ]*)(?!< \*\/$)/', $value, $matches);
 
