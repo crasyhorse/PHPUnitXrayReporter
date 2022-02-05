@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Crasyhorse\PhpunitXrayReporter\Tags\Info;
+namespace Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info;
 
-use Crasyhorse\PhpunitXrayReporter\Tags\XrayTag;
-use Crasyhorse\PhpunitXrayReporter\Tags\ModifiedDescriptionTag;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\ModifiedDescriptionTag;
 
 /**
  * Represents the XrayTag that correlats with the XrayType Summary.

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Crasyhorse\PhpunitXrayReporter\Tags\Info;
+namespace Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info;
 
-use Crasyhorse\PhpunitXrayReporter\Tags\XrayTag;
-use Crasyhorse\PhpunitXrayReporter\Tags\ModifiedArrayTag;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\ModifiedArrayTag;
 
 /**
  * Represents the XrayTag that correlats with the XrayType TestEnvironment.

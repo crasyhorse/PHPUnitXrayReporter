@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace Crasyhorse\PhpunitXrayReporter\Parser;
 
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\Description;
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\Project;
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\Revision;
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\Summary;
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\TestEnvironments;
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\TestPlanKey;
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\User;
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\Version;
-use Crasyhorse\PhpunitXrayReporter\Tags\TestExecutionKey;
-use Crasyhorse\PhpunitXrayReporter\Tags\TestInfo\Definition;
-use Crasyhorse\PhpunitXrayReporter\Tags\TestInfo\Labels;
-use Crasyhorse\PhpunitXrayReporter\Tags\TestInfo\ProjectKey;
-use Crasyhorse\PhpunitXrayReporter\Tags\TestInfo\RequirementKeys;
-use Crasyhorse\PhpunitXrayReporter\Tags\TestInfo\TestType;
-use Crasyhorse\PhpunitXrayReporter\Tags\Tests\Defects;
-use Crasyhorse\PhpunitXrayReporter\Tags\Tests\TestKey;
-use Crasyhorse\PhpunitXrayReporter\Tags\XrayTag;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Description;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Project;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Revision;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Summary;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\TestEnvironments;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\TestPlanKey;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\User;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Version;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestExecutionKey;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\Definition;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\Labels;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\ProjectKey;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\RequirementKeys;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\TestType;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\Defects;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\TestKey;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
 
 /**
  * Manages the list of available customs tags and also provides the list
@@ -79,7 +79,7 @@ final class TagSet
      *
      * @return array<array-key, XrayTag>
      */
-    public function getCustomTags(array $additionalCustomTags = []): array
+    final public function getCustomTags(array $additionalCustomTags = []): array
     {
         return array_merge([
             new TestExecutionKey(),
@@ -107,7 +107,7 @@ final class TagSet
      *
      * @return array<array-key, string>
      */
-    public function getAllowedTags(): array
+    final public function getAllowedTags(): array
     {
         return $this->allowedTags;
     }

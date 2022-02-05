@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Crasyhorse\PhpunitXrayReporter\Tags;
+namespace Crasyhorse\PhpunitXrayReporter\Xray\Tags;
 
 use Jasny\PhpdocParser\Tag\WordTag;
 

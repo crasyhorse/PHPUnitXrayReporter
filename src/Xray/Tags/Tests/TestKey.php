@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Crasyhorse\PhpunitXrayReporter\Tags\Tests;
+namespace Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests;
 
-use Crasyhorse\PhpunitXrayReporter\Tags\XrayTag;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
 use Jasny\PhpdocParser\Tag\WordTag;
 
 /**
