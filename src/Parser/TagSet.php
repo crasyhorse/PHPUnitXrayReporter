@@ -35,7 +35,7 @@ use Crasyhorse\PhpunitXrayReporter\Tags\XrayTag;
  *
  * @since 0.1.0
  */
-class TagSet
+final class TagSet
 {
     /**
      * List the tags that are allowed to be inserted into the parser result.
