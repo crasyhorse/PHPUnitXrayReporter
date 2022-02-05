@@ -23,25 +23,18 @@ class TestExecution implements JsonSerializable
     private $info;
 
     /**
-     * @var Test[]
+     * @var array<array-key, Test>
      */
     private $tests = [];
 
-    public function __construct(string $key, Info $info)
+    /**
+     * @param array<array-key, Test> $tests
+     */
+    public function __construct(string $key, Info $info, array $tests)
     {
         $this->key = $key;
         $this->info = $info;
-        $this->tests;
-    }
-
-    /**
-     * Add a test result to the list.
-     *
-     * @return void
-     */
-    public function addTest(Test $test): void
-    {
-        $this->tests[] = $test;
+        $this->tests = $tests;
     }
 
     /**
