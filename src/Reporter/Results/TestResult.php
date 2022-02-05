@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Crasyhorse\PhpunitXrayReporter\Reporter\Results;
 
 /**
- * Identifies a class that represents an test result.
+ * Identifies a class that represents a test result.
  *
  * @author Florian Weidinger
  *

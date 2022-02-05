@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use Carbon\CarbonInterval;
 
 /**
- * Represents the result of a successful test run.
+ * Represents the result of a test run.
  *
  * @author Florian Weidinger
  *
@@ -44,6 +44,12 @@ abstract class AbstractTestResult implements TestResult
         $this->message = $message;
     }
 
+    /**
+     * Calculates the point in time the test has finished and returns it as a human readable
+     * date string.
+     *
+     * @return string
+     */
     public function getFinish(): string
     {
         return $this->start->add(CarbonInterval::milliseconds($this->time))->toFormattedDateString();
