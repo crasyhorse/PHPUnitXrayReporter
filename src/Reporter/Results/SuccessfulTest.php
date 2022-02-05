@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Crasyhorse\PhpunitXrayReporter\Reporter\Results;
 
+use Carbon\Carbon;
+
 /**
  * Represents the result of a successful test run.
  *
@@ -11,26 +13,15 @@ namespace Crasyhorse\PhpunitXrayReporter\Reporter\Results;
  *
  * @since 0.1.0
  */
-final class SuccessfulTest implements TestResult
+final class SuccessfulTest extends AbstractTestResult
 {
     /**
      * @var "PASS"
      */
     const TEST_RESULT = 'PASS';
 
-    /**
-     * @var string
-     */
-    private $test;
-
-    /**
-     * @var float
-     */
-    private $time;
-
-    public function __construct(string $test, float $time)
+    public function __construct(string $test, float $time, Carbon $start)
     {
-        $this->test = $test;
-        $this->time = $time;
+        parent::__construct($test, $time, $start);
     }
 }
