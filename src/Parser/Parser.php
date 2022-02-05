@@ -9,6 +9,10 @@ use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
 use Jasny\PhpdocParser\PhpdocParser;
 use Jasny\PhpdocParser\Set\PhpDocumentor;
 use ReflectionMethod;
+use Crasyhorse\PhpunitXrayReporter\Xray\Types\Info;
+use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestInfo;
+use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestExecution;
+use Crasyhorse\PhpunitXrayReporter\Xray\Types\Test;
 
 /**
  * Encapsulates jasny/phpdoc-parser.
@@ -54,11 +58,95 @@ final class Parser
     }
 
     /**
-     * Reads the attributes from the test result and adds them to the $meta object.
+     * Builds the Xray type "Info" object.
      * 
+     * @return Info
+     */
+    private function buildInfo(array $testExecution): Info
+    {
+        // code...
+    }
+
+    /**
+     * Builds the Xray type "TestExecution" object.
+     * 
+     * @return array<array-key, TestExecution>
+     */
+    private function buildTestExecution(array $groupedResults): array
+    {
+        $testExecutions = [];
+        foreach ($groupedResults as $testExecution) {
+            $info = $this->buildInfo($testExecution);
+            $tests = $this->buildTests($testExecution);
+            $testExecutionKey = '';
+            $testExecutions[] = new TestExecution($testExecutionKey, $info, $tests);
+        }
+
+        return $testExecutions;
+    }
+
+    /**
+     * Builds the Xray type "TestInfo" object.
+     * 
+     * @return TestInfo
+     */
+    private function buildTestInfo(array $test) : TestInfo
+    {
+        // code...
+    }
+
+    /**
+     * Builds the Xray type "Test" object.
+     * 
+     * @return array<array-key, Test>
+     */
+    private function buildTests(array $testExecution): array
+    {
+        // code...
+    }
+
+    /**
+     * Build parse tree, grouped by test execution. Iterations are also grouped
+     * by test key.
+     *
      * @return array
      */
-    private function readTestResult(TestResult $result, array $meta): array 
+    private function groupResults(array $parsedResults): array
+    {
+        $groupedResults = $this->groupByTestExecution($parsedResults);
+        $groupedResults = $this->groupIterations($groupedResults);
+
+        return $groupedResults;
+    }
+
+    /**
+     * Group parsed results by test execution.
+     *
+     * @return array
+     */
+    private function groupByTestExecution(array $parsedResults): array
+    {
+        // code...
+    }
+
+    /**
+     * Look for iterations and group them by test key. Also define the real
+     * test result. If a single iteratin has failed the whole test has to
+     * be marked as failed.
+     *
+     * @return array
+     */
+    private function groupIterations(array $groupedResults): array
+    {
+        // code...
+    }
+
+    /**
+     * Reads the attributes from the test result and adds them to the $meta object.
+     *
+     * @return array
+     */
+    private function readTestResult(TestResult $result, array $meta): array
     {
         $meta['start'] = $result->getStart();
         $meta['finish'] = $result->getFinish();
@@ -67,6 +155,7 @@ final class Parser
 
         return $meta;
     }
+
     /**
      * Strips off the "with data set ..." string from the test name.
      *
