@@ -16,12 +16,16 @@ use Carbon\Carbon;
 final class FailedTest extends AbstractTestResult
 {
     /**
-     * @var "FAIL"
+     * @var string
      */
     const TEST_RESULT = 'FAIL';
 
     public function __construct(string $test, float $time, Carbon $start, string $message)
     {
         parent::__construct($test, $time, $start, $message);
+    }
+
+    public function getStatus(): string {
+        return self::TEST_RESULT;
     }
 }
