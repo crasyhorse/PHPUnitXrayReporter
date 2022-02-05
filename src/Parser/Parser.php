@@ -4,23 +4,7 @@ declare(strict_types=1);
 
 namespace Crasyhorse\PhpunitXrayReporter\Parser;
 
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\Description;
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\Project;
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\Revision;
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\Summary;
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\TestEnvironments;
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\TestPlanKey;
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\User;
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\Version;
-use Crasyhorse\PhpunitXrayReporter\Tags\TestExecutionKey;
-use Crasyhorse\PhpunitXrayReporter\Tags\TestInfo\Definition;
-use Crasyhorse\PhpunitXrayReporter\Tags\TestInfo\Labels;
-use Crasyhorse\PhpunitXrayReporter\Tags\TestInfo\ProjectKey;
-use Crasyhorse\PhpunitXrayReporter\Tags\TestInfo\RequirementKeys;
-use Crasyhorse\PhpunitXrayReporter\Tags\TestInfo\TestType;
-use Crasyhorse\PhpunitXrayReporter\Tags\Tests\Comment;
-use Crasyhorse\PhpunitXrayReporter\Tags\Tests\Defects;
-use Crasyhorse\PhpunitXrayReporter\Tags\Tests\TestKey;
+use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TestResult;
 use Crasyhorse\PhpunitXrayReporter\Tags\XrayTag;
 use Jasny\PhpdocParser\PhpdocParser;
 use Jasny\PhpdocParser\Set\PhpDocumentor;
@@ -41,67 +25,14 @@ final class Parser
     private $customTags;
 
     /**
-     * List the tags that are allowed to be inserted into the parser result.
-     *
-     * @var array<array-key, string>
-     */
-    private $allowedTags = [];
-
-    /**
-     * List of tags that should not be present in the parsed result.
-     *
-     * @var array<array-key, string>
-     */
-    private $blacklistedTags;
-
-    /**
-     * @param array<array-key, XrayTag> $additionalCustomTags Additional Tags of type XrayTag
      * @param array<array-key, string>  $whitelistedTags      Allow additional tags like @test or @dataProvider
      * @param array<array-key, string>  $blacklistedTags      Remove tags like @param or @return
+     * @param array<array-key, XrayTag> $additionalCustomTags Additional Tags of type XrayTag
      */
-    public function __construct(array $additionalCustomTags = null, array $whitelistedTags = null, array $blacklistedTags = null)
+    public function __construct(array $whitelistedTags = [], array $blacklistedTags = [], array $additionalCustomTags = [])
     {
-        $this->customTags = [
-            new TestExecutionKey(),
-            new Project(),
-            new Description(),
-            new Project(),
-            new Revision(),
-            new Summary(),
-            new TestEnvironments(),
-            new TestPlanKey(),
-            new User(),
-            new Version(),
-            new Comment(),
-            new Defects(),
-            new TestKey(),
-            new Definition(),
-            new Labels(),
-            new ProjectKey(),
-            new RequirementKeys(),
-            new TestType(),
-        ];
-
-        $this->blacklistedTags = [
-            'return',
-            'param',
-            'throws',
-            'author',
-            'since',
-            'see',
-        ];
-
-        if (is_array($additionalCustomTags)) {
-            $this->customTags = array_merge($this->customTags, $additionalCustomTags);
-        }
-
-        if (is_array($whitelistedTags)) {
-            $this->allowedTags = array_merge($this->allowedTags, $whitelistedTags);
-        }
-
-        if (is_array($blacklistedTags)) {
-            $this->allowedTags = array_diff($this->allowedTags, $blacklistedTags);
-        }
+        $tagSet = new TagSet($whitelistedTags, $blacklistedTags);
+        $this->customTags = $tagSet->getCustomTags($additionalCustomTags);
     }
 
     /**
@@ -109,17 +40,16 @@ final class Parser
      *
      * @return array
      */
-    final public function parse(string $test): array
+    final public function parse(TestResult $result): array
     {
-        $testName = $this->stripOffWithDataSet($test);
+        $testName = $this->stripOffWithDataSet($result->getTest());
         $docBlock = (new ReflectionMethod($testName))->getDocComment();
-
         $tags = PhpDocumentor::tags()->with($this->customTags);
         $parser = new PhpdocParser($tags);
 
-        $metaInformation = $parser->parse($docBlock);
+        $meta = $parser->parse($docBlock);
 
-        return $metaInformation;
+        return $meta;
     }
 
     /**
