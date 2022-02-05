@@ -49,7 +49,10 @@ abstract class AbstractTestResult implements TestResult
         return $this->start->add(CarbonInterval::milliseconds($this->time))->toFormattedDateString();
     }
 
-    public function getMessage(): string
+    /**
+     * @return string|null
+     */
+    public function getMessage()
     {
         return $this->message;
     }
