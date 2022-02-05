@@ -18,7 +18,6 @@ use Crasyhorse\PhpunitXrayReporter\Tags\TestInfo\Labels;
 use Crasyhorse\PhpunitXrayReporter\Tags\TestInfo\ProjectKey;
 use Crasyhorse\PhpunitXrayReporter\Tags\TestInfo\RequirementKeys;
 use Crasyhorse\PhpunitXrayReporter\Tags\TestInfo\TestType;
-use Crasyhorse\PhpunitXrayReporter\Tags\Tests\Comment;
 use Crasyhorse\PhpunitXrayReporter\Tags\Tests\Defects;
 use Crasyhorse\PhpunitXrayReporter\Tags\Tests\TestKey;
 use Crasyhorse\PhpunitXrayReporter\Tags\XrayTag;
@@ -93,7 +92,6 @@ final class TagSet
             new TestPlanKey(),
             new User(),
             new Version(),
-            new Comment(),
             new Defects(),
             new TestKey(),
             new Definition(),
