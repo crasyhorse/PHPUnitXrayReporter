@@ -48,6 +48,9 @@ final class Parser
         $parser = new PhpdocParser($tags);
 
         $meta = $parser->parse($docBlock);
+        $meta['start'] = $result->getStart();
+        $meta['finish'] = $result->getFinish();
+        $meta['comment'] = $result->getMessage() ?? 'Test has passed.';
 
         return $meta;
     }
