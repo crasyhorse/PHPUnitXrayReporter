@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Crasyhorse\PhpunitXrayReporter\Tags\Tests;
 
 use Crasyhorse\PhpunitXrayReporter\Tags\XrayTag;
-use Jasny\PhpdocParser\Tag\ArrayTag;
+use Crasyhorse\PhpunitXrayReporter\Tags\ModifiedArrayTag;
 
 /**
  * Represents the XrayTag that correlats with the XrayType Defects.
@@ -14,7 +14,7 @@ use Jasny\PhpdocParser\Tag\ArrayTag;
  *
  * @since 0.1.0
  */
-class Defects extends ArrayTag implements XrayTag
+class Defects extends ModifiedArrayTag implements XrayTag
 {
     public function __construct()
     {
