@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace CrasyHorse\Tests\Unit;
 
 use Carbon\Carbon;
-use CrasyHorse\PhpunitXrayReporter\Parser\Parser;
+use Crasyhorse\PhpunitXrayReporter\Parser\Parser;
 use Crasyhorse\PhpunitXrayReporter\Reporter\Results\SuccessfulTest;
+use Crasyhorse\PhpunitXrayReporter\Reporter\Results\FailedTest;
 use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TestResult;
 use DateTimeZone;
 use PHPUnit\Framework\TestCase;
@@ -86,6 +87,25 @@ class ParserTest extends TestCase
                         'workInProgress', 'demo'
                     ],
                     'XRAY-TESTINFO-definition' => "Let's test"
+                ],
+            ],
+            'Failed test result including Info object.' => [
+                new FailedTest('CrasyHorse\Tests\Assets\PseudoSpec::spec4', 0.1, $start, 'Failed asserting that 4 matches expected 5.'),
+                [
+                    'XRAY-testExecutionKey' => 'DEMO-669',
+                    'XRAY-INFO-summary' => 'Update test execution DEMO-669 including the Info object',
+                    'XRAY-INFO-description' => 'This is some kind of a test double for testing the Parser class. That means it is only a pseudo spec.',
+                    'XRAY-INFO-version' => '1.0',
+                    'XRAY-INFO-revision' => '1.0.1',
+                    'XRAY-INFO-user' => 'CalamityCoyote',
+                    'XRAY-INFO-testEnvironments' => [
+                        'PHP-Unit',
+                    ],
+                    'XRAY-TESTS-testKey' => 'DEMO-124',
+                    'start' => $start->toIso8601String(),
+                    'comment' => 'Failed asserting that 4 matches expected 5.',
+                    'status' => FailedTest::TEST_RESULT,
+                    'XRAY-INFO-project' => 'DEMO'
                 ],
             ],
         ];

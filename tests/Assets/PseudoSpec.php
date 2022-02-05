@@ -58,4 +58,22 @@ class PseudoSpec
     {
         // code...
     }
+
+    /**
+     * Update test execution DEMO-669 including the Info object.
+     *
+     * @XRAY-testExecutionKey DEMO-669
+     * @XRAY-INFO-project DEMO
+     * @XRAY-INFO-summary Update test execution DEMO-669 including the Info object
+     * @XRAY-INFO-description This is some kind of a test double for testing the Parser class. That means it is only a pseudo spec.
+     * @XRAY-INFO-version 1.0
+     * @XRAY-INFO-revision 1.0.1
+     * @XRAY-INFO-user CalamityCoyote
+     * @XRAY-INFO-testEnvironments PHP-Unit
+     * @XRAY-TESTS-testKey DEMO-124
+     */
+    public function spec4(): void
+    {
+        // code...
+    }
 }
