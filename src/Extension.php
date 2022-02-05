@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Crasyhorse\PhpunitXrayReporter;
 
 use Carbon\Carbon;
-use Crasyhorse\PhpunitXrayReporter\Parser\Parser;
+use Crasyhorse\PhpunitXrayReporter\Reporter\Reporter;
+use Crasyhorse\PhpunitXrayReporter\Reporter\Results\FailedTest;
+use Crasyhorse\PhpunitXrayReporter\Reporter\Results\SuccessfulTest;
+use DateTimeZone;
 use PHPUnit\Runner\AfterIncompleteTestHook;
 use PHPUnit\Runner\AfterRiskyTestHook;
 use PHPUnit\Runner\AfterSkippedTestHook;
@@ -29,66 +32,59 @@ final class Extension implements BeforeTestHook, AfterSuccessfulTestHook, AfterT
     private $start;
 
     /**
-     * @var Parser
+     * @var Reporter
      */
-    private $parser;
+    private $reporter;
 
     public function __construct()
     {
-        $this->start = Carbon::now();
-        $this->parser = new Parser();
+        $this->reporter = new Reporter();
+    }
+
+    public function __destruct()
+    {
+        $this->reporter->processResults();
     }
 
     public function executeBeforeTest(string $test): void
     {
+        $this->start = Carbon::now(new DateTimeZone('Europe/Berlin'));
     }
 
     public function executeAfterSuccessfulTest(string $test, float $time): void
     {
-        $result = $this->parser->parse($test);
-        var_dump($result);
+        $result = new SuccessfulTest($test, $time, $this->start);
+        $this->reporter->add($result);
     }
 
     public function executeAfterTestFailure(string $test, string $message, float $time): void
     {
-        /** @var class-string $test */
-        $result = $this->parser->parse($test);
-        var_dump($result);
+        $result = new FailedTest($test, $time, $this->start, $message);
+        $this->reporter->add($result);
     }
 
     public function executeAfterTestError(string $test, string $message, float $time): void
     {
-        /** @var class-string $test */
-        $result = $this->parser->parse($test);
-        var_dump($result);
+        $result = new FailedTest($test, $time, $this->start, $message);
+        $this->reporter->add($result);
     }
 
     public function executeAfterTestWarning(string $test, string $message, float $time): void
     {
-        /** @var class-string $test */
-        $result = $this->parser->parse($test);
-        var_dump($result);
+        $result = new FailedTest($test, $time, $this->start, $message);
+        $this->reporter->add($result);
     }
 
     public function executeAfterSkippedTest(string $test, string $message, float $time): void
     {
-        /** @var class-string $test */
-        $result = $this->parser->parse($test);
-        var_dump($result);
     }
 
     public function executeAfterIncompleteTest(string $test, string $message, float $time): void
     {
-        /** @var class-string $test */
-        $result = $this->parser->parse($test);
-        var_dump($result);
     }
 
     public function executeAfterRiskyTest(string $test, string $message, float $time): void
     {
-        /** @var class-string $test */
-        $result = $this->parser->parse($test);
-        var_dump($result);
     }
 
     public function executeAfterTest(string $test, float $time): void
