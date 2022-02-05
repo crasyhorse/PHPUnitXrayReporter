@@ -30,9 +30,8 @@ class ParserTest extends TestCase
         $actual = $parser->parse($testResult);
 
         $this->assertFinishIsGreaterThanOrEqualStart($actual, $expected);
-        
+
         $actual = $this->removeTimestamps($actual);
-        $expected = $this->removeTimestamps($expected);
         $this->assertEquals($expected, $actual);
     }
 
@@ -49,28 +48,70 @@ class ParserTest extends TestCase
                     'XRAY-INFO-description' => 'This is some kind of a test double for testing the Parser class. That means it is only a pseudo spec.',
                     'XRAY-INFO-version' => '1.0',
                     'XRAY-INFO-revision' => '1.0.1',
-                    'XRAY-INFO-user' => 'Calamity',
+                    'XRAY-INFO-user' => 'CalamityCoyote',
                     'XRAY-INFO-testEnvironments' => [
                         'PHP-Unit',
                     ],
+                    'XRAY-TESTS-testKey' => 'DEMO-123',
                     'start' => $start->toIso8601String(),
-                    'finish' => null,
                     'comment' => 'Test has passed.',
+                    'status' => SuccessfulTest::TEST_RESULT,
+                    'XRAY-INFO-project' => 'DEMO'
+                ],
+            ],
+            'Successful test result without Info object.' => [
+                new SuccessfulTest('CrasyHorse\Tests\Assets\PseudoSpec::spec2', 0.1, $start),
+                [
+                    'XRAY-testExecutionKey' => 'DEMO-667',
+                    'XRAY-TESTS-testKey' => 'DEMO-123',
+                    'start' => $start->toIso8601String(),
+                    'comment' => 'Test has passed.',
+                    'status' => SuccessfulTest::TEST_RESULT
+                ],
+            ],
+            'Successful test result with Test and TestInfo objects.' => [
+                new SuccessfulTest('CrasyHorse\Tests\Assets\PseudoSpec::spec3', 0.1, $start),
+                [
+                    'XRAY-testExecutionKey' => 'DEMO-668',
+                    'XRAY-TESTS-testKey' => 'DEMO-123',
+                    'start' => $start->toIso8601String(),
+                    'comment' => 'Test has passed.',
+                    'status' => SuccessfulTest::TEST_RESULT,
+                    'XRAY-TESTINFO-projectKey' => 'DEMO',
+                    'XRAY-TESTINFO-testType' => 'Generic',
+                    'XRAY-TESTINFO-requirementKeys' => [
+                        'DEMO-1', 'DEMO-2', 'DEMO-3'
+                    ],
+                    'XRAY-TESTINFO-labels' => [
+                        'workInProgress', 'demo'
+                    ],
+                    'XRAY-TESTINFO-definition' => "Let's test"
                 ],
             ],
         ];
     }
 
+    /**
+     * Looks for the existence of the 'finish' field. If it exists, it will be checked against
+     * the 'start' field. Returns true if 'finish' is greater than or equal to 'start'.
+     * 
+     * @return void
+     */
     private function assertFinishIsGreaterThanOrEqualStart(array $actual, array $expected): void
     {
-        if (array_key_exists('finish', $expected)) {
-            $this->assertArrayHasKey('finish', $actual);
+        if (array_key_exists('finish', $actual)) {
             $start = Carbon::parse($actual['start'], 'Europe/Berlin');
             $finish = Carbon::parse($actual['finish'], 'Europe/Berlin');
             $this->assertTrue($finish->greaterThanOrEqualTo($start));
         }
     }
 
+    /**
+     * Removes the following timestamp field from an array:
+     * # finish
+     * 
+     * @return array
+     */
     private function removeTimestamps(array $parsedResult): array
     {
         unset($parsedResult['finish']);
