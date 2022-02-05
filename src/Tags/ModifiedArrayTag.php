@@ -8,7 +8,7 @@ use Jasny\PhpdocParser\Tag\ArrayTag;
 use Jasny\PhpdocParser\PhpdocException;
 
 class ModifiedArrayTag extends ArrayTag {
-        /**
+    /**
      * Must be overriden because otherwise the closing PHPDoc comment
      * consisting of an asterisk and a slash will show up in the list
      * of test environments if this tag is the last one in the doc block.
@@ -55,9 +55,8 @@ class ModifiedArrayTag extends ArrayTag {
      */
     protected function stripOffClosingDocBlockComment($value)
     {
-        preg_match('/([^\*\/ ]*)(?!< \*\/$)/', $value, $matches);
+        preg_match('/([^\*\/ ]*)(?!\*\/$)/', $value, $matches);
 
         return $matches[0];
     }
-
 }
