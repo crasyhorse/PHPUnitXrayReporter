@@ -6,7 +6,7 @@ namespace Crasyhorse\PhpunitXrayReporter\Reporter;
 
 use Crasyhorse\PhpunitXrayReporter\Parser\Parser;
 use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TestResult;
-use Crasyhorse\PhpunitXrayReporter\Tags\XrayTag;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
 
 /**
  * Processes test results and the meta information for the annotations.
@@ -15,7 +15,7 @@ use Crasyhorse\PhpunitXrayReporter\Tags\XrayTag;
  *
  * @since 0.1.0
  */
-class Reporter
+final class Reporter
 {
     /**
      * @var Parser
@@ -38,17 +38,40 @@ class Reporter
         $this->testResults = [];
     }
 
-    public function add(TestResult $testResult): void
+    /**
+     * Add a new test result to $testResults
+     * 
+     * @return void
+     */
+    final public function add(TestResult $testResult): void
     {
         $this->testResults[] = $testResult;
     }
 
-    public function processResults(): void
+    /**
+     * Parse and process the list of test results.
+     * 
+     * @return void
+     */
+    final public function processResults(): void
     {
+        $parsedResults = $this->parseResults();
+        
+    }
+
+    /**
+     * Parses test results.
+     * 
+     * @return array
+     */
+    private function parseResults(): array
+    {
+        $parsedResults = [];
         foreach ($this->testResults as $result) {
             $parsed = $this->parser->parse($result);
-
-            var_dump($parsed);
+            $parsedResults[] = $parsed;
         }
+
+        return $parsedResults;
     }
 }

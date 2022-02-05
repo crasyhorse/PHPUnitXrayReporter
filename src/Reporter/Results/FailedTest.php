@@ -25,7 +25,7 @@ final class FailedTest extends AbstractTestResult
         parent::__construct($test, $time, $start, $message);
     }
 
-    public function getStatus(): string {
+    final public function getStatus(): string {
         return self::TEST_RESULT;
     }
 }
