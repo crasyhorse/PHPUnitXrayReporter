@@ -20,6 +20,8 @@ interface TestResult
      */
     public function getMessage();
 
+    public function getStart(): string;
+
     public function getTest(): string;
 
     public function getTime(): float;

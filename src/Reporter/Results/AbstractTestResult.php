@@ -52,7 +52,7 @@ abstract class AbstractTestResult implements TestResult
      */
     public function getFinish(): string
     {
-        return $this->start->add(CarbonInterval::milliseconds($this->time))->toFormattedDateString();
+        return $this->start->add(CarbonInterval::milliseconds($this->time))->toIso8601String();
     }
 
     /**
@@ -61,6 +61,11 @@ abstract class AbstractTestResult implements TestResult
     public function getMessage()
     {
         return $this->message;
+    }
+
+    public function getStart(): string
+    {
+        return $this->start->toIso8601String();
     }
 
     public function getTest(): string
