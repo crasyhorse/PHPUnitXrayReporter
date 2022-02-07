@@ -41,6 +41,7 @@ class PrepareTest extends TestCase
      *
      * @test
      * @XRAY-testExecutionKey PRTL-666
+     * @XRAY-TESTS-testKey PRTL-Test-1
      */
     public function add_adds_two_integer_values(): void
     {
@@ -58,6 +59,7 @@ class PrepareTest extends TestCase
      * @testdox Method add adds two integer values
      *
      * @XRAY-testExecutionKey PRTL-666
+     * @XRAY-TESTS-testKey PRTL-Test-2
      */
     public function add_adds_two_integer_values_using_testdox_annotation(): void
     {
@@ -74,6 +76,7 @@ class PrepareTest extends TestCase
      * @dataProvider integer_provider
      *
      * @XRAY-testExecutionKey PRTL-666
+     * @XRAY-TESTS-testKey PRTL-Test-3
      */
     public function add_adds_two_integers_from_a_list_of_values(int $a, int $b, int $result): void
     {
@@ -87,6 +90,7 @@ class PrepareTest extends TestCase
      *
      * @test
      * @XRAY-testExecutionKey PRTL-666
+     * @XRAY-TESTS-testKey PRTL-Test-4
      */
     public function test_returning_an_error_because_the_first_operand_is_a_string(): void
     {
@@ -100,7 +104,8 @@ class PrepareTest extends TestCase
      * This test fails because 2 + 2 is not 5.
      *
      * @test
-     * @XRAY-testExecutionKey PRTL-666
+     * @XRAY-testExecutionKey PRTL-667
+     * @XRAY-TESTS-testKey PRTL-Test-5
      */
     public function add_adds_two_integers_but_does_not_return_the_expected_result(): void
     {
@@ -114,7 +119,8 @@ class PrepareTest extends TestCase
      * This test does nothing because it is skipped.
      *
      * @test
-     * @XRAY-testExecutionKey PRTL-666
+     * @XRAY-testExecutionKey PRTL-667
+     * @XRAY-TESTS-testKey PRTL-Test-6
      */
     public function test_does_nothing_because_it_is_skipped(): void
     {
@@ -125,7 +131,8 @@ class PrepareTest extends TestCase
      * This test does nothing because it is incomplete.
      *
      * @test
-     * @XRAY-testExecutionKey PRTL-666
+     * @XRAY-testExecutionKey PRTL-667
+     * @XRAY-TESTS-testKey PRTL-Test-7
      */
     public function test_does_nothing_because_it_is_incomplete(): void
     {
@@ -136,7 +143,8 @@ class PrepareTest extends TestCase
      * This test is marked as risky.
      *
      * @test
-     * @XRAY-testExecutionKey PRTL-666
+     * @XRAY-testExecutionKey PRTL-667
+     * @XRAY-TESTS-testKey PRTL-Test-8
      */
     public function risky_test(): void
     {
@@ -151,6 +159,9 @@ class PrepareTest extends TestCase
             ],
             'a = 3, b = 6, result = 9' => [
                 3, 6, 9,
+            ],
+            'a = 7, b = 4, result = 10 (FAIL)' => [
+                7, 4, 10,
             ],
         ];
     }
