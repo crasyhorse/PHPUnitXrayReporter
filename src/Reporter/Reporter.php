@@ -39,8 +39,8 @@ final class Reporter
     }
 
     /**
-     * Add a new test result to $testResults
-     * 
+     * Add a new test result to $testResults.
+     *
      * @return void
      */
     final public function add(TestResult $testResult): void
@@ -50,18 +50,22 @@ final class Reporter
 
     /**
      * Parse and process the list of test results.
-     * 
+     *
      * @return void
      */
     final public function processResults(): void
     {
         $parsedResults = $this->parseResults();
-        
+        $parsedResults = $this->parser->afterDocBlockParsedHook($parsedResults);
+
+        var_dump($parsedResults);
+        die();
+        $parseTree = $this->parser->groupResults($parsedResults);
     }
 
     /**
      * Parses test results.
-     * 
+     *
      * @return array
      */
     private function parseResults(): array
