@@ -22,7 +22,7 @@ use ReflectionMethod;
  *
  * @since 0.1.0
  */
-final class Parser
+class Parser
 {
     /**
      * @var array<array-key, XrayTag>
@@ -66,8 +66,9 @@ final class Parser
      */
     final public function groupResults(array $parsedResults): array
     {
-        $groupedResults = $this->groupIterations($parsedResults);
-        $testExecutions = $this->buildTestExecutions($groupedResults);
+        $groupedResults = $this->groupByTestExecutions($parsedResults);
+        // $groupedResults = $this->groupIterations($parsedResults);
+        // $testExecutions = $this->buildTestExecutions($groupedResults);
     }
 
     /**
@@ -134,6 +135,11 @@ final class Parser
     private function buildTests(array $testExecution): array
     {
         // code...
+    }
+
+    private function groupByTestExecutions(array $parsedResults): array
+    {
+        // ->groupIterations();
     }
 
     /**
