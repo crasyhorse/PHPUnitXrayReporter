@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CrasyHorse\Tests\Unit\Tags;
 
-use Crasyhorse\PhpunitXrayReporter\Tags\XrayTag;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
 use Jasny\PhpdocParser\Tag\DescriptionTag;
 
 /**

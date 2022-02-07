@@ -5,23 +5,22 @@ declare(strict_types=1);
 namespace CrasyHorse\Tests\Unit;
 
 use Crasyhorse\PhpunitXrayReporter\Parser\TagSet;
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\Description;
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\Project;
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\Revision;
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\Summary;
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\TestEnvironments;
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\TestPlanKey;
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\User;
-use Crasyhorse\PhpunitXrayReporter\Tags\Info\Version;
-use Crasyhorse\PhpunitXrayReporter\Tags\TestExecutionKey;
-use Crasyhorse\PhpunitXrayReporter\Tags\TestInfo\Definition;
-use Crasyhorse\PhpunitXrayReporter\Tags\TestInfo\Labels;
-use Crasyhorse\PhpunitXrayReporter\Tags\TestInfo\ProjectKey;
-use Crasyhorse\PhpunitXrayReporter\Tags\TestInfo\RequirementKeys;
-use Crasyhorse\PhpunitXrayReporter\Tags\TestInfo\TestType;
-use Crasyhorse\PhpunitXrayReporter\Tags\Tests\Comment;
-use Crasyhorse\PhpunitXrayReporter\Tags\Tests\Defects;
-use Crasyhorse\PhpunitXrayReporter\Tags\Tests\TestKey;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Description;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Project;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Revision;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Summary;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\TestEnvironments;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\TestPlanKey;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\User;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Version;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestExecutionKey;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\Definition;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\Labels;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\ProjectKey;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\RequirementKeys;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\TestType;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\Defects;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\TestKey;
 use CrasyHorse\Tests\Unit\Tags\AdditionalCustomTag;
 use PHPUnit\Framework\TestCase;
 
@@ -96,7 +95,6 @@ class TagSetTest extends TestCase
             new TestPlanKey(),
             new User(),
             new Version(),
-            new Comment(),
             new Defects(),
             new TestKey(),
             new Definition(),
@@ -130,7 +128,6 @@ class TagSetTest extends TestCase
             new TestPlanKey(),
             new User(),
             new Version(),
-            new Comment(),
             new Defects(),
             new TestKey(),
             new Definition(),
