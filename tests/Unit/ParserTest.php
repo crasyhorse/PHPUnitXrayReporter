@@ -6,8 +6,8 @@ namespace CrasyHorse\Tests\Unit;
 
 use Carbon\Carbon;
 use Crasyhorse\PhpunitXrayReporter\Parser\Parser;
-use Crasyhorse\PhpunitXrayReporter\Reporter\Results\SuccessfulTest;
 use Crasyhorse\PhpunitXrayReporter\Reporter\Results\FailedTest;
+use Crasyhorse\PhpunitXrayReporter\Reporter\Results\SuccessfulTest;
 use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TestResult;
 use DateTimeZone;
 use PHPUnit\Framework\TestCase;
@@ -29,7 +29,6 @@ class ParserTest extends TestCase
         $parser = new Parser();
 
         $actual = $parser->parse($testResult);
-
         $this->assertFinishIsGreaterThanOrEqualStart($actual, $expected);
 
         $actual = $this->removeTimestamps($actual);
@@ -57,7 +56,7 @@ class ParserTest extends TestCase
                     'start' => $start->toIso8601String(),
                     'comment' => 'Test has passed.',
                     'status' => SuccessfulTest::TEST_RESULT,
-                    'XRAY-INFO-project' => 'DEMO'
+                    'XRAY-INFO-project' => 'DEMO',
                 ],
             ],
             'Successful test result without Info object.' => [
@@ -67,7 +66,7 @@ class ParserTest extends TestCase
                     'XRAY-TESTS-testKey' => 'DEMO-123',
                     'start' => $start->toIso8601String(),
                     'comment' => 'Test has passed.',
-                    'status' => SuccessfulTest::TEST_RESULT
+                    'status' => SuccessfulTest::TEST_RESULT,
                 ],
             ],
             'Successful test result with Test and TestInfo objects.' => [
@@ -81,12 +80,12 @@ class ParserTest extends TestCase
                     'XRAY-TESTINFO-projectKey' => 'DEMO',
                     'XRAY-TESTINFO-testType' => 'Generic',
                     'XRAY-TESTINFO-requirementKeys' => [
-                        'DEMO-1', 'DEMO-2', 'DEMO-3'
+                        'DEMO-1', 'DEMO-2', 'DEMO-3',
                     ],
                     'XRAY-TESTINFO-labels' => [
-                        'workInProgress', 'demo'
+                        'workInProgress', 'demo',
                     ],
-                    'XRAY-TESTINFO-definition' => "Let's test"
+                    'XRAY-TESTINFO-definition' => "Let's test",
                 ],
             ],
             'Failed test result including Info object.' => [
@@ -105,7 +104,7 @@ class ParserTest extends TestCase
                     'start' => $start->toIso8601String(),
                     'comment' => 'Failed asserting that 4 matches expected 5.',
                     'status' => FailedTest::TEST_RESULT,
-                    'XRAY-INFO-project' => 'DEMO'
+                    'XRAY-INFO-project' => 'DEMO',
                 ],
             ],
         ];
@@ -114,7 +113,7 @@ class ParserTest extends TestCase
     /**
      * Looks for the existence of the 'finish' field. If it exists, it will be checked against
      * the 'start' field. Returns true if 'finish' is greater than or equal to 'start'.
-     * 
+     *
      * @return void
      */
     private function assertFinishIsGreaterThanOrEqualStart(array $actual, array $expected): void
@@ -128,8 +127,8 @@ class ParserTest extends TestCase
 
     /**
      * Removes the following timestamp field from an array:
-     * # finish
-     * 
+     * # finish.
+     *
      * @return array
      */
     private function removeTimestamps(array $parsedResult): array
