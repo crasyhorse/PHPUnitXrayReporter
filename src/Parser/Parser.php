@@ -6,13 +6,14 @@ namespace Crasyhorse\PhpunitXrayReporter\Parser;
 
 use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TestResult;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
+use Crasyhorse\PhpunitXrayReporter\Xray\Types\Info;
+use Crasyhorse\PhpunitXrayReporter\Xray\Types\Test;
+use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestExecution;
+use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestInfo;
 use Jasny\PhpdocParser\PhpdocParser;
 use Jasny\PhpdocParser\Set\PhpDocumentor;
+use OutOfBoundsException;
 use ReflectionMethod;
-use Crasyhorse\PhpunitXrayReporter\Xray\Types\Info;
-use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestInfo;
-use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestExecution;
-use Crasyhorse\PhpunitXrayReporter\Xray\Types\Test;
 
 /**
  * Encapsulates jasny/phpdoc-parser.
@@ -29,6 +30,11 @@ final class Parser
     private $customTags;
 
     /**
+     * @var TestExecution
+     */
+    private $testExecution;
+
+    /**
      * @param array<array-key, string>  $whitelistedTags      Allow additional tags like @test or @dataProvider
      * @param array<array-key, string>  $blacklistedTags      Remove tags like @param or @return
      * @param array<array-key, XrayTag> $additionalCustomTags Additional Tags of type XrayTag
@@ -37,6 +43,31 @@ final class Parser
     {
         $tagSet = new TagSet($whitelistedTags, $blacklistedTags);
         $this->customTags = $tagSet->getCustomTags($additionalCustomTags);
+    }
+
+    /**
+     * Fired after the parser has finished parsing the doc blocks. Can be overriden
+     * by a developer to gain access to the list of parsed annotations.
+     *
+     * @return array
+     */
+    public function afterDocBlockParsedHook(array $meta): array
+    {
+        return $meta;
+    }
+
+    /**
+     * Build parse tree, grouped by test execution. Iterations are also grouped
+     * by test.
+     *
+     * @param array<array-key, object>
+     *
+     * @return array
+     */
+    final public function groupResults(array $parsedResults): array
+    {
+        $groupedResults = $this->groupIterations($parsedResults);
+        $testExecutions = $this->buildTestExecutions($groupedResults);
     }
 
     /**
@@ -59,7 +90,7 @@ final class Parser
 
     /**
      * Builds the Xray type "Info" object.
-     * 
+     *
      * @return Info
      */
     private function buildInfo(array $testExecution): Info
@@ -68,11 +99,11 @@ final class Parser
     }
 
     /**
-     * Builds the Xray type "TestExecution" object.
-     * 
+     * Builds the Xray type "TestExecution" object(s).
+     *
      * @return array<array-key, TestExecution>
      */
-    private function buildTestExecution(array $groupedResults): array
+    private function buildTestExecutions(array $groupedResults): array
     {
         $testExecutions = [];
         foreach ($groupedResults as $testExecution) {
@@ -87,44 +118,20 @@ final class Parser
 
     /**
      * Builds the Xray type "TestInfo" object.
-     * 
+     *
      * @return TestInfo
      */
-    private function buildTestInfo(array $test) : TestInfo
+    private function buildTestInfo(array $test): TestInfo
     {
         // code...
     }
 
     /**
      * Builds the Xray type "Test" object.
-     * 
+     *
      * @return array<array-key, Test>
      */
     private function buildTests(array $testExecution): array
-    {
-        // code...
-    }
-
-    /**
-     * Build parse tree, grouped by test execution. Iterations are also grouped
-     * by test key.
-     *
-     * @return array
-     */
-    private function groupResults(array $parsedResults): array
-    {
-        $groupedResults = $this->groupByTestExecution($parsedResults);
-        $groupedResults = $this->groupIterations($groupedResults);
-
-        return $groupedResults;
-    }
-
-    /**
-     * Group parsed results by test execution.
-     *
-     * @return array
-     */
-    private function groupByTestExecution(array $parsedResults): array
     {
         // code...
     }
@@ -139,6 +146,22 @@ final class Parser
     private function groupIterations(array $groupedResults): array
     {
         // code...
+    }
+
+    /**
+     * @return string|never
+     *
+     * @throws OutOfBoundsException
+     */
+    private function readTestExecutionKey(array $parsedResults)
+    {
+        if (count($parsedResults) > 0) {
+            if (array_key_exists('XRAY-testExecutionKey', $parsedResults[0])) {
+                return $parsedResults[0]['XRAY-testExecutionKey'];
+            }
+        }
+
+        throw new OutOfBoundsException('Test execution key could not be found.');
     }
 
     /**
