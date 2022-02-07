@@ -3,10 +3,11 @@
 declare(strict_types=1);
 
 namespace Crasyhorse\PhpunitXrayReporter\Xray\Types;
+
 use JsonSerializable;
 
 /**
- * Represents a XRay "Test execution" object.
+ * Represents an XRay "Test execution" object.
  *
  * @author Florian Weidinger
  */
@@ -18,7 +19,7 @@ class TestExecution implements JsonSerializable
     private $key = '';
 
     /**
-     * @var Info
+     * @var Info|null
      */
     private $info;
 
@@ -30,11 +31,19 @@ class TestExecution implements JsonSerializable
     /**
      * @param array<array-key, Test> $tests
      */
-    public function __construct(string $key, Info $info, array $tests)
+    public function __construct(string $key)
     {
         $this->key = $key;
-        $this->info = $info;
-        $this->tests = $tests;
+    }
+
+    /**
+     * Adds an Xray "Test" object.
+     *
+     * @return void
+     */
+    public function addTest(Test $test): void
+    {
+        $this->tests[] = $test;
     }
 
     /**
@@ -47,7 +56,12 @@ class TestExecution implements JsonSerializable
         return [
             'testExecutionKey' => $this->key,
             'info' => $this->info,
-            'tests' => $this->tests
+            'tests' => $this->tests,
         ];
+    }
+
+    public function setInfo(Info $info): void
+    {
+        $this->info = $info;
     }
 }
