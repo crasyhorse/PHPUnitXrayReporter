@@ -72,8 +72,7 @@ final class Reporter
     {
         $parsedResults = [];
         foreach ($this->testResults as $result) {
-            $parsed = $this->parser->parse($result);
-            $parsedResults[] = $parsed;
+            $parsedResults[] = $this->parser->parse($result);
         }
 
         return $parsedResults;
