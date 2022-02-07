@@ -58,9 +58,12 @@ final class Reporter
         $parsedResults = $this->parseResults();
         $parsedResults = $this->parser->afterDocBlockParsedHook($parsedResults);
 
-        var_dump($parsedResults);
-        die();
+        // var_dump($parsedResults);
+        // TODO Tags sind weiterhin nach dem von uns vergebenen String benannt, auch wenn json_encode verwendet wurde
+
         $parseTree = $this->parser->groupResults($parsedResults);
+        var_dump($parseTree);
+        die();
     }
 
     /**

@@ -10,9 +10,11 @@ use Crasyhorse\PhpunitXrayReporter\Xray\Types\Info;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\Test;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestExecution;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestInfo;
+use Exception;
 use Jasny\PhpdocParser\PhpdocParser;
 use Jasny\PhpdocParser\Set\PhpDocumentor;
 use OutOfBoundsException;
+use ReflectionException;
 use ReflectionMethod;
 
 /**
@@ -67,6 +69,8 @@ class Parser
     final public function groupResults(array $parsedResults): array
     {
         $groupedResults = $this->groupByTestExecutions($parsedResults);
+
+        return $groupedResults;
         // $groupedResults = $this->groupIterations($parsedResults);
         // $testExecutions = $this->buildTestExecutions($groupedResults);
     }
@@ -79,14 +83,21 @@ class Parser
     final public function parse(TestResult $result): array
     {
         $testName = $this->stripOffWithDataSet($result->getTest());
-        $docBlock = (new ReflectionMethod($testName))->getDocComment();
-        $tags = PhpDocumentor::tags()->with($this->customTags);
-        $parser = new PhpdocParser($tags);
+        try {
+            $docBlock = (new ReflectionMethod($testName))->getDocComment();
+            $tags = PhpDocumentor::tags()->with($this->customTags);
+            $parser = new PhpdocParser($tags);
 
-        $meta = $parser->parse($docBlock);
-        $meta = $this->readTestResult($result, $meta);
+            $meta = $parser->parse($docBlock);
+            $meta = $this->readTestResult($result, $meta);
 
-        return $meta;
+            return $meta;
+        } catch (ReflectionException $e) {
+            // TODO Error Handling verbessern
+            trigger_error($e->__toString(), E_USER_WARNING);
+
+            return [];
+        }
     }
 
     /**
@@ -139,19 +150,53 @@ class Parser
 
     private function groupByTestExecutions(array $parsedResults): array
     {
-        // ->groupIterations();
+        $groupedList = [];
+        foreach ($parsedResults as $result) {
+            if (array_key_exists('XRAY-testExecutionKey', $result)) {
+                $executionKey = $result['XRAY-testExecutionKey'];
+                // TODO Wenn wir den testExecutionKey nicht mehr in dem Test Array benötigen
+                // unset($result['XRAY-testExecutionKey']);
+                if (array_key_exists($executionKey, $groupedList)) {
+                    // $groupedList[$executionKey][] = $result; // without iteration prevention
+                    $groupedList[$executionKey] = $this->groupIterations($groupedList[$executionKey], $result);
+                } else {
+                    $groupedList[$executionKey][] = $result;
+                }
+            } else {
+                // TODO: Exception schreiben, falls ein Test keinen genauen testExecutionkey hat? Oder keyless Schlüssel?
+                $groupedList['keyless'][] = $result;
+            }
+        }
+
+        return $groupedList;
     }
 
     /**
      * Look for iterations and group them by test key. Also define the real
-     * test result. If a single iteratin has failed the whole test has to
+     * test result. If a single iteration has failed the whole test has to
      * be marked as failed.
      *
      * @return array
      */
-    private function groupIterations(array $groupedResults): array
+    private function groupIterations(array $sortedExecutionTests, array $possibleIteration): array
     {
-        // code...
+        $iterationPreventedArray = $sortedExecutionTests;
+        $counter = 0;
+        foreach ($sortedExecutionTests as $test) {
+            if ($test['XRAY-TESTS-testKey'] == $possibleIteration['XRAY-TESTS-testKey']) {
+                if ($possibleIteration['status'] == 'FAIL') {
+                    $iterationPreventedArray[$counter] = $possibleIteration;
+                }
+                $counter = -1;
+                break;
+            }
+            ++$counter;
+        }
+        if ($counter != -1) {
+            $iterationPreventedArray[] = $possibleIteration;
+        }
+
+        return $iterationPreventedArray;
     }
 
     /**
