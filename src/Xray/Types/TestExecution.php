@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Crasyhorse\PhpunitXrayReporter\Xray\Types;
 
+use Crasyhorse\PhpunitXrayReporter\Reporter\Results\FailedTest;
 use JsonSerializable;
 
 /**
@@ -14,14 +15,9 @@ use JsonSerializable;
 class TestExecution implements JsonSerializable
 {
     /**
-     * @var string
+     * @var string|null
      */
-    private $key = '';
-
-    /**
-     * @var Info|null
-     */
-    private $info;
+    private $key;
 
     /**
      * @var array<array-key, Test>
@@ -31,19 +27,30 @@ class TestExecution implements JsonSerializable
     /**
      * @param array<array-key, Test> $tests
      */
-    public function __construct(string $key)
+    public function __construct(string $key = null)
     {
         $this->key = $key;
     }
 
     /**
-     * Adds an Xray "Test" object.
+     * Adds an Xray "Test" object if its status has changed
+     * to FAIL or if it does not exist.
      *
      * @return void
      */
-    public function addTest(Test $test): void
+    public function addTest(Test $value): void
     {
-        $this->tests[] = $test;
+        if(count($this->tests) === 0) {
+            $this->tests[$value->getTestKey()] = $value;
+        }
+
+        foreach($this->tests as $test) {
+            if(($test->getTestKey() === $value->getTestKey() &&
+                $value->getStatus() === FailedTest::TEST_RESULT) ||
+                $test->getTestKey() !== $value->getTestKey()) {
+                    $this->tests[$value->getTestKey()] = $value; 
+            }
+        }
     }
 
     /**
@@ -55,13 +62,7 @@ class TestExecution implements JsonSerializable
     {
         return [
             'testExecutionKey' => $this->key,
-            'info' => $this->info,
             'tests' => $this->tests,
         ];
-    }
-
-    public function setInfo(Info $info): void
-    {
-        $this->info = $info;
     }
 }

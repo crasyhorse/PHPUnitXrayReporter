@@ -6,14 +6,13 @@ namespace Crasyhorse\PhpunitXrayReporter\Parser;
 
 use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TestResult;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
-use Crasyhorse\PhpunitXrayReporter\Xray\Types\Info;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\Test;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestExecution;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestInfo;
-use Exception;
+use Crasyhorse\PhpunitXrayReporter\Xray\Builder\TestBuilder;
+use Crasyhorse\PhpunitXrayReporter\Xray\Builder\TestInfoBuilder;
 use Jasny\PhpdocParser\PhpdocParser;
 use Jasny\PhpdocParser\Set\PhpDocumentor;
-use OutOfBoundsException;
 use ReflectionException;
 use ReflectionMethod;
 
@@ -34,7 +33,12 @@ class Parser
     /**
      * @var TestExecution
      */
-    private $testExecution;
+    private $testExecutionToImport;
+
+    /**
+     * @var TestExecution[]
+     */
+    private $testExecutionsToUpdate;
 
     /**
      * @param array<array-key, string>  $whitelistedTags      Allow additional tags like @test or @dataProvider
@@ -59,20 +63,35 @@ class Parser
     }
 
     /**
+     * Fired after the parser has finished creating the parse tre with all test executions.
+     * Can be overriden by a developer to gain access to the parse tree.
+     *
+     * @return array
+     */
+    public function afterParseTreeCreatedHook(array $parseTree): array
+    {
+        return $parseTree;
+    }
+
+    final public function getTestExecutionToImport(): TestExecution {
+        return $this->testExecutionToImport;
+    }
+
+    final public function getTestExecutionsToUpdate(): array {
+        return array_values($this->testExecutionsToUpdate);
+    }
+    /**
      * Build parse tree, grouped by test execution. Iterations are also grouped
      * by test.
      *
      * @param array<array-key, object>
      *
-     * @return array
+     * @return void
      */
-    final public function groupResults(array $parsedResults): array
+    final public function groupResults(array $parsedResults): void
     {
-        $groupedResults = $this->groupByTestExecutions($parsedResults);
-
-        return $groupedResults;
-        // $groupedResults = $this->groupIterations($parsedResults);
-        // $testExecutions = $this->buildTestExecutions($groupedResults);
+        $this->groupByTestExecutions($parsedResults);
+        $this->groupIterations($parsedResults, $this->testExecutionsToUpdate);
     }
 
     /**
@@ -100,32 +119,36 @@ class Parser
         }
     }
 
-    /**
-     * Builds the Xray type "Info" object.
-     *
-     * @return Info
-     */
-    private function buildInfo(array $testExecution): Info
+    private function addTestExecution(array $testExecution): void
     {
-        // code...
+        if (array_key_exists('XRAY-testExecutionKey', $testExecution)) {
+            $this->testExecutionsToUpdate[$testExecution['XRAY-testExecutionKey']] = 
+                new TestExecution($testExecution['XRAY-testExecutionKey']);
+        } else {
+            $this->testExecutionToImport = new TestExecution();
+        }
     }
 
-    /**
-     * Builds the Xray type "TestExecution" object(s).
-     *
-     * @return array<array-key, TestExecution>
-     */
-    private function buildTestExecutions(array $groupedResults): array
+    private function buildTest(array $result): Test
     {
-        $testExecutions = [];
-        foreach ($groupedResults as $testExecution) {
-            $info = $this->buildInfo($testExecution);
-            $tests = $this->buildTests($testExecution);
-            $testExecutionKey = '';
-            $testExecutions[] = new TestExecution($testExecutionKey, $info, $tests);
+        $test = (new TestBuilder())
+                ->setTestKey($result['XRAY-TESTS-testKey'])
+                ->setStart($result['start'])
+                ->setFinish($result['finish'])
+                ->setStatus($result['status']);
+
+        if (array_key_exists('XRAY-TESTS-comment', $result)) {
+            $test = $test->setComment($result['XRAY-TESTS-comment']);
         }
 
-        return $testExecutions;
+        if (array_key_exists('XRAY-TESTS-defects', $result)) {
+            $test = $test->setDefects($result['XRAY-TESTS-defects']);
+        }
+
+        $testInfo = $this->buildTestInfo($result);
+        $test = $test->setTestInfo($testInfo);
+
+        return $test->build();
     }
 
     /**
@@ -133,42 +156,37 @@ class Parser
      *
      * @return TestInfo
      */
-    private function buildTestInfo(array $test): TestInfo
+    private function buildTestInfo(array $result): TestInfo
     {
-        // code...
-    }
-
-    /**
-     * Builds the Xray type "Test" object.
-     *
-     * @return array<array-key, Test>
-     */
-    private function buildTests(array $testExecution): array
-    {
-        // code...
-    }
-
-    private function groupByTestExecutions(array $parsedResults): array
-    {
-        $groupedList = [];
-        foreach ($parsedResults as $result) {
-            if (array_key_exists('XRAY-testExecutionKey', $result)) {
-                $executionKey = $result['XRAY-testExecutionKey'];
-                // TODO Wenn wir den testExecutionKey nicht mehr in dem Test Array benötigen
-                // unset($result['XRAY-testExecutionKey']);
-                if (array_key_exists($executionKey, $groupedList)) {
-                    // $groupedList[$executionKey][] = $result; // without iteration prevention
-                    $groupedList[$executionKey] = $this->groupIterations($groupedList[$executionKey], $result);
-                } else {
-                    $groupedList[$executionKey][] = $result;
-                }
-            } else {
-                // TODO: Exception schreiben, falls ein Test keinen genauen testExecutionkey hat? Oder keyless Schlüssel?
-                $groupedList['keyless'][] = $result;
-            }
+        $testInfo = new TestInfoBuilder();
+        if (array_key_exists('XRAY-TESTINFO-projectKey', $result)) {
+            $testInfo = $testInfo->setProjectKey($result['XRAY-TESTINFO-projectKey']);
         }
 
-        return $groupedList;
+        if (array_key_exists('XRAY-TESTINFO-testType', $result)) {
+            $testInfo = $testInfo->setTestType($result['XRAY-TESTINFO-testType']);
+        }
+        
+        if (array_key_exists('XRAY-TESTINFO-requirementKeys', $result)) {
+            $testInfo = $testInfo->setRequirementKeys($result['XRAY-TESTINFO-requirementKeys']);
+        }
+
+        if (array_key_exists('XRAY-TESTINFO-labels', $result)) {
+            $testInfo = $testInfo->setLabels($result['XRAY-TESTINFO-labels']);
+        }
+
+        if (array_key_exists('XRAY-TESTINFO-definition', $result)) {
+            $testInfo = $testInfo->setDefinition($result['XRAY-TESTINFO-definition']);
+        }
+
+        return $testInfo->build();
+    }
+
+    private function groupByTestExecutions(array $parsedResults): void
+    {
+        foreach ($parsedResults as $testExecution) {
+            $this->addTestExecution($testExecution);
+        }
     }
 
     /**
@@ -176,43 +194,19 @@ class Parser
      * test result. If a single iteration has failed the whole test has to
      * be marked as failed.
      *
-     * @return array
+     * @return void
      */
-    private function groupIterations(array $sortedExecutionTests, array $possibleIteration): array
+    private function groupIterations(array $parsedResults, array $testExecutions): void
     {
-        $iterationPreventedArray = $sortedExecutionTests;
-        $counter = 0;
-        foreach ($sortedExecutionTests as $test) {
-            if ($test['XRAY-TESTS-testKey'] == $possibleIteration['XRAY-TESTS-testKey']) {
-                if ($possibleIteration['status'] == 'FAIL') {
-                    $iterationPreventedArray[$counter] = $possibleIteration;
-                }
-                $counter = -1;
-                break;
-            }
-            ++$counter;
-        }
-        if ($counter != -1) {
-            $iterationPreventedArray[] = $possibleIteration;
-        }
+        foreach($parsedResults as $result){
+            $test = $this->buildTest($result);
 
-        return $iterationPreventedArray;
-    }
-
-    /**
-     * @return string|never
-     *
-     * @throws OutOfBoundsException
-     */
-    private function readTestExecutionKey(array $parsedResults)
-    {
-        if (count($parsedResults) > 0) {
-            if (array_key_exists('XRAY-testExecutionKey', $parsedResults[0])) {
-                return $parsedResults[0]['XRAY-testExecutionKey'];
+            if (array_key_exists('XRAY-testExecutionKey', $result)) {
+                $testExecutions[$result['XRAY-testExecutionKey']]->addTest($test);
+            } else {
+                $this->testExecutionToImport->addTest($test);
             }
         }
-
-        throw new OutOfBoundsException('Test execution key could not be found.');
     }
 
     /**

@@ -42,6 +42,11 @@ class PrepareTest extends TestCase
      * @test
      * @XRAY-testExecutionKey PRTL-666
      * @XRAY-TESTS-testKey PRTL-Test-1
+     * @XRAY-TESTINFO-projectKey PRTL
+     * @XRAY-TESTINFO-testType Generic
+     * @XRAY-TESTINFO-requirementKeys PRTL-815,PRTL-4711
+     * @XRAY-TESTINFO-labels workInProgress
+     * @XRAY-TESTINFO-definition This is a test definition.
      */
     public function add_adds_two_integer_values(): void
     {

@@ -22,7 +22,7 @@ class TestInfoBuilder implements Builder {
     /**
      * @var array<int, string>
      */
-    private $requirementsKeys = [];
+    private $requirementKeys = [];
 
     /**
      * @var array<int, string>
@@ -64,17 +64,17 @@ class TestInfoBuilder implements Builder {
     /**
      * @return array<int, string>
      */
-    public function getRequirementsKeys()
+    public function getRequirementKeys()
     {
-        return $this->requirementsKeys;
+        return $this->requirementKeys;
     }
     
     /**
-     * @param array<int, string> $requirementsKeys
+     * @param array<int, string> $requirementKeys
      */
-    public function setRequirementsKeys($requirementsKeys): self
+    public function setRequirementKeys($requirementKeys): self
     {
-        $this->requirementsKeys = $requirementsKeys;
+        $this->requirementKeys = $requirementKeys;
         return $this;
     }
 

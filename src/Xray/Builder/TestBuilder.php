@@ -13,7 +13,7 @@ class TestBuilder implements Builder {
     /**
      * @var string
      */
-    private $key = '';
+    private $testKey = '';
 
     /**
      * @var string
@@ -49,14 +49,14 @@ class TestBuilder implements Builder {
         // Intentionally left blank
     }
 
-    public function getKey(): string
+    public function getTestKey(): string
     {
-        return $this->key;
+        return $this->testKey;
     }
 
-    public function setKey(string $key): self
+    public function setTestKey(string $testKey): self
     {
-        $this->key = $key;
+        $this->testKey = $testKey;
         return $this;
     }
 

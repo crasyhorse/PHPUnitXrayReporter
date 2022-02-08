@@ -27,7 +27,7 @@ class TestInfo implements JsonSerializable, XrayType
     /**
      * @var array<int, string>
      */
-    private $requirementsKeys;
+    private $requirementKeys;
 
     /**
      * @var array<int, string>
@@ -47,7 +47,7 @@ class TestInfo implements JsonSerializable, XrayType
     {
         $this->projectKey = $testInfoBuilder->getProjectKey();
         $this->testType = $testInfoBuilder->getTestType();
-        $this->requirementsKeys = $testInfoBuilder->getRequirementsKeys();
+        $this->requirementKeys = $testInfoBuilder->getRequirementKeys();
         $this->labels = $testInfoBuilder->getLabels();
         $this->definition = $testInfoBuilder->getDefinition();
     }
@@ -59,12 +59,22 @@ class TestInfo implements JsonSerializable, XrayType
      */
     public function jsonSerialize()
     {
-        return [
-            'projectKey' => $this->projectKey,
-            'testType' => $this->testType,
-            'requirementsKeys' => $this->requirementsKeys,
-            'labels' => $this->labels,
-            'definition' => $this->definition,
-        ];
+        $json = [];
+        foreach(['projectKey', 'testType', 'requirementKeys', 'labels', 'definition'] as $attribute) {
+            if(!empty($this->{$attribute})) {
+                $json[$attribute] = $this->{$attribute};
+            }
+        }
+
+        return $json;
+    }
+
+    public function isEmpty(): bool
+    {
+        return empty($this->projectKey) &&
+            empty($this->testType) &&
+            empty($this->requirementKeys) &&
+            empty($this->labels) &&
+            empty($this->definition);
     }
 }

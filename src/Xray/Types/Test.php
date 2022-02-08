@@ -17,7 +17,7 @@ class Test implements JsonSerializable, XrayType {
     /**
      * @var string
      */
-    private $key;
+    private $testKey;
 
     /**
      * @var string
@@ -51,14 +51,59 @@ class Test implements JsonSerializable, XrayType {
 
     public function __construct(TestBuilder $testBuilder)
     {
-        $this->key = $testBuilder->getKey();
+        $this->testKey = $testBuilder->getTestKey();
         $this->comment = $testBuilder->getcomment();
         $this->defects = $testBuilder->getDefects();
         $this->start = $testBuilder->getStart();
         $this->finish = $testBuilder->getFinish();
         $this->status = $testBuilder->getStatus();
+        $this->testInfo = $testBuilder->getTestInfo();
     }
 
+    public function getTestKey(): string
+    {
+        return $this->testKey;
+    }
+
+    public function getComment(): string
+    {
+        return $this->comment;
+    }
+    
+    /**
+     * @return array<array-key, string>
+     */
+    public function getDefects()
+    {
+        return $this->defects;
+    }
+    
+    /**
+     * @return TestInfo|null
+     */
+    public function getTestInfo()
+    {
+        return $this->testInfo;
+    }
+    
+    public function getStart(): string
+    {
+        return $this->start;
+    }
+    
+    public function getFinish(): string
+    {
+        return $this->finish;
+    }
+    
+    /**
+     * @return "PASS" | "FAIL" | "ERROR" | "WARNING" | "RISKY"
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+    
     /**
      * Defines how this class is serialized into JSON.
      *
@@ -66,14 +111,17 @@ class Test implements JsonSerializable, XrayType {
      */
     public function jsonSerialize()
     {
-        return [
-            'testKey' => $this->key,
-            'comment' => $this->comment,
-            'defects' => $this->defects,
-            'start' => $this->start,
-            'finish' => $this->finish,
-            'status' => $this->status,
-            'testInfo' => $this->testInfo
-        ];
+        $json = [];
+        foreach(['testKey', 'comment', 'defects', 'start', 'finish', 'status'] as $attribute) {
+            if(!empty($this->{$attribute})) {
+                $json[$attribute] = $this->{$attribute};
+            }
+        }
+
+        if(!$this->getTestInfo()->isEmpty()) {
+            $json['testInfo'] = $this->getTestInfo();
+        }
+
+        return $json;
     }
 }
