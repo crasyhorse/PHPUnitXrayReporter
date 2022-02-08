@@ -31,14 +31,14 @@ class Parser
     private $customTags;
 
     /**
-     * @var TestExecution
+     * @var TestExecution|null
      */
     private $testExecutionToImport;
 
     /**
      * @var TestExecution[]
      */
-    private $testExecutionsToUpdate;
+    private $testExecutionsToUpdate = [];
 
     /**
      * @param array<array-key, string>  $whitelistedTags      Allow additional tags like @test or @dataProvider
@@ -63,7 +63,7 @@ class Parser
     }
 
     /**
-     * Fired after the parser has finished creating the parse tre with all test executions.
+     * Fired after the parser has finished creating the parse tree with all test executions.
      * Can be overriden by a developer to gain access to the parse tree.
      *
      * @return array
@@ -73,10 +73,21 @@ class Parser
         return $parseTree;
     }
 
-    final public function getTestExecutionToImport(): TestExecution {
+    /**
+     * Returns a single test execution that should be imported into Xray (test execution
+     * without a testExecutionKey attribute).
+     * 
+     * @return TestExecution|null
+     */
+    final public function getTestExecutionToImport() {
         return $this->testExecutionToImport;
     }
 
+    /**
+     * Returns the list of test executions (parse Tree).
+     * 
+     * @return array
+     */
     final public function getTestExecutionsToUpdate(): array {
         return array_values($this->testExecutionsToUpdate);
     }
@@ -84,7 +95,7 @@ class Parser
      * Build parse tree, grouped by test execution. Iterations are also grouped
      * by test.
      *
-     * @param array<array-key, object>
+     * @param array<array-key, string> $parsedResults
      *
      * @return void
      */
@@ -112,37 +123,60 @@ class Parser
 
             return $meta;
         } catch (ReflectionException $e) {
-            // TODO Error Handling verbessern
             trigger_error($e->__toString(), E_USER_WARNING);
 
             return [];
         }
     }
 
-    private function addTestExecution(array $testExecution): void
+    /**
+     * Builds the Xray type "TestExecution". If the TestExecution object has a
+     * testExecutionKey attribute, it will be added to the list of updatable
+     * test executions. Otherwise, it is treated as a new test executions
+     * that should be imported into Xray.
+     * 
+     * @param array<array-key, string> $testExecution
+     * 
+     * @return void
+     */
+    private function buildTestExecution(array $testExecution): void
     {
         if (array_key_exists('XRAY-testExecutionKey', $testExecution)) {
-            $this->testExecutionsToUpdate[$testExecution['XRAY-testExecutionKey']] = 
-                new TestExecution($testExecution['XRAY-testExecutionKey']);
+            $testExecutionKey = $testExecution['XRAY-testExecutionKey'];
+            $this->testExecutionsToUpdate[$testExecutionKey] = 
+                new TestExecution($testExecutionKey);
         } else {
             $this->testExecutionToImport = new TestExecution();
         }
     }
 
+    /**
+     * Builds the Xray type "Test" object.
+     * 
+     * @param array<array-key, string> $result
+     * 
+     * @return Test
+     */
     private function buildTest(array $result): Test
     {
         $test = (new TestBuilder())
                 ->setTestKey($result['XRAY-TESTS-testKey'])
                 ->setStart($result['start'])
-                ->setFinish($result['finish'])
-                ->setStatus($result['status']);
+                ->setFinish($result['finish']);
+
+        /** @var "PASS" | "FAIL" $status */
+        $status = $result['status'];
+
+        $test = $test->setStatus($status);
 
         if (array_key_exists('XRAY-TESTS-comment', $result)) {
             $test = $test->setComment($result['XRAY-TESTS-comment']);
         }
 
         if (array_key_exists('XRAY-TESTS-defects', $result)) {
-            $test = $test->setDefects($result['XRAY-TESTS-defects']);
+            /** @var array<array-key, string> $defects */
+            $defects = $result['XRAY-TESTS-defects'];
+            $test = $test->setDefects($defects);
         }
 
         $testInfo = $this->buildTestInfo($result);
@@ -154,38 +188,57 @@ class Parser
     /**
      * Builds the Xray type "TestInfo" object.
      *
+     * @param array<array-key,string> $result
+     * 
      * @return TestInfo
      */
     private function buildTestInfo(array $result): TestInfo
     {
         $testInfo = new TestInfoBuilder();
         if (array_key_exists('XRAY-TESTINFO-projectKey', $result)) {
-            $testInfo = $testInfo->setProjectKey($result['XRAY-TESTINFO-projectKey']);
+            $projectKey = $result['XRAY-TESTINFO-projectKey'];
+            $testInfo = $testInfo->setProjectKey($projectKey);
         }
 
         if (array_key_exists('XRAY-TESTINFO-testType', $result)) {
-            $testInfo = $testInfo->setTestType($result['XRAY-TESTINFO-testType']);
+            /** @var "Generic" | "Cumcumber" | null $testType */
+            $testType = $result['XRAY-TESTINFO-testType'];
+            $testInfo = $testInfo->setTestType($testType);
         }
         
         if (array_key_exists('XRAY-TESTINFO-requirementKeys', $result)) {
-            $testInfo = $testInfo->setRequirementKeys($result['XRAY-TESTINFO-requirementKeys']);
+            /** @var array<array-key, string> $requirementKeys */
+            $requirementKeys = $result['XRAY-TESTINFO-requirementKeys'];
+            $testInfo = $testInfo->setRequirementKeys($requirementKeys);
         }
 
         if (array_key_exists('XRAY-TESTINFO-labels', $result)) {
-            $testInfo = $testInfo->setLabels($result['XRAY-TESTINFO-labels']);
+            /** @var array<array-key, string> $labels */
+            $labels = $result['XRAY-TESTINFO-requirementKeys'];
+            $testInfo = $testInfo->setLabels($labels);
         }
 
         if (array_key_exists('XRAY-TESTINFO-definition', $result)) {
-            $testInfo = $testInfo->setDefinition($result['XRAY-TESTINFO-definition']);
+            $definition = $result['XRAY-TESTINFO-projectKey'];
+            $testInfo = $testInfo->setDefinition($definition);
         }
 
         return $testInfo->build();
     }
 
+    /**
+     * Walks over the array of parsed results and creates the list of test executions
+     * (parse tree).
+     * 
+     * @param array<array-key, string> $parsedResults
+     * 
+     * @return void
+     */
     private function groupByTestExecutions(array $parsedResults): void
     {
+        /** @var array<array-key, string> $testExecution */
         foreach ($parsedResults as $testExecution) {
-            $this->addTestExecution($testExecution);
+            $this->buildTestExecution($testExecution);
         }
     }
 
@@ -198,13 +251,19 @@ class Parser
      */
     private function groupIterations(array $parsedResults, array $testExecutions): void
     {
+        /** @var array<array-key, string> $result */
         foreach($parsedResults as $result){
             $test = $this->buildTest($result);
 
             if (array_key_exists('XRAY-testExecutionKey', $result)) {
-                $testExecutions[$result['XRAY-testExecutionKey']]->addTest($test);
+                $testExecutionKey = $result['XRAY-testExecutionKey'];
+                /** @var TestExecution $testExecution */
+                $testExecution = $testExecutions[$testExecutionKey];
+                $testExecution->addTest($test);
             } else {
-                $this->testExecutionToImport->addTest($test);
+                if (!empty($this->testExecutionToImport)) {
+                    $this->testExecutionToImport->addTest($test);
+                }
             }
         }
     }
@@ -232,8 +291,6 @@ class Parser
     private function stripOffWithDataSet(string $test): string
     {
         preg_match_all('/([[:alpha:]][_0-9a-zA-Z:\\\]+)(?!< with data set)/', $test, $matches);
-        $testName = $matches[0][0];
-
-        return $testName;
+        return $matches[0][0];
     }
 }
