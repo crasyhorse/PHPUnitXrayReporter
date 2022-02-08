@@ -4,14 +4,6 @@ declare(strict_types=1);
 
 namespace Crasyhorse\PhpunitXrayReporter\Parser;
 
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Description;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Project;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Revision;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Summary;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\TestEnvironments;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\TestPlanKey;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\User;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Version;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestExecutionKey;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\Definition;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\Labels;
@@ -83,15 +75,6 @@ final class TagSet
     {
         return array_merge([
             new TestExecutionKey(),
-            new Project(),
-            new Description(),
-            new Project(),
-            new Revision(),
-            new Summary(),
-            new TestEnvironments(),
-            new TestPlanKey(),
-            new User(),
-            new Version(),
             new Defects(),
             new TestKey(),
             new Definition(),

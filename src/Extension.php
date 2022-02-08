@@ -36,9 +36,10 @@ final class Extension implements BeforeTestHook, AfterSuccessfulTestHook, AfterT
      */
     private $reporter;
 
-    public function __construct()
+    public function __construct(string $outputDir)
     {
-        $this->reporter = new Reporter();
+        $this->reporter = new Reporter($outputDir);
+        $this->start = Carbon::now(new DateTimeZone('Europe/Berlin'));
     }
 
     public function __destruct()

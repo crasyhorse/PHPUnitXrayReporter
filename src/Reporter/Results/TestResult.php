@@ -23,7 +23,10 @@ interface TestResult
 
     public function getStart(): string;
 
-    public function getStatus(): string;
+    /**
+     * @return "PASS" | "FAIL"
+     */
+    public function getStatus();
 
     public function getTest(): string;
 

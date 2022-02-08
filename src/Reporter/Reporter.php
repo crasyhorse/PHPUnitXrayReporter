@@ -7,6 +7,7 @@ namespace Crasyhorse\PhpunitXrayReporter\Reporter;
 use Crasyhorse\PhpunitXrayReporter\Parser\Parser;
 use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TestResult;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
+use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestExecution;
 
 /**
  * Processes test results and the meta information for the annotations.
@@ -17,6 +18,11 @@ use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
  */
 final class Reporter
 {
+    /**
+     * @var string
+     */
+    private $outputDir;
+
     /**
      * @var Parser
      */
@@ -32,8 +38,9 @@ final class Reporter
      * @param array<array-key, string>  $blacklistedTags      Remove tags like @param or @return
      * @param array<array-key, XrayTag> $additionalCustomTags Additional Tags of type XrayTag
      */
-    public function __construct(array $whitelistedTags = [], array $blacklistedTags = [], array $additionalCustomTags = [])
+    public function __construct(string $outputDir, array $whitelistedTags = [], array $blacklistedTags = [], array $additionalCustomTags = [])
     {
+        $this->outputDir = $outputDir;
         $this->parser = new Parser($whitelistedTags, $blacklistedTags, $additionalCustomTags);
         $this->testResults = [];
     }
@@ -55,12 +62,24 @@ final class Reporter
      */
     final public function processResults(): void
     {
+        /** @var array<array-key, string> $parsedResults */
         $parsedResults = $this->parseResults();
         $parsedResults = $this->parser->afterDocBlockParsedHook($parsedResults);
 
-        var_dump($parsedResults);
-        die();
-        $parseTree = $this->parser->groupResults($parsedResults);
+        $this->parser->groupResults($parsedResults);
+        $parseTree = $this->parser->getTestExecutionsToUpdate();
+        $parseTree = $this->parser->afterParseTreeCreatedHook($parseTree);
+
+        $this->createJsonFiles($parseTree);
+    }
+
+    private function createJsonFiles(array $parseTree): void
+    {
+        $parseTreeValues = array_values($parseTree);
+        /** @var TestExecution $execution */
+        foreach ($parseTreeValues as $execution) {
+            file_put_contents("{$this->outputDir}.{$execution->getKey()}.json", json_encode($execution, JSON_PRETTY_PRINT));
+        }
     }
 
     /**
