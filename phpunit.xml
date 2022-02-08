@@ -37,6 +37,10 @@
         </report>
     </coverage>
     <extensions>
-        <extension class="Crasyhorse\PhpunitXrayReporter\Extension"></extension>
+        <extension class="Crasyhorse\PhpunitXrayReporter\Extension">
+            <arguments>
+                <string>.\tests\</string>
+            </arguments>
+        </extension>
     </extensions>
 </phpunit>

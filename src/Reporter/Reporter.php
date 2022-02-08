@@ -18,6 +18,11 @@ use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
 final class Reporter
 {
     /**
+     * @var string
+     */
+    private $outputDir;
+
+    /**
      * @var Parser
      */
     private $parser;
@@ -32,8 +37,9 @@ final class Reporter
      * @param array<array-key, string>  $blacklistedTags      Remove tags like @param or @return
      * @param array<array-key, XrayTag> $additionalCustomTags Additional Tags of type XrayTag
      */
-    public function __construct(array $whitelistedTags = [], array $blacklistedTags = [], array $additionalCustomTags = [])
+    public function __construct(string $outputDir, array $whitelistedTags = [], array $blacklistedTags = [], array $additionalCustomTags = [])
     {
+        $this->outputDir = $outputDir;
         $this->parser = new Parser($whitelistedTags, $blacklistedTags, $additionalCustomTags);
         $this->testResults = [];
     }
@@ -66,11 +72,11 @@ final class Reporter
         die();
     }
 
-    private function createJsonFiles(array $parseTree): void {
-        //file_put_contents
-        //json_encode(, JSON_PRETTY_PRINT)
-
-        // Name: testExecutionKey
+    private function createJsonFiles(array $parseTree): void
+    {
+        foreach ($parseTree as $executionKey => $execution) {
+            file_put_contents($this->outputDir.$execution->getKey().'.json', json_encode($execution, JSON_PRETTY_PRINT));
+        }
     }
 
     /**
