@@ -33,6 +33,14 @@ class TestExecution implements JsonSerializable
     }
 
     /**
+     * @return string|null
+     */
+    public function getKey()
+    {
+        return $this->key;
+    }
+
+    /**
      * Adds an Xray "Test" object if its status has changed
      * to FAIL or if it does not exist.
      *
@@ -40,15 +48,15 @@ class TestExecution implements JsonSerializable
      */
     public function addTest(Test $value): void
     {
-        if(count($this->tests) === 0) {
+        if (count($this->tests) === 0) {
             $this->tests[$value->getTestKey()] = $value;
         }
 
-        foreach($this->tests as $test) {
-            if(($test->getTestKey() === $value->getTestKey() &&
+        foreach ($this->tests as $test) {
+            if (($test->getTestKey() === $value->getTestKey() &&
                 $value->getStatus() === FailedTest::TEST_RESULT) ||
                 $test->getTestKey() !== $value->getTestKey()) {
-                    $this->tests[$value->getTestKey()] = $value; 
+                $this->tests[$value->getTestKey()] = $value;
             }
         }
     }
