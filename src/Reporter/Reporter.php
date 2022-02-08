@@ -73,10 +73,14 @@ final class Reporter
         $this->createJsonFiles($parseTree);
     }
 
-    private function createJsonFiles(array $parseTree): void
+    /**
+     * Creates the JSON-Files for the Xray API.
+     * 
+     * @param array<TestExecution> $parseTree
+     */
+    private function createJsonFiles($parseTree): void
     {
         $parseTreeValues = array_values($parseTree);
-        /** @var TestExecution $execution */
         foreach ($parseTreeValues as $execution) {
             file_put_contents("{$this->outputDir}.{$execution->getKey()}.json", json_encode($execution, JSON_PRETTY_PRINT));
         }
