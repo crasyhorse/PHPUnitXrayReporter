@@ -55,9 +55,11 @@ class Parser
      * Fired after the parser has finished parsing the doc blocks. Can be overriden
      * by a developer to gain access to the list of parsed annotations.
      *
-     * @return array
+     * @param  array<array-key, string> $meta
+     * 
+     * @return array<array-key, string>
      */
-    public function afterDocBlockParsedHook(array $meta): array
+    public function afterDocBlockParsedHook($meta)
     {
         return $meta;
     }
@@ -66,9 +68,11 @@ class Parser
      * Fired after the parser has finished creating the parse tree with all test executions.
      * Can be overriden by a developer to gain access to the parse tree.
      *
-     * @return array
+     * @param  list<TestExecution> $parseTree
+     * 
+     * @return list<TestExecution>
      */
-    public function afterParseTreeCreatedHook(array $parseTree): array
+    public function afterParseTreeCreatedHook($parseTree)
     {
         return $parseTree;
     }
@@ -86,9 +90,9 @@ class Parser
     /**
      * Returns the list of test executions (parse Tree).
      * 
-     * @return array
+     * @return list<TestExecution>
      */
-    final public function getTestExecutionsToUpdate(): array {
+    final public function getTestExecutionsToUpdate() {
         return array_values($this->testExecutionsToUpdate);
     }
     /**
