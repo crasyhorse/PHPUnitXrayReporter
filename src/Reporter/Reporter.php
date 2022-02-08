@@ -7,6 +7,7 @@ namespace Crasyhorse\PhpunitXrayReporter\Reporter;
 use Crasyhorse\PhpunitXrayReporter\Parser\Parser;
 use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TestResult;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
+use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestExecution;
 
 /**
  * Processes test results and the meta information for the annotations.
@@ -61,6 +62,7 @@ final class Reporter
      */
     final public function processResults(): void
     {
+        /** @var array<array-key, string> $parsedResults */
         $parsedResults = $this->parseResults();
         $parsedResults = $this->parser->afterDocBlockParsedHook($parsedResults);
 
@@ -69,13 +71,14 @@ final class Reporter
         $parseTree = $this->parser->afterParseTreeCreatedHook($parseTree);
 
         $this->createJsonFiles($parseTree);
-        die();
     }
 
     private function createJsonFiles(array $parseTree): void
     {
-        foreach ($parseTree as $executionKey => $execution) {
-            file_put_contents($this->outputDir.$execution->getKey().'.json', json_encode($execution, JSON_PRETTY_PRINT));
+        $parseTreeValues = array_values($parseTree);
+        /** @var TestExecution $execution */
+        foreach ($parseTreeValues as $execution) {
+            file_put_contents("{$this->outputDir}.{$execution->getKey()}.json", json_encode($execution, JSON_PRETTY_PRINT));
         }
     }
 

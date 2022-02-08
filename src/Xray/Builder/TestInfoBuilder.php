@@ -15,17 +15,17 @@ class TestInfoBuilder implements Builder {
     private $projectKey = '';
 
     /**
-     * @var string
+     * @var "Generic" | "Cumcumber" | null
      */
-    private $testType = '';
+    private $testType = 'Generic';
 
     /**
-     * @var array<int, string>
+     * @var array<array-key, string>
      */
     private $requirementKeys = [];
 
     /**
-     * @var array<int, string>
+     * @var array<array-key, string>
      */
     private $labels = [];
 
@@ -50,19 +50,25 @@ class TestInfoBuilder implements Builder {
         return $this;
     }
 
-    public function getTestType(): string
+    /**
+     * @return "Generic" | "Cumcumber" | null
+     */
+    public function getTestType()
     {
         return $this->testType;
     }
     
-    public function setTestType(string $testType): self
+    /**
+     * @param "Generic" | "Cumcumber" | null $testType
+     */
+    public function setTestType($testType): self
     {
         $this->testType = $testType;
         return $this;
     }
 
     /**
-     * @return array<int, string>
+     * @return array<array-key, string>
      */
     public function getRequirementKeys()
     {
@@ -70,7 +76,7 @@ class TestInfoBuilder implements Builder {
     }
     
     /**
-     * @param array<int, string> $requirementKeys
+     * @param array<array-key, string> $requirementKeys
      */
     public function setRequirementKeys($requirementKeys): self
     {
@@ -79,7 +85,7 @@ class TestInfoBuilder implements Builder {
     }
 
     /**
-     * @return array<int,string>
+     * @return array<array-key,string>
      */
     public function getLabels()
     {
@@ -87,7 +93,7 @@ class TestInfoBuilder implements Builder {
     }
     
     /**
-     * @param array<int,string> $labels
+     * @param array<array-key,string> $labels
      */
     public function setLabels($labels): self
     {
@@ -110,9 +116,9 @@ class TestInfoBuilder implements Builder {
     /**
      * Builds a class of type XrayType.
      * 
-     * @return XrayType
+     * @return TestInfo
      */
-    public function build(): XrayType {
+    public function build(): TestInfo {
         return new TestInfo($this);
     }
 

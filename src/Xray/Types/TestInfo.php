@@ -20,17 +20,17 @@ class TestInfo implements JsonSerializable, XrayType
     private $projectKey;
 
     /**
-     * @var string
+     * @var "Generic" | "Cumcumber" | null
      */
     private $testType;
 
     /**
-     * @var array<int, string>
+     * @var array<array-key,string>
      */
     private $requirementKeys;
 
     /**
-     * @var array<int, string>
+     * @var array<array-key,string>
      */
     private $labels;
 
@@ -39,10 +39,6 @@ class TestInfo implements JsonSerializable, XrayType
      */
     private $definition;
 
-    /**
-     * @param array<int, string> $requirementsKeys
-     * @param array<int, string> $labels
-     */
     public function __construct(TestInfoBuilder $testInfoBuilder)
     {
         $this->projectKey = $testInfoBuilder->getProjectKey();
@@ -62,6 +58,7 @@ class TestInfo implements JsonSerializable, XrayType
         $json = [];
         foreach(['projectKey', 'testType', 'requirementKeys', 'labels', 'definition'] as $attribute) {
             if(!empty($this->{$attribute})) {
+                /** @psalm-suppress MixedAssignment */
                 $json[$attribute] = $this->{$attribute};
             }
         }

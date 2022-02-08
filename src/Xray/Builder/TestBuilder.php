@@ -41,7 +41,7 @@ class TestBuilder implements Builder {
     private $finish = '';
 
     /**
-     * @var "PASS" | "FAIL" | "ERROR" | "WARNING" | "RISKY"
+     * @var "PASS" | "FAIL"
      */
     private $status = 'FAIL';
     
@@ -125,7 +125,7 @@ class TestBuilder implements Builder {
     }
 
     /**
-     * @return "PASS" | "FAIL" | "ERROR" | "WARNING" | "RISKY"
+     * @return "PASS" | "FAIL"
      */
     public function getStatus()
     {
@@ -133,7 +133,7 @@ class TestBuilder implements Builder {
     }
     
     /**
-     * @param "PASS" | "FAIL" | "ERROR" | "WARNING" | "RISKY" $status
+     * @param "PASS" | "FAIL" $status
      */
     public function setStatus($status): self
     {
@@ -144,9 +144,9 @@ class TestBuilder implements Builder {
     /**
      * Builds a class of type XrayType.
      * 
-     * @return XrayType
+     * @return Test
      */
-    public function build(): XrayType {
+    public function build(): Test {
         return new Test($this);
     }
 
