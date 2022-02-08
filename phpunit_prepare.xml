@@ -36,4 +36,11 @@
             <clover outputFile="reports/clover/clover.xml"/>
         </report>
     </coverage>
+    <extensions>
+        <extension class="Crasyhorse\PhpunitXrayReporter\Extension">
+            <arguments>
+                <string>.\tests\</string>
+            </arguments>
+        </extension>
+    </extensions>
 </phpunit>
