@@ -87,7 +87,7 @@ class TestsTest extends TestCase
 
     /**
      * No TestKey
-     * This test uses no TestKey comma separated. An Exception should be thrown..
+     * This test uses no TestKey separated. An Exception should be thrown.
      *
      * @test
      * @XRAY-testExecutionKey PHPUnitXrayReporter-17
@@ -139,8 +139,7 @@ class TestsTest extends TestCase
      *
      * @XRAY-TESTS-testKey PHPUnitXrayReporter-21
      * @XRAY-TESTS-comment This Test should return PASS
-     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2,PHPUnitXrayReporter-3,PHPUnitXrayReporter-4
-     */
+     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2,PHPUnitXrayReporter-3,PHPUnitXrayReporter-4*/
     public function defects_test_2(): void
     {
         $asset = new Asset();
