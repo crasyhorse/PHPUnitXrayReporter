@@ -50,12 +50,17 @@ class TestExecution implements JsonSerializable
     {
         if (count($this->tests) === 0) {
             $this->tests[$value->getTestKey()] = $value;
-        }
-
-        foreach ($this->tests as $test) {
-            if (($test->getTestKey() === $value->getTestKey() &&
-                $value->getStatus() === FailedTest::TEST_RESULT) ||
-                $test->getTestKey() !== $value->getTestKey()) {
+        } else {
+            $noTestFound = true;
+            foreach ($this->tests as $test) {
+                if ($test->getTestKey() == $value->getTestKey()) {
+                    $noTestFound = false;
+                    if ($value->getStatus() == FailedTest::TEST_RESULT) {
+                        $this->tests[$value->getTestKey()] = $value;
+                    }
+                }
+            }
+            if ($noTestFound) {
                 $this->tests[$value->getTestKey()] = $value;
             }
         }
