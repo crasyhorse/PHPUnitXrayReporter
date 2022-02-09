@@ -33,16 +33,16 @@ use PHPUnit\Framework\TestCase;
  *
  * @since 0.1.0
  */
-class TestExecutionTest extends TestCase
+class TestsTest extends TestCase
 {
     /**
-     * More than one TestExecutionKey
-     * This test uses more than one TestExecutionKey space separated. Just the first one of them should be parsed.
+     * More than one TestKey
+     * This test uses more than one TestKey space separated. Just the first one of them should be parsed.
      *
      * @test
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-13 PHPUnitXrayReporter-013 PHPUnitXrayReporter-113
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-17
      *
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-14
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-18 PHPUnitXrayReporter-018 PHPUnitXrayReporter-118
      * @XRAY-TESTS-comment This Test should return PASS
      * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
@@ -52,7 +52,7 @@ class TestExecutionTest extends TestCase
      * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
      * @XRAY-TESTINFO-definition The Test sums 2+2=4 and expects 4
      */
-    public function more_than_one_TestExecutionKey_space_separated(): void
+    public function more_than_one_TestKey_space_separated(): void
     {
         $asset = new Asset();
         $expected = 4;
@@ -61,13 +61,13 @@ class TestExecutionTest extends TestCase
     }
 
     /**
-     * More than one TestExecutionKey
-     * This test uses more than one TestExecutionKey comma separated. Just the first one of them should be parsed.
+     * More than one TestKey
+     * This test uses more than one TestKey comma separated. Just the first one of them should be parsed.
      *
      * @test
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-13,PHPUnitXrayReporter-013,PHPUnitXrayReporter-113
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-17
      *
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-15
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-19,PHPUnitXrayReporter-018,PHPUnitXrayReporter-118
      * @XRAY-TESTS-comment This Test should return PASS
      * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
@@ -77,7 +77,7 @@ class TestExecutionTest extends TestCase
      * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
      * @XRAY-TESTINFO-definition The Test sums 2+2=4 and expects 4
      */
-    public function more_than_one_TestExecutionKey_comma_separated(): void
+    public function more_than_one_TestKey_comma_separated(): void
     {
         $asset = new Asset();
         $expected = 4;
@@ -86,12 +86,12 @@ class TestExecutionTest extends TestCase
     }
 
     /**
-     * No TestExecutionKey
-     * This test uses no TestExecutionKey. An Exception should be thrown.
+     * No TestKey
+     * This test uses no TestKey comma separated. An Exception should be thrown..
      *
      * @test
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-17
      *
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-16
      * @XRAY-TESTS-comment This Test should return PASS
      * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
@@ -101,7 +101,7 @@ class TestExecutionTest extends TestCase
      * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
      * @XRAY-TESTINFO-definition The Test sums 2+2=4 and expects 4
      */
-    public function no_TestExecutionKey(): void
+    public function no_TestKey(): void
     {
         $asset = new Asset();
         $expected = 4;
