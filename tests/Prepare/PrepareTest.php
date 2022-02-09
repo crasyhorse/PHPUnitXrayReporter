@@ -36,19 +36,28 @@ use PHPUnit\Framework\TestCase;
  */
 class PrepareTest extends TestCase
 {
+    // ==================================================================================
+    // All annotations tests
+    // ==================================================================================
+
     /**
      * Successful test.
+     * This test will return a PASS result and has all possible annotations we implemented.
      *
      * @test
-     * @XRAY-testExecutionKey PRTL-666
-     * @XRAY-TESTS-testKey PRTL-Test-1
-     * @XRAY-TESTINFO-projectKey PRTL
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-1
+     *
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-2
+     * @XRAY-TESTS-comment This Test should return PASS
+     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
+     *
+     * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
      * @XRAY-TESTINFO-testType Generic
-     * @XRAY-TESTINFO-requirementKeys PRTL-815,PRTL-4711
-     * @XRAY-TESTINFO-labels workInProgress
-     * @XRAY-TESTINFO-definition This is a test definition.
+     * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
+     * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
+     * @XRAY-TESTINFO-definition The Test sums 2+2=4 and expects 4
      */
-    public function add_adds_two_integer_values(): void
+    public function fully_annotated_successful_test(): void
     {
         $asset = new Asset();
         $expected = 4;
@@ -57,16 +66,39 @@ class PrepareTest extends TestCase
     }
 
     /**
-     * Successful test using the testdox annotation to set
-     * a human readable test summary.
+     * Unsuccessful test.
+     * This test will return a FAIL result and has all possible annotations we implemented.
      *
      * @test
-     * @testdox Method add adds two integer values
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-1
      *
-     * @XRAY-testExecutionKey PRTL-666
-     * @XRAY-TESTS-testKey PRTL-Test-2
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-3
+     * @XRAY-TESTS-comment This Test should return PASS
+     * @XRAY-TESTS-defects PHPUnitXrayReporter-2,PHPUnitXrayReporter-3
+     *
+     * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
+     * @XRAY-TESTINFO-testType Generic
+     * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2,PHPUnitXrayReporter-3
+     * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
+     * @XRAY-TESTINFO-definition The Test sums 2+2=4 but expects 5
      */
-    public function add_adds_two_integer_values_using_testdox_annotation(): void
+    public function fully_annotated_unsuccessful_test(): void
+    {
+        $asset = new Asset();
+        $expected = 5;
+        $actual = $asset->add(2, 2);
+        $this->assertEquals($expected, $actual);
+    }
+
+    // ==================================================================================
+    // Very few annotations tests
+    // ==================================================================================
+
+    /**
+     * @test
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-4
+     */
+    public function only_XRAY_testExecutionKey_annotation(): void
     {
         $asset = new Asset();
         $expected = 4;
@@ -75,15 +107,30 @@ class PrepareTest extends TestCase
     }
 
     /**
-     * Successful, data driven test.
-     *
      * @test
-     * @dataProvider integer_provider
-     *
-     * @XRAY-testExecutionKey PRTL-666
-     * @XRAY-TESTS-testKey PRTL-Test-3
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-4
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-6
      */
-    public function add_adds_two_integers_from_a_list_of_values(int $a, int $b, int $result): void
+    public function XRAY_testExecutionKey_and_XRAY_TESTS_testKey_annotation(): void
+    {
+        $asset = new Asset();
+        $expected = 4;
+        $actual = $asset->add(2, 2);
+        $this->assertEquals($expected, $actual);
+    }
+
+    // ==================================================================================
+    // Iteration tests
+    // ==================================================================================
+
+    /**
+     * @test
+     * @dataProvider two_iteration_data_provider1
+     *
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-6
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-7
+     */
+    public function test_with_two_iterations_PASS_PASS(int $a, int $b, int $result): void
     {
         $asset = new Asset();
         $actual = $asset->add($a, $b);
@@ -91,13 +138,59 @@ class PrepareTest extends TestCase
     }
 
     /**
+     * @test
+     * @dataProvider two_iteration_data_provider2
+     *
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-6
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-8
+     */
+    public function test_with_two_iterations_FAIL_PASS(int $a, int $b, int $result): void
+    {
+        $asset = new Asset();
+        $actual = $asset->add($a, $b);
+        $this->assertEquals($result, $actual);
+    }
+
+    /**
+     * @test
+     * @dataProvider two_iteration_data_provider3
+     *
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-6
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-9
+     */
+    public function test_with_two_iterations_PASS_FAIL(int $a, int $b, int $result): void
+    {
+        $asset = new Asset();
+        $actual = $asset->add($a, $b);
+        $this->assertEquals($result, $actual);
+    }
+
+    /**
+     * @test
+     * @dataProvider three_iteration_data_provider
+     *
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-6
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-10
+     */
+    public function test_with_three_iterations_PASS_FAIL_PASS(int $a, int $b, int $result): void
+    {
+        $asset = new Asset();
+        $actual = $asset->add($a, $b);
+        $this->assertEquals($result, $actual);
+    }
+
+    // ==================================================================================
+    // Different test behavior tests (error, skipped, incomplete, risky)
+    // ==================================================================================
+
+    /**
      * Returns an Error because the first operand $a is a string.
      *
      * @test
-     * @XRAY-testExecutionKey PRTL-666
-     * @XRAY-TESTS-testKey PRTL-Test-4
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-11
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-12
      */
-    public function test_returning_an_error_because_the_first_operand_is_a_string(): void
+    public function error_test(): void
     {
         $asset = new Asset();
         $expected = 4;
@@ -106,28 +199,13 @@ class PrepareTest extends TestCase
     }
 
     /**
-     * This test fails because 2 + 2 is not 5.
-     *
-     * @test
-     * @XRAY-testExecutionKey PRTL-667
-     * @XRAY-TESTS-testKey PRTL-Test-5
-     */
-    public function add_adds_two_integers_but_does_not_return_the_expected_result(): void
-    {
-        $asset = new Asset();
-        $expected = 5;
-        $actual = $asset->add(2, 2);
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
      * This test does nothing because it is skipped.
      *
      * @test
-     * @XRAY-testExecutionKey PRTL-667
-     * @XRAY-TESTS-testKey PRTL-Test-6
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-11
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-13
      */
-    public function test_does_nothing_because_it_is_skipped(): void
+    public function skipped_test(): void
     {
         $this->markTestSkipped('Skipped test');
     }
@@ -136,10 +214,10 @@ class PrepareTest extends TestCase
      * This test does nothing because it is incomplete.
      *
      * @test
-     * @XRAY-testExecutionKey PRTL-667
-     * @XRAY-TESTS-testKey PRTL-Test-7
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-11
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-14
      */
-    public function test_does_nothing_because_it_is_incomplete(): void
+    public function incomplete_test(): void
     {
         $this->markTestIncomplete('Incomplete test');
     }
@@ -148,15 +226,153 @@ class PrepareTest extends TestCase
      * This test is marked as risky.
      *
      * @test
-     * @XRAY-testExecutionKey PRTL-667
-     * @XRAY-TESTS-testKey PRTL-Test-8
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-11
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-15
      */
     public function risky_test(): void
     {
         $this->markAsRisky();
     }
 
-    public function integer_provider(): array
+    // ==================================================================================
+    // XRAY-TESTINFO-XXX Tag Tests
+    // ==================================================================================
+
+    /**
+     * XRAY-TESTINFO-XXX Tag Test
+     * This test Execution will test all possible annotations of Testinfo we've implemented.
+     *
+     * @test
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-12
+     *
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-13
+     * @XRAY-TESTS-comment This Test should return PASS
+     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
+     *
+     * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
+     * @XRAY-TESTINFO-testType Generic
+     * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
+     * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
+     * @XRAY-TESTINFO-definition The Test sums 2+2=4 and expects 4
+     */
+    public function different_XRAY_TESTINFO_tags_all(): void
+    {
+        $asset = new Asset();
+        $expected = 4;
+        $actual = $asset->add(2, 2);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-12
+     *
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-14
+     * @XRAY-TESTS-comment This Test should return PASS
+     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
+     *
+     * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
+     */
+    public function different_XRAY_TESTINFO_tags_1(): void
+    {
+        $asset = new Asset();
+        $expected = 4;
+        $actual = $asset->add(2, 2);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * XRAY-TESTINFO-XXX Tag Test.
+     *
+     * @test
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-12
+     *
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-15
+     * @XRAY-TESTS-comment This Test should return PASS
+     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
+     *
+     * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
+     * @XRAY-TESTINFO-testType Generic
+     */
+    public function different_XRAY_TESTINFO_tags_2(): void
+    {
+        $asset = new Asset();
+        $expected = 4;
+        $actual = $asset->add(2, 2);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * XRAY-TESTINFO-XXX Tag Test.
+     *
+     * @test
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-12
+     *
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-16
+     * @XRAY-TESTS-comment This Test should return PASS
+     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
+     *
+     * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
+     * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
+     */
+    public function different_XRAY_TESTINFO_tags_3(): void
+    {
+        $asset = new Asset();
+        $expected = 4;
+        $actual = $asset->add(2, 2);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * XRAY-TESTINFO-XXX Tag Test.
+     *
+     * @test
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-12
+     *
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-17
+     * @XRAY-TESTS-comment This Test should return PASS
+     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
+     *
+     * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
+     * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
+     * @XRAY-TESTINFO-definition The Test sums 2+2=4 and expects 4
+     */
+    public function different_XRAY_TESTINFO_tags_4(): void
+    {
+        $asset = new Asset();
+        $expected = 4;
+        $actual = $asset->add(2, 2);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * XRAY-TESTINFO-XXX Tag Test
+     * This test Execution will test all possible annotations of Testinfo we've implemented.
+     *
+     * @test
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-12
+     *
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-18
+     * @XRAY-TESTS-comment This Test should return PASS
+     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
+     *
+     * @XRAY-TESTINFO-testType Generic
+     * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
+     * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
+     */
+    public function different_XRAY_TESTINFO_tags_5(): void
+    {
+        $asset = new Asset();
+        $expected = 4;
+        $actual = $asset->add(2, 2);
+        $this->assertEquals($expected, $actual);
+    }
+
+    // ==================================================================================
+    // DATA PROVIDER
+    // ==================================================================================
+
+    public function two_iteration_data_provider1(): array
     {
         return [
             'a = 2, b = 2, result = 4' => [
@@ -165,8 +381,44 @@ class PrepareTest extends TestCase
             'a = 3, b = 6, result = 9' => [
                 3, 6, 9,
             ],
-            'a = 7, b = 4, result = 10 (FAIL)' => [
+        ];
+    }
+
+    public function two_iteration_data_provider2(): array
+    {
+        return [
+            'a = 2, b = 2, result = 1' => [
+                2, 2, 1,
+            ],
+            'a = 3, b = 6, result = 9' => [
+                3, 6, 9,
+            ],
+        ];
+    }
+
+    public function two_iteration_data_provider3(): array
+    {
+        return [
+            'a = 2, b = 2, result = 4' => [
+                2, 2, 4,
+            ],
+            'a = 3, b = 6, result = 27' => [
+                3, 6, 27,
+            ],
+        ];
+    }
+
+    public function three_iteration_data_provider(): array
+    {
+        return [
+            'a = 2, b = 2, result = 4' => [
+                2, 2, 4,
+            ],
+            'a = 7, b = 4, result = 10' => [
                 7, 4, 10,
+            ],
+            'a = 3, b = 6, result = 9' => [
+                3, 6, 9,
             ],
         ];
     }
