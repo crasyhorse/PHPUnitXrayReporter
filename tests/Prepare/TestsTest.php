@@ -108,4 +108,44 @@ class TestsTest extends TestCase
         $actual = $asset->add(2, 2);
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * XRAY-TESTS-defects test 1
+     * testing defects annotation.
+     *
+     * @test
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-17
+     *
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-20
+     * @XRAY-TESTS-comment This Test should return PASS
+     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2,PHPUnitXrayReporter-3,PHPUnitXrayReporter-4
+     *
+     * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
+     */
+    public function defects_test_1(): void
+    {
+        $asset = new Asset();
+        $expected = 4;
+        $actual = $asset->add(2, 2);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * XRAY-TESTS-defects test 2
+     * testing defects annotation. The *\/ String should not be shown.
+     *
+     * @test
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-17
+     *
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-21
+     * @XRAY-TESTS-comment This Test should return PASS
+     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2,PHPUnitXrayReporter-3,PHPUnitXrayReporter-4
+     */
+    public function defects_test_2(): void
+    {
+        $asset = new Asset();
+        $expected = 4;
+        $actual = $asset->add(2, 2);
+        $this->assertEquals($expected, $actual);
+    }
 }
