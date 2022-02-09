@@ -41,9 +41,9 @@ class TestExecutionTest extends TestCase
      * This test uses more than one TestExecutionKey space separated. Just the first one of them should be parsed.
      *
      * @test
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-13 PHPUnitXrayReporter-013 PHPUnitXrayReporter-113
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-24 PHPUnitXrayReporter-013 PHPUnitXrayReporter-113
      *
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-14
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-25
      * @XRAY-TESTS-comment This Test should return PASS
      * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
@@ -66,9 +66,9 @@ class TestExecutionTest extends TestCase
      * This test uses more than one TestExecutionKey comma separated. Just the first one of them should be parsed.
      *
      * @test
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-13,PHPUnitXrayReporter-013,PHPUnitXrayReporter-113
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-24,PHPUnitXrayReporter-013,PHPUnitXrayReporter-113
      *
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-15
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-26
      * @XRAY-TESTS-comment This Test should return PASS
      * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
@@ -96,7 +96,7 @@ class TestExecutionTest extends TestCase
      *
      * @test
      *
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-16
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-27
      * @XRAY-TESTS-comment This Test should return PASS
      * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *

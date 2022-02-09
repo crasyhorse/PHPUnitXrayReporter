@@ -41,9 +41,9 @@ class TestsTest extends TestCase
      * This test uses more than one TestKey space separated. Just the first one of them should be parsed.
      *
      * @test
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-17
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-28
      *
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-18 PHPUnitXrayReporter-018 PHPUnitXrayReporter-118
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-29 PHPUnitXrayReporter-018 PHPUnitXrayReporter-118
      * @XRAY-TESTS-comment This Test should return PASS
      * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
@@ -66,9 +66,9 @@ class TestsTest extends TestCase
      * This test uses more than one TestKey comma separated. Just the first one of them should be parsed.
      *
      * @test
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-17
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-28
      *
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-19,PHPUnitXrayReporter-018,PHPUnitXrayReporter-118
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-30,PHPUnitXrayReporter-018,PHPUnitXrayReporter-118
      * @XRAY-TESTS-comment This Test should return PASS
      * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
@@ -91,7 +91,7 @@ class TestsTest extends TestCase
      * This test uses no TestKey separated. An Exception should be thrown.
      *
      * @test
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-17
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-28
      *
      * @XRAY-TESTS-comment This Test should return PASS
      * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
@@ -115,9 +115,9 @@ class TestsTest extends TestCase
      * testing defects annotation.
      *
      * @test
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-17
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-28
      *
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-20
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-32
      * @XRAY-TESTS-comment This Test should return PASS
      * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2,PHPUnitXrayReporter-3,PHPUnitXrayReporter-4
      *
@@ -136,9 +136,9 @@ class TestsTest extends TestCase
      * testing defects annotation. The *\/ String should not be shown.
      *
      * @test
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-17
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-28
      *
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-21
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-33
      * @XRAY-TESTS-comment This Test should return PASS
      * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2,PHPUnitXrayReporter-3,PHPUnitXrayReporter-4*/
     public function defects_test_2(): void

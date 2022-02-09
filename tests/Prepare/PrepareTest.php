@@ -127,8 +127,8 @@ class PrepareTest extends TestCase
      * @test
      * @dataProvider two_iteration_data_provider1
      *
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-6
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-7
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-7
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-8
      */
     public function test_with_two_iterations_PASS_PASS(int $a, int $b, int $result): void
     {
@@ -141,8 +141,8 @@ class PrepareTest extends TestCase
      * @test
      * @dataProvider two_iteration_data_provider2
      *
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-6
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-8
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-7
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-9
      */
     public function test_with_two_iterations_FAIL_PASS(int $a, int $b, int $result): void
     {
@@ -155,8 +155,8 @@ class PrepareTest extends TestCase
      * @test
      * @dataProvider two_iteration_data_provider3
      *
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-6
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-9
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-7
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-10
      */
     public function test_with_two_iterations_PASS_FAIL(int $a, int $b, int $result): void
     {
@@ -169,8 +169,8 @@ class PrepareTest extends TestCase
      * @test
      * @dataProvider three_iteration_data_provider
      *
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-6
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-10
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-7
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-11
      */
     public function test_with_three_iterations_PASS_FAIL_PASS(int $a, int $b, int $result): void
     {
@@ -187,8 +187,8 @@ class PrepareTest extends TestCase
      * Returns an Error because the first operand $a is a string.
      *
      * @test
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-11
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-12
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-12
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-13
      */
     public function error_test(): void
     {
@@ -202,8 +202,8 @@ class PrepareTest extends TestCase
      * This test does nothing because it is skipped.
      *
      * @test
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-11
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-13
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-12
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-14
      */
     public function skipped_test(): void
     {
@@ -214,8 +214,8 @@ class PrepareTest extends TestCase
      * This test does nothing because it is incomplete.
      *
      * @test
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-11
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-14
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-12
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-15
      */
     public function incomplete_test(): void
     {
@@ -226,8 +226,8 @@ class PrepareTest extends TestCase
      * This test is marked as risky.
      *
      * @test
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-11
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-15
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-12
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-16
      */
     public function risky_test(): void
     {
@@ -243,9 +243,9 @@ class PrepareTest extends TestCase
      * This test Execution will test all possible annotations of Testinfo we've implemented.
      *
      * @test
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-12
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-17
      *
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-13
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-18
      * @XRAY-TESTS-comment This Test should return PASS
      * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
@@ -265,9 +265,9 @@ class PrepareTest extends TestCase
 
     /**
      * @test
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-12
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-17
      *
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-14
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-19
      * @XRAY-TESTS-comment This Test should return PASS
      * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
@@ -285,9 +285,9 @@ class PrepareTest extends TestCase
      * XRAY-TESTINFO-XXX Tag Test.
      *
      * @test
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-12
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-17
      *
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-15
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-20
      * @XRAY-TESTS-comment This Test should return PASS
      * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
@@ -306,9 +306,9 @@ class PrepareTest extends TestCase
      * XRAY-TESTINFO-XXX Tag Test.
      *
      * @test
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-12
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-17
      *
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-16
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-21
      * @XRAY-TESTS-comment This Test should return PASS
      * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
@@ -327,9 +327,9 @@ class PrepareTest extends TestCase
      * XRAY-TESTINFO-XXX Tag Test.
      *
      * @test
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-12
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-17
      *
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-17
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-22
      * @XRAY-TESTS-comment This Test should return PASS
      * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
@@ -350,9 +350,9 @@ class PrepareTest extends TestCase
      * This test Execution will test all possible annotations of Testinfo we've implemented.
      *
      * @test
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-12
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-17
      *
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-18
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-23
      * @XRAY-TESTS-comment This Test should return PASS
      * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
