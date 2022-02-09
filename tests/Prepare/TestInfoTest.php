@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CrasyHorse\Tests\Prepare;
 
+use CrasyHorse\Tests\Assets\Asset;
 use PHPUnit\Framework\TestCase;
 
 /**
