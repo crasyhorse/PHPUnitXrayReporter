@@ -49,15 +49,21 @@ class Test implements JsonSerializable, XrayType {
      */
     private $status;
 
+    /**
+     * @var string
+     */
+    private $name;
+
     public function __construct(TestBuilder $testBuilder)
     {
         $this->testKey = $testBuilder->getTestKey();
-        $this->comment = $testBuilder->getcomment();
+        $this->comment = $testBuilder->getComment();
         $this->defects = $testBuilder->getDefects();
         $this->start = $testBuilder->getStart();
         $this->finish = $testBuilder->getFinish();
         $this->status = $testBuilder->getStatus();
         $this->testInfo = $testBuilder->getTestInfo();
+        $this->name = $testBuilder->getName();
     }
 
     public function getTestKey(): string
@@ -76,6 +82,11 @@ class Test implements JsonSerializable, XrayType {
     public function getDefects()
     {
         return $this->defects;
+    }
+
+    public function getName() 
+    {
+        return $this->name;
     }
     
     /**

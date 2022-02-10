@@ -49,19 +49,19 @@ class TestExecution implements JsonSerializable
     public function addTest(Test $value): void
     {
         if (count($this->tests) === 0) {
-            $this->tests[$value->getTestKey()] = $value;
+            $this->tests[$value->getName()] = $value;
         } else {
             $noTestFound = true;
             foreach ($this->tests as $test) {
                 if ($test->getTestKey() == $value->getTestKey()) {
                     $noTestFound = false;
                     if ($value->getStatus() == FailedTest::TEST_RESULT) {
-                        $this->tests[$value->getTestKey()] = $value;
+                        $this->tests[$value->getName()] = $value;
                     }
                 }
             }
             if ($noTestFound) {
-                $this->tests[$value->getTestKey()] = $value;
+                $this->tests[$value->getName()] = $value;
             }
         }
     }

@@ -167,6 +167,7 @@ class Parser
     private function buildTest(array $result): Test
     {
         $test = (new TestBuilder())
+                ->setName($result['name'])
                 ->setStart($result['start'])
                 ->setFinish($result['finish']);
 
@@ -289,6 +290,7 @@ class Parser
         $meta['finish'] = $result->getFinish();
         $meta['comment'] = $result->getMessage() ?? 'Test has passed.';
         $meta['status'] = $result->getStatus();
+        $meta['name'] = $result->getName();
 
         return $meta;
     }
