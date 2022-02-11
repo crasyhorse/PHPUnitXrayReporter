@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CrasyHorse\Tests\Feature;
 
+use Opis\JsonSchema\Helper;
 use Opis\JsonSchema\Validator;
 use PHPUnit\Framework\TestCase;
 
@@ -23,22 +24,24 @@ class ValidateReportFilesTest extends TestCase
     {
         $this->XRAYFilesDirectory = dirname(__DIR__, 1).DIRECTORY_SEPARATOR.'XRAYFiles';
 
-        $validator = new Validator();
-        $resolver = $validator->resolver();
+        $this->validator = new Validator();
+        $resolver = $this->validator->resolver();
 
+        //__DIR__.DIRECTORY_SEPARATOR.'xraySchema.json'
         /* @var \Opis\JsonSchema\Resolvers\SchemaResolver $resolver */
         $resolver->registerFile(
             $this->validationSchemeUrl,
             __DIR__.DIRECTORY_SEPARATOR.'xraySchema.json'
         );
+        // var_dump($resolver);
     }
 
-    public function validate($jsonfilename)
+    public function validate($jsonfilename): bool
     {
         $filecontent = file_get_contents($jsonfilename);
 
-        $result = $validator->validate(
-            $filecontent,
+        return $result = $this->validator->validate(
+            Helper::toJSON($filecontent),
             $this->validationSchemeUrl
         );
     }
@@ -49,11 +52,12 @@ class ValidateReportFilesTest extends TestCase
      */
     public function created_json_files_are_correct(): void
     {
-        var_dump($this->XRAYFilesDirectory);
-        $this->getXrayJsonFiles();
-        //get files
+        $filelist = $this->getXrayJsonFiles();
 
-        //validate
+        foreach ($filelist as $item) {
+            $actual = $this->validate($this->XRAYFilesDirectory.DIRECTORY_SEPARATOR.$item);
+            $this->assertEquals($actual, true);
+        }
     }
 
     private function getXrayJsonFiles(): array

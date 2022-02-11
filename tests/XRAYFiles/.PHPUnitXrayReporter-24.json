@@ -1,0 +1,53 @@
+{
+    "testExecutionKey": "PHPUnitXrayReporter-24",
+    "tests": {
+        "more_than_one_TestExecutionKey_space_separated": {
+            "testKey": "PHPUnitXrayReporter-25",
+            "defects": [
+                "PHPUnitXrayReporter-1",
+                "PHPUnitXrayReporter-2"
+            ],
+            "start": "2022-02-11T09:53:19+01:00",
+            "finish": "2022-02-11T09:53:19+01:00",
+            "status": "PASS",
+            "testInfo": {
+                "projectKey": "PHPUnitXrayReporter",
+                "testType": "Generic",
+                "requirementKeys": [
+                    "PHPUnitXrayReporter-1",
+                    "PHPUnitXrayReporter-2"
+                ],
+                "labels": [
+                    "workInProgress",
+                    "Bug",
+                    "NeedsTriage"
+                ],
+                "definition": "The Test sums 2+2=4 and expects 4"
+            }
+        },
+        "more_than_one_TestExecutionKey_comma_separated": {
+            "testKey": "PHPUnitXrayReporter-26",
+            "defects": [
+                "PHPUnitXrayReporter-1",
+                "PHPUnitXrayReporter-2"
+            ],
+            "start": "2022-02-11T09:53:19+01:00",
+            "finish": "2022-02-11T09:53:19+01:00",
+            "status": "PASS",
+            "testInfo": {
+                "projectKey": "PHPUnitXrayReporter",
+                "testType": "Generic",
+                "requirementKeys": [
+                    "PHPUnitXrayReporter-1",
+                    "PHPUnitXrayReporter-2"
+                ],
+                "labels": [
+                    "workInProgress",
+                    "Bug",
+                    "NeedsTriage"
+                ],
+                "definition": "The Test sums 2+2=4 and expects 4"
+            }
+        }
+    }
+}

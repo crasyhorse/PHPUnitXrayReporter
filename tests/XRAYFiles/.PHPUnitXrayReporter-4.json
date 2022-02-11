@@ -1,0 +1,22 @@
+{
+    "testExecutionKey": "PHPUnitXrayReporter-4",
+    "tests": {
+        "only_XRAY_testExecutionKey_annotation": {
+            "start": "2022-02-11T09:53:19+01:00",
+            "finish": "2022-02-11T09:53:19+01:00",
+            "status": "PASS",
+            "testInfo": {
+                "testType": "Generic"
+            }
+        },
+        "XRAY_testExecutionKey_and_XRAY_TESTS_testKey_annotation": {
+            "testKey": "PHPUnitXrayReporter-6",
+            "start": "2022-02-11T09:53:19+01:00",
+            "finish": "2022-02-11T09:53:19+01:00",
+            "status": "PASS",
+            "testInfo": {
+                "testType": "Generic"
+            }
+        }
+    }
+}
