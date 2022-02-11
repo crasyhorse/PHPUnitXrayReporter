@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Crasyhorse\PhpunitXrayReporter\Xray\Tags;
 
-use Jasny\PhpdocParser\Tag\ArrayTag;
 use Jasny\PhpdocParser\PhpdocException;
+use Jasny\PhpdocParser\Tag\ArrayTag;
 
-class ModifiedArrayTag extends ArrayTag {
+class ModifiedArrayTag extends ArrayTag
+{
     /**
      * Must be overriden because otherwise the closing PHPDoc comment
      * consisting of an asterisk and a slash will show up in the list
@@ -17,7 +18,7 @@ class ModifiedArrayTag extends ArrayTag {
      *
      * @return non-empty-array<array-key, array<array-key, mixed>|mixed>
      * @psalm-suppress PossiblyInvalidCast
-     * @psalm-suppress PossiblyInvalidArgument 
+     * @psalm-suppress PossiblyInvalidArgument
      */
     public function process(array $notations, string $value): array
     {
@@ -51,11 +52,19 @@ class ModifiedArrayTag extends ArrayTag {
      * @param string $value
      *
      * @return string|string[]|null
-     * @psalm-suppress PossiblyInvalidArgument 
+     * @psalm-suppress PossiblyInvalidArgument
      */
     protected function stripOffClosingDocBlockComment($value)
     {
-        preg_match('/([^\*\/ ]*)(?!\*\/$)/', $value, $matches);
+        $matched = preg_match('/([^\/]*)(?=\*\/$)/', $value, $matches);
+        if (!$matched) {
+            $matched = preg_match('/([^\/]*)(?=\* \@)/', $value, $matches);
+        }
+        if (!$matched) {
+            preg_match('/([^\/]*)(?=$)/', $value, $matches);
+        }
+
+        $matches[0] = trim(str_replace('* ', "\n", $matches[0]));
 
         return $matches[0];
     }
