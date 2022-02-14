@@ -11,6 +11,7 @@ use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\Test;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestExecution;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestInfo;
+use InvalidArgumentException;
 use Jasny\PhpdocParser\PhpdocParser;
 use Jasny\PhpdocParser\Set\PhpDocumentor;
 use ReflectionException;
@@ -150,6 +151,9 @@ class Parser
     {
         if (array_key_exists('XRAY-testExecutionKey', $testExecution)) {
             $testExecutionKey = $testExecution['XRAY-testExecutionKey'];
+            if (empty($testExecutionKey)) {
+                throw new InvalidArgumentException('XRAY-testExecutionKey has to be set, if annotation is given. It is not set in test case: '.$testExecution['name']);
+            }
             $this->testExecutionsToUpdate[$testExecutionKey] =
                 new TestExecution($testExecutionKey);
         } else {
@@ -177,6 +181,10 @@ class Parser
         $test = $test->setStatus($status);
 
         if (array_key_exists('XRAY-TESTS-testKey', $result)) {
+            $testKey = $result['XRAY-TESTS-testKey'];
+            if (empty($testKey)) {
+                throw new InvalidArgumentException('XRAY-testKey has to be set, if annotation is given. It is not set in test case: '.$result['name']);
+            }
             $test = $test->setTestKey($result['XRAY-TESTS-testKey']);
         }
 
