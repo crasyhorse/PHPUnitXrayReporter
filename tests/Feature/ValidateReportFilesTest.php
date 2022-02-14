@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CrasyHorse\Tests\Feature;
 
 use Opis\JsonSchema\Errors\ErrorFormatter;
-use Opis\JsonSchema\Helper;
 use Opis\JsonSchema\Validator;
 use PHPUnit\Framework\TestCase;
 
@@ -31,10 +30,10 @@ class ValidateReportFilesTest extends TestCase
 
     public function validate($jsonfilename): bool
     {
-        $filecontent = file_get_contents($jsonfilename);
+        $jsoncontent = json_decode(file_get_contents($jsonfilename));
 
         $result = $this->validator->validate(
-            Helper::toJSON($filecontent),
+            $jsoncontent,
             $this->schema
         );
         if (!$result->isValid()) {
