@@ -51,17 +51,19 @@ class TestExecution implements JsonSerializable
     public function addTest(Test $value): void
     {
         if (count($this->tests) === 0) {
-            $this->tests[$value->getName()] = $value;
+            $this->tests[] = $value;
         } else {
-            $testFound = false;
+            $counter = 0;
             foreach ($this->tests as $test) {
                 if ($test->getTestKey() == $value->getTestKey()) {
-                    $testFound = true;
-                    $this->overwriteDecision($test->getStatus(), $value);
+                    $this->decideToOverwrite($test->getStatus(), $value, $counter);
+                    $counter = -1;
+                    break;
                 }
+                ++$counter;
             }
-            if (!$testFound) {
-                $this->tests[$value->getName()] = $value;
+            if ($counter != -1) {
+                $this->tests[] = $value;
             }
         }
     }
@@ -73,16 +75,12 @@ class TestExecution implements JsonSerializable
      * 2) A todo test (skipped or incomplete from phpunit) just overwrites a successful test
      *    because a failure Message is more important
      * 3) A successful test do nothing, because the given test should already have the right status.
-     *
-     * It returns either a test with same testKey was found or not
-     *
-     * @return bool
      */
-    private function overwriteDecision(string $oldTestStatus, Test $value): void
+    private function decideToOverwrite(string $oldTestStatus, Test $value, int $index): void
     {
         if ($value->getStatus() == FailedTest::TEST_RESULT ||
             ($value->getStatus() == TodoTest::TEST_RESULT && $oldTestStatus === SuccessfulTest::TEST_RESULT)) {
-            $this->tests[$value->getName()] = $value;
+            $this->tests[$index] = $value;
         }
     }
 
