@@ -1,5 +1,6 @@
 {
-    "$id": "XraySchema",
+  
+    "$id": "http://example.com/xraySchema.json",
     "type": "object",
     "properties": {
       "testExecutionKey": {
@@ -51,7 +52,7 @@
         "items": {
             "$ref": "#/definitions/Test"
         },
-        "minItems": 1,
+        "minItems": 1
       }
     },
     "additionalProperties": false,
@@ -118,7 +119,7 @@
               "$ref": "#/definitions/EvidenceItem"
             }
           },
-          "evidences": { // DEPRECATED
+          "evidences": { 
             "type": "array",
             "items": {
               "$ref": "#/definitions/EvidenceItem"
