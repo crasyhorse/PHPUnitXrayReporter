@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Crasyhorse\PhpunitXrayReporter\Xray\Types;
 
-use JsonSerializable;
-use Crasyhorse\PhpunitXrayReporter\Xray\Types\XrayType;
 use Crasyhorse\PhpunitXrayReporter\Xray\Builder\TestInfoBuilder;
+use JsonSerializable;
+
 /**
  * Represents a Xray "TestInfo" object.
  *
@@ -14,6 +14,16 @@ use Crasyhorse\PhpunitXrayReporter\Xray\Builder\TestInfoBuilder;
  */
 class TestInfo implements JsonSerializable, XrayType
 {
+    /**
+     * @var string
+     */
+    private $summary;
+
+    /**
+     * @var string
+     */
+    private $description;
+
     /**
      * @var string
      */
@@ -41,6 +51,8 @@ class TestInfo implements JsonSerializable, XrayType
 
     public function __construct(TestInfoBuilder $testInfoBuilder)
     {
+        $this->summary = $testInfoBuilder->getSummary();
+        $this->description = $testInfoBuilder->getDescription();
         $this->projectKey = $testInfoBuilder->getProjectKey();
         $this->testType = $testInfoBuilder->getTestType();
         $this->requirementKeys = $testInfoBuilder->getRequirementKeys();
@@ -56,9 +68,9 @@ class TestInfo implements JsonSerializable, XrayType
     public function jsonSerialize()
     {
         $json = [];
-        foreach(['projectKey', 'testType', 'requirementKeys', 'labels', 'definition'] as $attribute) {
-            if(!empty($this->{$attribute})) {
-                /** @psalm-suppress MixedAssignment */
+        foreach (['summary', 'description', 'projectKey', 'testType', 'requirementKeys', 'labels', 'definition'] as $attribute) {
+            if (!empty($this->{$attribute})) {
+                /* @psalm-suppress MixedAssignment */
                 $json[$attribute] = $this->{$attribute};
             }
         }

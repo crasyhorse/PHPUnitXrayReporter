@@ -234,6 +234,19 @@ class Parser
             $testInfo = $testInfo->setDefinition($definition);
         }
 
+        if (array_key_exists('summery', $result)) {
+            $summary = $result['summery'];
+            $testInfo = $testInfo->setSummary($summary);
+        } else {
+            $summary = $result['name'];
+            $testInfo = $testInfo->setSummary($summary);
+        }
+
+        if (array_key_exists('description', $result)) {
+            $description = $result['description'];
+            $testInfo = $testInfo->setDescription($description);
+        }
+
         return $testInfo->build();
     }
 

@@ -14,6 +14,7 @@ use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\Comment;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\Defects;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\TestKey;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
+use Jasny\PhpdocParser\Tag\Summery;
 
 /**
  * Manages the list of available customs tags and also provides the list
@@ -84,6 +85,7 @@ final class TagSet
             new RequirementKeys(),
             new TestType(),
             new Comment(),
+            new Summery(),
         ], $additionalCustomTags);
     }
 
