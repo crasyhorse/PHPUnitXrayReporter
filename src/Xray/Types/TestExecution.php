@@ -72,18 +72,18 @@ class TestExecution implements JsonSerializable
      * 1) A failed test will overwrite every given test
      * 2) A todo test (skipped or incomplete from phpunit) just overwrites a successful test
      *    because a failure Message is more important
-     * 3) A successful test do nothing, because the given test should already have the right status
-     * 
+     * 3) A successful test do nothing, because the given test should already have the right status.
+     *
      * It returns either a test with same testKey was found or not
+     *
      * @return bool
      */
-    private function overwriteDecision(string $oldTestStatus, Test $value): void {
-        if ($value->getStatus() == FailedTest::TEST_RESULT) {
-            $this->tests[$value->getName()] = $value;
-        } else if ($value->getStatus() == TodoTest::TEST_RESULT && $oldTestStatus === SuccessfulTest::TEST_RESULT) {
+    private function overwriteDecision(string $oldTestStatus, Test $value): void
+    {
+        if ($value->getStatus() == FailedTest::TEST_RESULT ||
+            ($value->getStatus() == TodoTest::TEST_RESULT && $oldTestStatus === SuccessfulTest::TEST_RESULT)) {
             $this->tests[$value->getName()] = $value;
         }
-
     }
 
     /**
