@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Crasyhorse\PhpunitXrayReporter\Parser;
 
 use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TestResult;
+use Crasyhorse\PhpunitXrayReporter\Xray\Builder\TestBuilder;
+use Crasyhorse\PhpunitXrayReporter\Xray\Builder\TestInfoBuilder;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\Test;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestExecution;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestInfo;
-use Crasyhorse\PhpunitXrayReporter\Xray\Builder\TestBuilder;
-use Crasyhorse\PhpunitXrayReporter\Xray\Builder\TestInfoBuilder;
 use Jasny\PhpdocParser\PhpdocParser;
 use Jasny\PhpdocParser\Set\PhpDocumentor;
 use ReflectionException;
@@ -55,8 +55,8 @@ class Parser
      * Fired after the parser has finished parsing the doc blocks. Can be overriden
      * by a developer to gain access to the list of parsed annotations.
      *
-     * @param  array<array-key, string> $meta
-     * 
+     * @param array<array-key, string> $meta
+     *
      * @return array<array-key, string>
      */
     public function afterDocBlockParsedHook($meta)
@@ -68,8 +68,8 @@ class Parser
      * Fired after the parser has finished creating the parse tree with all test executions.
      * Can be overriden by a developer to gain access to the parse tree.
      *
-     * @param  list<TestExecution> $parseTree
-     * 
+     * @param list<TestExecution> $parseTree
+     *
      * @return list<TestExecution>
      */
     public function afterParseTreeCreatedHook($parseTree)
@@ -80,21 +80,24 @@ class Parser
     /**
      * Returns a single test execution that should be imported into Xray (test execution
      * without a testExecutionKey attribute).
-     * 
+     *
      * @return TestExecution|null
      */
-    final public function getTestExecutionToImport() {
+    final public function getTestExecutionToImport()
+    {
         return $this->testExecutionToImport;
     }
 
     /**
      * Returns the list of test executions (parse Tree).
-     * 
+     *
      * @return list<TestExecution>
      */
-    final public function getTestExecutionsToUpdate() {
+    final public function getTestExecutionsToUpdate()
+    {
         return array_values($this->testExecutionsToUpdate);
     }
+
     /**
      * Build parse tree, grouped by test execution. Iterations are also grouped
      * by test.
@@ -138,16 +141,16 @@ class Parser
      * testExecutionKey attribute, it will be added to the list of updatable
      * test executions. Otherwise, it is treated as a new test executions
      * that should be imported into Xray.
-     * 
+     *
      * @param array<array-key, string> $testExecution
-     * 
+     *
      * @return void
      */
     private function buildTestExecution(array $testExecution): void
     {
         if (array_key_exists('XRAY-testExecutionKey', $testExecution)) {
             $testExecutionKey = $testExecution['XRAY-testExecutionKey'];
-            $this->testExecutionsToUpdate[$testExecutionKey] = 
+            $this->testExecutionsToUpdate[$testExecutionKey] =
                 new TestExecution($testExecutionKey);
         } else {
             $this->testExecutionToImport = new TestExecution();
@@ -156,15 +159,15 @@ class Parser
 
     /**
      * Builds the Xray type "Test" object.
-     * 
+     *
      * @param array<array-key, string> $result
-     * 
+     *
      * @return Test
      */
     private function buildTest(array $result): Test
     {
         $test = (new TestBuilder())
-                ->setTestKey($result['XRAY-TESTS-testKey'])
+                ->setName($result['name'])
                 ->setStart($result['start'])
                 ->setFinish($result['finish']);
 
@@ -172,6 +175,10 @@ class Parser
         $status = $result['status'];
 
         $test = $test->setStatus($status);
+
+        if (array_key_exists('XRAY-TESTS-testKey', $result)) {
+            $test = $test->setTestKey($result['XRAY-TESTS-testKey']);
+        }
 
         if (array_key_exists('XRAY-TESTS-comment', $result)) {
             $test = $test->setComment($result['XRAY-TESTS-comment']);
@@ -193,7 +200,7 @@ class Parser
      * Builds the Xray type "TestInfo" object.
      *
      * @param array<array-key,string> $result
-     * 
+     *
      * @return TestInfo
      */
     private function buildTestInfo(array $result): TestInfo
@@ -209,7 +216,7 @@ class Parser
             $testType = $result['XRAY-TESTINFO-testType'];
             $testInfo = $testInfo->setTestType($testType);
         }
-        
+
         if (array_key_exists('XRAY-TESTINFO-requirementKeys', $result)) {
             /** @var array<array-key, string> $requirementKeys */
             $requirementKeys = $result['XRAY-TESTINFO-requirementKeys'];
@@ -218,12 +225,12 @@ class Parser
 
         if (array_key_exists('XRAY-TESTINFO-labels', $result)) {
             /** @var array<array-key, string> $labels */
-            $labels = $result['XRAY-TESTINFO-requirementKeys'];
+            $labels = $result['XRAY-TESTINFO-labels'];
             $testInfo = $testInfo->setLabels($labels);
         }
 
         if (array_key_exists('XRAY-TESTINFO-definition', $result)) {
-            $definition = $result['XRAY-TESTINFO-projectKey'];
+            $definition = $result['XRAY-TESTINFO-definition'];
             $testInfo = $testInfo->setDefinition($definition);
         }
 
@@ -233,9 +240,9 @@ class Parser
     /**
      * Walks over the array of parsed results and creates the list of test executions
      * (parse tree).
-     * 
+     *
      * @param array<array-key, string> $parsedResults
-     * 
+     *
      * @return void
      */
     private function groupByTestExecutions(array $parsedResults): void
@@ -256,7 +263,7 @@ class Parser
     private function groupIterations(array $parsedResults, array $testExecutions): void
     {
         /** @var array<array-key, string> $result */
-        foreach($parsedResults as $result){
+        foreach ($parsedResults as $result) {
             $test = $this->buildTest($result);
 
             if (array_key_exists('XRAY-testExecutionKey', $result)) {
@@ -283,6 +290,7 @@ class Parser
         $meta['finish'] = $result->getFinish();
         $meta['comment'] = $result->getMessage() ?? 'Test has passed.';
         $meta['status'] = $result->getStatus();
+        $meta['name'] = $result->getName();
 
         return $meta;
     }
@@ -295,6 +303,7 @@ class Parser
     private function stripOffWithDataSet(string $test): string
     {
         preg_match_all('/([[:alpha:]][_0-9a-zA-Z:\\\]+)(?!< with data set)/', $test, $matches);
+
         return $matches[0][0];
     }
 }

@@ -44,7 +44,13 @@ class TestBuilder implements Builder {
      * @var "PASS" | "FAIL"
      */
     private $status = 'FAIL';
+
+    /**
+     * @var string|null
+     */
     
+    private $name = null;
+
     public function __construct(){
         // Intentionally left blank
     }
@@ -138,6 +144,23 @@ class TestBuilder implements Builder {
     public function setStatus($status): self
     {
         $this->status = $status;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+    
+    /**
+     * @param string
+     */
+    public function setName($name): self
+    {
+        $this->name = $name;
         return $this;
     }
 

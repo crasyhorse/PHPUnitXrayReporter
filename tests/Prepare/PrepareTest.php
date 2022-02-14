@@ -67,7 +67,7 @@ class PrepareTest extends TestCase
 
     /**
      * Unsuccessful test.
-     * This test will return a FAIL result and has all possible annotations we implemented.
+     * This test will return a FAIL result and has all possible annotations we've implemented.
      *
      * @test
      * @XRAY-testExecutionKey PHPUnitXrayReporter-1
@@ -244,10 +244,7 @@ class PrepareTest extends TestCase
      *
      * @test
      * @XRAY-testExecutionKey PHPUnitXrayReporter-17
-     *
      * @XRAY-TESTS-testKey PHPUnitXrayReporter-18
-     * @XRAY-TESTS-comment This Test should return PASS
-     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
      * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
      * @XRAY-TESTINFO-testType Generic
@@ -266,10 +263,7 @@ class PrepareTest extends TestCase
     /**
      * @test
      * @XRAY-testExecutionKey PHPUnitXrayReporter-17
-     *
      * @XRAY-TESTS-testKey PHPUnitXrayReporter-19
-     * @XRAY-TESTS-comment This Test should return PASS
-     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
      * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
      */
@@ -286,10 +280,7 @@ class PrepareTest extends TestCase
      *
      * @test
      * @XRAY-testExecutionKey PHPUnitXrayReporter-17
-     *
      * @XRAY-TESTS-testKey PHPUnitXrayReporter-20
-     * @XRAY-TESTS-comment This Test should return PASS
-     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
      * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
      * @XRAY-TESTINFO-testType Generic
@@ -307,10 +298,7 @@ class PrepareTest extends TestCase
      *
      * @test
      * @XRAY-testExecutionKey PHPUnitXrayReporter-17
-     *
      * @XRAY-TESTS-testKey PHPUnitXrayReporter-21
-     * @XRAY-TESTS-comment This Test should return PASS
-     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
      * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
      * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
@@ -328,14 +316,12 @@ class PrepareTest extends TestCase
      *
      * @test
      * @XRAY-testExecutionKey PHPUnitXrayReporter-17
-     *
      * @XRAY-TESTS-testKey PHPUnitXrayReporter-22
-     * @XRAY-TESTS-comment This Test should return PASS
-     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
      * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
      * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      * @XRAY-TESTINFO-definition The Test sums 2+2=4 and expects 4
+     * It is useful to see, that the second line is also printed
      */
     public function different_XRAY_TESTINFO_tags_4(): void
     {
@@ -351,10 +337,7 @@ class PrepareTest extends TestCase
      *
      * @test
      * @XRAY-testExecutionKey PHPUnitXrayReporter-17
-     *
      * @XRAY-TESTS-testKey PHPUnitXrayReporter-23
-     * @XRAY-TESTS-comment This Test should return PASS
-     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
      * @XRAY-TESTINFO-testType Generic
      * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2

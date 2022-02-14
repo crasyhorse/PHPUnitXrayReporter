@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo;
 
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
-use Jasny\PhpdocParser\Tag\WordTag;
+use Crasyhorse\PhpunitXrayReporter\XRAY\Tags\ModifiedWordTag;
 
 /**
  * Represents the XrayTag that correlats with the XrayType TestType.
@@ -14,7 +14,7 @@ use Jasny\PhpdocParser\Tag\WordTag;
  *
  * @since 0.1.0
  */
-class TestType extends WordTag implements XrayTag
+class TestType extends ModifiedWordTag implements XrayTag
 {
     public function __construct()
     {

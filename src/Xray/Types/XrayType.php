@@ -13,4 +13,5 @@ namespace Crasyhorse\PhpunitXrayReporter\Xray\Types;
  */
 interface XrayType
 {
+    public function jsonSerialize();
 }

@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Crasyhorse\PhpunitXrayReporter\Reporter\Reporter;
 use Crasyhorse\PhpunitXrayReporter\Reporter\Results\FailedTest;
 use Crasyhorse\PhpunitXrayReporter\Reporter\Results\SuccessfulTest;
+use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TodoTest;
 use DateTimeZone;
 use PHPUnit\Runner\AfterIncompleteTestHook;
 use PHPUnit\Runner\AfterRiskyTestHook;
@@ -78,10 +79,14 @@ final class Extension implements BeforeTestHook, AfterSuccessfulTestHook, AfterT
 
     public function executeAfterSkippedTest(string $test, string $message, float $time): void
     {
+        $result = new TodoTest($test, $time, $this->start, $message);
+        $this->reporter->add($result);
     }
 
     public function executeAfterIncompleteTest(string $test, string $message, float $time): void
     {
+        $result = new TodoTest($test, $time, $this->start, $message);
+        $this->reporter->add($result);
     }
 
     public function executeAfterRiskyTest(string $test, string $message, float $time): void
