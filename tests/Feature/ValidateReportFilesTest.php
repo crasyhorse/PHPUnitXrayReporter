@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CrasyHorse\Tests\Feature;
 
+use Opis\JsonSchema\Errors\ErrorFormatter;
 use Opis\JsonSchema\Helper;
 use Opis\JsonSchema\Validator;
 use PHPUnit\Framework\TestCase;
@@ -17,33 +18,38 @@ class ValidateReportFilesTest extends TestCase
 {
     protected $validator;
 
-    protected $validationSchemeUrl = 'https://validation.test/crasyhorse/xraySchema.json';
     protected $XRAYFilesDirectory;
+    protected $schema;
 
     protected function setup(): void
     {
         $this->XRAYFilesDirectory = dirname(__DIR__, 1).DIRECTORY_SEPARATOR.'XRAYFiles';
 
         $this->validator = new Validator();
-        $resolver = $this->validator->resolver();
-
-        //__DIR__.DIRECTORY_SEPARATOR.'xraySchema.json'
-        /* @var \Opis\JsonSchema\Resolvers\SchemaResolver $resolver */
-        $resolver->registerFile(
-            $this->validationSchemeUrl,
-            __DIR__.DIRECTORY_SEPARATOR.'xraySchema.json'
-        );
-        // var_dump($resolver);
+        $this->schema = file_get_contents(__DIR__.DIRECTORY_SEPARATOR.'xraySchema.json');
     }
 
     public function validate($jsonfilename): bool
     {
         $filecontent = file_get_contents($jsonfilename);
 
-        return $result = $this->validator->validate(
+        $result = $this->validator->validate(
             Helper::toJSON($filecontent),
-            $this->validationSchemeUrl
+            $this->schema
         );
+        if (!$result->isValid()) {
+            $formatter = new ErrorFormatter();
+
+            /** @var \Opis\JsonSchema\Errors\ValidationError $validationErrors */
+            $validationErrors = $result->error();
+            $formattedValidationErrors = $formatter->formatFlat($validationErrors);
+
+            var_dump($formattedValidationErrors);
+
+            return false;
+        }
+
+        return $result->isValid();
     }
 
     /**
@@ -56,7 +62,7 @@ class ValidateReportFilesTest extends TestCase
 
         foreach ($filelist as $item) {
             $actual = $this->validate($this->XRAYFilesDirectory.DIRECTORY_SEPARATOR.$item);
-            $this->assertEquals($actual, true);
+            $this->assertEquals(true, $actual, 'For file: '.$item);
         }
     }
 
