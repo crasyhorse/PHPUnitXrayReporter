@@ -119,4 +119,43 @@ class TestsTest extends TestCase
         $actual = $asset->add(2, 2);
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * XRAY-TESTS-comment test 1
+     * testing comment annotation. Should take more than one line of the string.
+     *
+     * @test
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-28
+     * @XRAY-TESTS-comment Something is written down in this comment tag
+     * and it is more than one line!
+     *
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-33
+     */
+    public function comment_test_1(): void
+    {
+        $asset = new Asset();
+        $expected = 4;
+        $actual = $asset->add(2, 2);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * XRAY-TESTS-comment test 2
+     * testing comment annotation. The *\/ String should not be shown.
+     *
+     * @test
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-28
+     *
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-33
+     * 
+     * @XRAY-TESTS-comment Something is written down in this comment tag
+     * and it is more than one line!*/
+    public function comment_test_2(): void
+    {
+        $asset = new Asset();
+        $expected = 4;
+        $actual = $asset->add(2, 2);
+        $this->assertEquals($expected, $actual);
+    }
+
 }
