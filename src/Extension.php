@@ -91,6 +91,8 @@ final class Extension implements BeforeTestHook, AfterSuccessfulTestHook, AfterT
 
     public function executeAfterRiskyTest(string $test, string $message, float $time): void
     {
+        $result = new TodoTest($test, $time, $this->start, $message);
+        $this->reporter->add($result);
     }
 
     public function executeAfterTest(string $test, float $time): void
