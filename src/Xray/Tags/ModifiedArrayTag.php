@@ -27,8 +27,10 @@ class ModifiedArrayTag extends ArrayTag
 
             return $notations;
         }
-
-        $itemString = $this->stripOffClosingDocBlockComment($this->stripParentheses($value));
+        $itemString = $this->stripParentheses($value);
+        if (str_contains($itemString, '*')) {
+            $itemString = $this->stripOffClosingDocBlockComment($itemString);
+        }
         $items = $this->splitValue($itemString);
 
         try {
@@ -56,15 +58,9 @@ class ModifiedArrayTag extends ArrayTag
      */
     protected function stripOffClosingDocBlockComment($value)
     {
-        $matched = preg_match('/([^\/]*)(?=\*\/$)/', $value, $matches);
-        if (!$matched) {
-            $matched = preg_match('/([^\/]*)(?=\* \@)/', $value, $matches);
-        }
-        if (!$matched) {
-            preg_match('/([^\/]*)(?=$)/', $value, $matches);
-        }
+        $matched = preg_match('/([^\/]*)(?=\*)/', $value, $matches);
 
-        $matches[0] = trim(str_replace('* ', "\n", $matches[0]));
+        $matches[0] = trim($matches[0]);
 
         return $matches[0];
     }
