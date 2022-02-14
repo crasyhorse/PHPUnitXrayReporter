@@ -47,16 +47,10 @@ class TestInfoTest extends TestCase
      * @test
      * @XRAY-testExecutionKey PHPUnitXrayReporter-34
      *
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-35
-     * @XRAY-TESTS-comment This Test should return PASS
-     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
-     *
-     * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
-     * @XRAY-TESTINFO-testType Generic
-     * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      * @XRAY-TESTINFO-definition The Test sums 2+2=4 and expects 4
      * But ist this line also shown in the json result?
-     * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
+     *
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-35
      */
     public function testinfo_definition_test_1(): void
     {
@@ -74,13 +68,7 @@ class TestInfoTest extends TestCase
      * @XRAY-testExecutionKey PHPUnitXrayReporter-34
      *
      * @XRAY-TESTS-testKey PHPUnitXrayReporter-36
-     * @XRAY-TESTS-comment This Test should return PASS
-     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
-     * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
-     * @XRAY-TESTINFO-testType Generic
-     * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
-     * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
      * @XRAY-TESTINFO-definition The Test sums 2+2=4 and expects 4
      * But ist this line also shown in the json result?*/
     public function testinfo_definition_test_2(): void
@@ -102,16 +90,9 @@ class TestInfoTest extends TestCase
      * @test
      * @XRAY-testExecutionKey PHPUnitXrayReporter-34
      *
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-37
-     * @XRAY-TESTS-comment This Test should return PASS
-     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
-     *
-     * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
-     * @XRAY-TESTINFO-testType Generic
-     * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
-     * @XRAY-TESTINFO-definition The Test sums 2+2=4 and expects 4
-     * But ist this line also shown in the json result?
+     *
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-37
      */
     public function testinfo_labels_test_1(): void
     {
@@ -129,12 +110,7 @@ class TestInfoTest extends TestCase
      * @XRAY-testExecutionKey PHPUnitXrayReporter-34
      *
      * @XRAY-TESTS-testKey PHPUnitXrayReporter-38
-     * @XRAY-TESTS-comment This Test should return PASS
-     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
-     * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
-     * @XRAY-TESTINFO-testType Generic
-     * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage*/
     public function testinfo_labels_test_2(): void
     {
@@ -156,15 +132,8 @@ class TestInfoTest extends TestCase
      * @XRAY-testExecutionKey PHPUnitXrayReporter-34
      *
      * @XRAY-TESTS-testKey PHPUnitXrayReporter-39
-     * @XRAY-TESTS-comment This Test should return PASS
-     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
      * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter Irgendwas anderes Interessantes
-     * @XRAY-TESTINFO-testType Generic
-     * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
-     * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
-     * @XRAY-TESTINFO-definition The Test sums 2+2=4 and expects 4
-     * But ist this line also shown in the json result?
      */
     public function more_than_one_projectKey_space_separated(): void
     {
@@ -182,15 +151,8 @@ class TestInfoTest extends TestCase
      * @XRAY-testExecutionKey PHPUnitXrayReporter-34
      *
      * @XRAY-TESTS-testKey PHPUnitXrayReporter-40
-     * @XRAY-TESTS-comment This Test should return PASS
-     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
      * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter,Irgendwas,anderes,Interessantes
-     * @XRAY-TESTINFO-testType Generic
-     * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
-     * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
-     * @XRAY-TESTINFO-definition The Test sums 2+2=4 and expects 4
-     * But ist this line also shown in the json result?
      */
     public function more_than_one_projectKey_comma_separated(): void
     {
@@ -208,14 +170,8 @@ class TestInfoTest extends TestCase
      * @XRAY-testExecutionKey PHPUnitXrayReporter-34
      *
      * @XRAY-TESTS-testKey PHPUnitXrayReporter-41
-     * @XRAY-TESTS-comment This Test should return PASS
-     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
-     * @XRAY-TESTINFO-testType Generic
-     * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
-     * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
-     * @XRAY-TESTINFO-definition The Test sums 2+2=4 and expects 4
-     * But ist this line also shown in the json result?
+     * @XRAY-TESTINFO-projectKey
      */
     public function no_projectKey(): void
     {
@@ -236,16 +192,9 @@ class TestInfoTest extends TestCase
      * @test
      * @XRAY-testExecutionKey PHPUnitXrayReporter-34
      *
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-42
-     * @XRAY-TESTS-comment This Test should return PASS
-     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
-     *
-     * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
-     * @XRAY-TESTINFO-testType Generic
      * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2,PHPUnitXrayReporter-49
-     * @XRAY-TESTINFO-definition The Test sums 2+2=4 and expects 4
-     * But ist this line also shown in the json result?
-     * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
+     *
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-42
      */
     public function testinfo_requirementKeys_test_1(): void
     {
@@ -263,13 +212,7 @@ class TestInfoTest extends TestCase
      * @XRAY-testExecutionKey PHPUnitXrayReporter-34
      *
      * @XRAY-TESTS-testKey PHPUnitXrayReporter-43
-     * @XRAY-TESTS-comment This Test should return PASS
-     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
-     * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
-     * @XRAY-TESTINFO-testType Generic
-     * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
-     * @XRAY-TESTINFO-definition The Test sums 2+2=4 and expects 4
      * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2,PHPUnitXrayReporter-49*/
     public function testinfo_requirementKeys_test_2(): void
     {
@@ -284,21 +227,16 @@ class TestInfoTest extends TestCase
     // ==================================================================================
 
     /**
-     * XRAY-TESTINFO-testType
+     * XRAY-TESTINFO-testType 1
      * This test uses more than one testType space separated. Just the first one of them should be parsed.
      *
      * @test
      * @XRAY-testExecutionKey PHPUnitXrayReporter-34
      *
      * @XRAY-TESTS-testKey PHPUnitXrayReporter-44
-     * @XRAY-TESTS-comment This Test should return PASS
-     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
-     * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
      * @XRAY-TESTINFO-testType Generic Cumcumber Alcohol_test Personality_test
-     * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
-     * @XRAY-TESTINFO-definition The Test sums 2+2=4 and expects 4
-     * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2,PHPUnitXrayReporter-49*/
+     */
     public function more_than_one_testType_space_separated(): void
     {
         $asset = new Asset();
@@ -308,22 +246,55 @@ class TestInfoTest extends TestCase
     }
 
     /**
-     * XRAY-TESTINFO-testType
+     * XRAY-TESTINFO-testType 2
      * This test uses more than one testType comma separated. Just the first one of them should be parsed.
      *
      * @test
      * @XRAY-testExecutionKey PHPUnitXrayReporter-34
      *
      * @XRAY-TESTS-testKey PHPUnitXrayReporter-45
-     * @XRAY-TESTS-comment This Test should return PASS
-     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
      *
-     * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
      * @XRAY-TESTINFO-testType Generic,Cumcumber,Alcohol_test,Personality_test
-     * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
-     * @XRAY-TESTINFO-definition The Test sums 2+2=4 and expects 4
-     * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2,PHPUnitXrayReporter-49*/
+     */
     public function more_than_one_testType_comma_separated(): void
+    {
+        $asset = new Asset();
+        $expected = 4;
+        $actual = $asset->add(2, 2);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * XRAY-TESTINFO-testType 3
+     * This test uses no TestType. An Exception should be thrown.
+     *
+     * @test
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-34
+     *
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-46
+     *
+     * @XRAY-TESTINFO-testType
+     */
+    public function no_testType(): void
+    {
+        $asset = new Asset();
+        $expected = 4;
+        $actual = $asset->add(2, 2);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * XRAY-TESTINFO-testType 4
+     * This test uses an illegal TestType argument. An Exception should be thrown.
+     *
+     * @test
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-34
+     *
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-47
+     *
+     * @XRAY-TESTINFO-testType Alcohol_test
+     */
+    public function illegal_testType(): void
     {
         $asset = new Asset();
         $expected = 4;
