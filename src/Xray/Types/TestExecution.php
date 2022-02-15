@@ -91,9 +91,12 @@ class TestExecution implements JsonSerializable
      */
     public function jsonSerialize()
     {
-        return [
-            'testExecutionKey' => $this->key,
-            'tests' => $this->tests,
-        ];
+        $json = [];
+        if(!empty($this->key)) {
+            $json['testExecutionKey'] = $this->key;
+        }
+        $json['tests'] = $this->tests; 
+
+        return $json;
     }
 }
