@@ -23,13 +23,13 @@ class ValidateReportFilesTest extends TestCase
     protected function setup(): void
     {
         $this->XRAYFilesDirectory = dirname(__DIR__, 1).DIRECTORY_SEPARATOR.'XRAYFiles';
-
         $this->validator = new Validator();
         $this->schema = file_get_contents(__DIR__.DIRECTORY_SEPARATOR.'xraySchema.json');
     }
 
     public function validate($jsonfilename): bool
     {
+        var_dump($jsonfilename);
         $jsoncontent = json_decode(file_get_contents($jsonfilename));
 
         $result = $this->validator->validate(
@@ -54,24 +54,27 @@ class ValidateReportFilesTest extends TestCase
     /**
      * @test
      * @group Validation
+     * @dataProvider getXrayJsonFiles
      */
-    public function created_json_files_are_correct(): void
+    public function created_json_files_are_correct($filename): void
     {
-        $filelist = $this->getXrayJsonFiles();
-
-        foreach ($filelist as $item) {
-            $actual = $this->validate($this->XRAYFilesDirectory.DIRECTORY_SEPARATOR.$item);
-            $this->assertEquals(true, $actual, 'For file: '.$item);
-        }
+        $actual = $this->validate($this->XRAYFilesDirectory.DIRECTORY_SEPARATOR.$filename);
+        $this->assertEquals(true, $actual, 'For file: '.$filename);
     }
 
-    private function getXrayJsonFiles(): array
+    public function getXrayJsonFiles(): array
     {
+        $this->XRAYFilesDirectory = dirname(__DIR__, 1).DIRECTORY_SEPARATOR.'XRAYFiles';
         $filelist = scandir($this->XRAYFilesDirectory);
         //remove . and ..
         unset($filelist[0]);
         unset($filelist[1]);
 
-        return $filelist;
+        $testdata = [];
+        foreach ($filelist as $file) {
+            array_push($testdata, [$file]);
+        }
+
+        return $testdata;
     }
 }

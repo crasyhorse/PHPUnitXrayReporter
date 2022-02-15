@@ -39,7 +39,7 @@
     <extensions>
         <extension class="Crasyhorse\PhpunitXrayReporter\Extension">
             <arguments>
-                <string>.\tests\</string>
+                <string>.\tests\XRAYFiles\</string>
             </arguments>
         </extension>
     </extensions>
