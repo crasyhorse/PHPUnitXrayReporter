@@ -15,17 +15,21 @@ namespace CrasyHorse\Tests\Assets;
 class PseudoSpec
 {
     /**
-     * Update test execution DEMO-666 including the Info object.
+     * Update test execution DEMO-666.
+     * This test will return a PASS result and has all possible annotations we implemented.
      *
+     * @test
      * @XRAY-testExecutionKey DEMO-666
-     * @XRAY-INFO-project DEMO
-     * @XRAY-INFO-summary Update test execution DEMO-666 including the Info object
-     * @XRAY-INFO-description This is some kind of a test double for testing the Parser class. That means it is only a pseudo spec.
-     * @XRAY-INFO-version 1.0
-     * @XRAY-INFO-revision 1.0.1
-     * @XRAY-INFO-user CalamityCoyote
-     * @XRAY-INFO-testEnvironments PHP-Unit
+     *
      * @XRAY-TESTS-testKey DEMO-123
+     * @XRAY-TESTS-comment This Test should return PASS
+     * @XRAY-TESTS-defects DEMO-1,DEMO-2
+     *
+     * @XRAY-TESTINFO-projectKey DEMO
+     * @XRAY-TESTINFO-testType Generic
+     * @XRAY-TESTINFO-requirementKeys DEMO-1,DEMO-2
+     * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
+     * @XRAY-TESTINFO-definition The Test does nothing
      */
     public function spec1(): void
     {
