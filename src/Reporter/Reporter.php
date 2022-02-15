@@ -65,11 +65,9 @@ final class Reporter
         /** @var array<array-key, string> $parsedResults */
         $parsedResults = $this->parseResults();
         $parsedResults = $this->parser->afterDocBlockParsedHook($parsedResults);
-
+        
         $this->parser->groupResults($parsedResults);
-        $parseTree = $this->parser->getTestExecutionsToUpdate();
-        $parseTree = $this->parser->afterParseTreeCreatedHook($parseTree);
-
+        $parseTree = $this->parser->getTestExecutionList();
         $this->createJsonFiles($parseTree);
     }
 
@@ -82,7 +80,11 @@ final class Reporter
     {
         $parseTreeValues = array_values($parseTree);
         foreach ($parseTreeValues as $execution) {
-            file_put_contents("{$this->outputDir}{$execution->getKey()}.json", json_encode($execution, JSON_PRETTY_PRINT));
+            if( $execution->getKey() != null){
+                file_put_contents("{$this->outputDir}".DIRECTORY_SEPARATOR."{$execution->getKey()}.json", json_encode($execution, JSON_PRETTY_PRINT));
+            } else {
+                file_put_contents("{$this->outputDir}".DIRECTORY_SEPARATOR."newExecution.json", json_encode($execution, JSON_PRETTY_PRINT));
+            }
         }
     }
 
