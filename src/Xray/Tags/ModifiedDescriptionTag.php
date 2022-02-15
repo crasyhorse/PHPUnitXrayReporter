@@ -34,14 +34,14 @@ class ModifiedDescriptionTag extends AbstractTag {
     {
         $matched = preg_match('/([^\/]*)(?=\*\/$)/', $value, $matches);
         if (!$matched) {
-            $matched = preg_match('/([^\/]*)(?=\* \@)/', $value, $matches);
+            $matched = preg_match('/([^\/]*)(?=\*[ ]*$)/', $value, $matches);
         }
         if (!$matched) {
             preg_match('/([^\/]*)(?=$)/', $value, $matches);
         }
         
         $matches[0] = trim(str_replace('* ', "\n", $matches[0]));
-
+        
         return $matches[0];
     }
 
