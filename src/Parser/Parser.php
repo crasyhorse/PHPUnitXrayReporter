@@ -79,6 +79,23 @@ class Parser
     }
 
     /**
+     * Returns the merged test execution list of testExecutionsToUpdate and testExecutionToImport
+     *
+     * @return list<TestExecution>
+     */
+    final public function getTestExecutionList() {
+        $allTestExecutions = [];
+        if (!empty($this->testExecutionsToUpdate)) {
+            $allTestExecutions = array_merge($allTestExecutions, $this->testExecutionsToUpdate);
+        }
+        if (!empty($this->testExecutionToImport)) {
+            $allTestExecutions[] = $this->testExecutionToImport;
+        }
+
+        return $allTestExecutions;
+    }
+
+    /**
      * Returns a single test execution that should be imported into Xray (test execution
      * without a testExecutionKey attribute).
      *
@@ -92,7 +109,7 @@ class Parser
     /**
      * Returns the list of test executions (parse Tree).
      *
-     * @return list<TestExecution>
+     * @return list<TestExecution>|null
      */
     final public function getTestExecutionsToUpdate()
     {
@@ -152,7 +169,7 @@ class Parser
         if (array_key_exists('XRAY-testExecutionKey', $testExecution)) {
             $testExecutionKey = $testExecution['XRAY-testExecutionKey'];
             if (empty($testExecutionKey)) {
-                throw new InvalidArgumentException('XRAY-testExecutionKey has to be set, if annotation is given. It is not set in test case: '.$testExecution['name']);
+                throw new InvalidArgumentException('XRAY-testExecutionKey has to be set, if annotation is given. Have you forgotten it? It is not set in test case: '.$testExecution['name']);
             }
             $this->testExecutionsToUpdate[$testExecutionKey] =
                 new TestExecution($testExecutionKey);
@@ -183,16 +200,16 @@ class Parser
         if (array_key_exists('XRAY-TESTS-testKey', $result)) {
             $testKey = $result['XRAY-TESTS-testKey'];
             if (empty($testKey)) {
-                throw new InvalidArgumentException('XRAY-testKey has to be set, if annotation is given. It is not set in test case: '.$result['name']);
+                throw new InvalidArgumentException('XRAY-TESTS-testKey has to be set, if annotation is given. Have you forgotten it? It is not set in test case: '.$result['name']);
             }
-            $test = $test->setTestKey($result['XRAY-TESTS-testKey']);
+            $test = $test->setTestKey($testKey);
         }
 
-        if (array_key_exists('XRAY-TESTS-comment', $result)) {
+        if (!empty($result['XRAY-TESTS-comment'])) {
             $test = $test->setComment($result['XRAY-TESTS-comment']);
         }
 
-        if (array_key_exists('XRAY-TESTS-defects', $result)) {
+        if (!empty($result['XRAY-TESTS-defects'])) {
             /** @var array<array-key, string> $defects */
             $defects = $result['XRAY-TESTS-defects'];
             $test = $test->setDefects($defects);
@@ -214,35 +231,43 @@ class Parser
     private function buildTestInfo(array $result): TestInfo
     {
         $testInfo = new TestInfoBuilder();
-        if (array_key_exists('XRAY-TESTINFO-projectKey', $result)) {
+        if (!empty($result['XRAY-TESTINFO-projectKey'])) {
             $projectKey = $result['XRAY-TESTINFO-projectKey'];
             $testInfo = $testInfo->setProjectKey($projectKey);
+        } elseif (!empty($result['XRAY-testExecutionKey'])) {
+            $projectKey = $this->stripOfKeyNumber($result['XRAY-testExecutionKey']);
+            $testInfo = $testInfo->setProjectKey($projectKey);
+        } elseif (!empty($result['XRAY-TESTS-testKey'])) {
+            $projectKey = $this->stripOfKeyNumber($result['XRAY-TESTS-testKey']);
+            $testInfo = $testInfo->setProjectKey($projectKey);
+        } else {
+            throw new InvalidArgumentException('No projectKey could be found or generated in test case: '.$result['name']);
         }
-
-        if (array_key_exists('XRAY-TESTINFO-testType', $result)) {
+        
+        if (!empty($result['XRAY-TESTINFO-testType'])) {
             /** @var "Generic" | "Cumcumber" | null $testType */
             $testType = $result['XRAY-TESTINFO-testType'];
             $testInfo = $testInfo->setTestType($testType);
         }
 
-        if (array_key_exists('XRAY-TESTINFO-requirementKeys', $result)) {
+        if (!empty($result['XRAY-TESTINFO-requirementKeys'])) {
             /** @var array<array-key, string> $requirementKeys */
             $requirementKeys = $result['XRAY-TESTINFO-requirementKeys'];
             $testInfo = $testInfo->setRequirementKeys($requirementKeys);
         }
 
-        if (array_key_exists('XRAY-TESTINFO-labels', $result)) {
+        if (!empty($result['XRAY-TESTINFO-labels'])) {
             /** @var array<array-key, string> $labels */
             $labels = $result['XRAY-TESTINFO-labels'];
             $testInfo = $testInfo->setLabels($labels);
         }
 
-        if (array_key_exists('XRAY-TESTINFO-definition', $result)) {
+        if (!empty($result['XRAY-TESTINFO-definition'])) {
             $definition = $result['XRAY-TESTINFO-definition'];
             $testInfo = $testInfo->setDefinition($definition);
         }
 
-        if (array_key_exists('summery', $result)) {
+        if (!empty($result['summery'])) {
             $summary = $result['summery'];
             $testInfo = $testInfo->setSummary($summary);
         } else {
@@ -250,7 +275,7 @@ class Parser
             $testInfo = $testInfo->setSummary($summary);
         }
 
-        if (array_key_exists('description', $result)) {
+        if (!empty($result['description'])) {
             $description = $result['description'];
             $testInfo = $testInfo->setDescription($description);
         }
@@ -326,5 +351,16 @@ class Parser
         preg_match_all('/([[:alpha:]][_0-9a-zA-Z:\\\]+)(?!< with data set)/', $test, $matches);
 
         return $matches[0][0];
+    }
+
+    /**
+     * Strips off the number behind the testExecutionKey or testKey. Afterwards the projectKey will be returned.
+     *
+     * @return string
+     */
+    private function stripOfKeyNumber(string $key): string
+    {
+        preg_match('/([0-9a-zA-Z]+)(?=-)/', $key, $matches);
+        return $matches[0];
     }
 }
