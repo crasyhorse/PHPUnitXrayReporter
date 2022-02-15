@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace CrasyHorse\Tests\Unit;
 
 use Crasyhorse\PhpunitXrayReporter\Parser\TagSet;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Description;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Project;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Revision;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Summary;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\TestEnvironments;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\TestPlanKey;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\User;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Version;
+// use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Description;
+// use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Project;
+// use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Revision;
+// use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Summary;
+// use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\TestEnvironments;
+// use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\TestPlanKey;
+// use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\User;
+// use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Info\Version;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestExecutionKey;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\Definition;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\Labels;
@@ -21,7 +21,9 @@ use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\RequirementKeys;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\TestType;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\Defects;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\TestKey;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\Comment;
 use CrasyHorse\Tests\Unit\Tags\AdditionalCustomTag;
+use Jasny\PhpdocParser\Tag\Summery;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -85,22 +87,15 @@ class TagSetTest extends TestCase
         $actual = $tagSet->getCustomTags();
 
         $expected = [
-            new TestExecutionKey(),
-            new Project(),
-            new Description(),
-            new Project(),
-            new Revision(),
-            new Summary(),
-            new TestEnvironments(),
-            new TestPlanKey(),
-            new User(),
-            new Version(),
+            new Comment(),
             new Defects(),
-            new TestKey(),
             new Definition(),
             new Labels(),
             new ProjectKey(),
             new RequirementKeys(),
+            new Summery(),
+            new TestExecutionKey(),
+            new TestKey(),
             new TestType(),
         ];
 
@@ -118,22 +113,15 @@ class TagSetTest extends TestCase
         $actual = $tagSet->getCustomTags([new AdditionalCustomTag()]);
 
         $expected = [
-            new TestExecutionKey(),
-            new Project(),
-            new Description(),
-            new Project(),
-            new Revision(),
-            new Summary(),
-            new TestEnvironments(),
-            new TestPlanKey(),
-            new User(),
-            new Version(),
+            new Comment(),
             new Defects(),
-            new TestKey(),
             new Definition(),
             new Labels(),
             new ProjectKey(),
             new RequirementKeys(),
+            new Summery(),
+            new TestExecutionKey(),
+            new TestKey(),
             new TestType(),
             new AdditionalCustomTag(),
         ];

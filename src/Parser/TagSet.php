@@ -76,16 +76,16 @@ final class TagSet
     final public function getCustomTags(array $additionalCustomTags = []): array
     {
         return array_merge([
-            new TestExecutionKey(),
+            new Comment(),
             new Defects(),
-            new TestKey(),
             new Definition(),
             new Labels(),
             new ProjectKey(),
             new RequirementKeys(),
-            new TestType(),
-            new Comment(),
             new Summery(),
+            new TestExecutionKey(),
+            new TestKey(),
+            new TestType(),
         ], $additionalCustomTags);
     }
 
