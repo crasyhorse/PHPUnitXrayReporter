@@ -38,10 +38,10 @@ final class Reporter
      * @param array<array-key, string>  $blacklistedTags      Remove tags like @param or @return
      * @param array<array-key, XrayTag> $additionalCustomTags Additional Tags of type XrayTag
      */
-    public function __construct(string $outputDir, array $whitelistedTags = [], array $blacklistedTags = [], array $additionalCustomTags = [])
+    public function __construct(string $outputDir, string $configDir, array $whitelistedTags = [], array $blacklistedTags = [], array $additionalCustomTags = [])
     {
         $this->outputDir = $outputDir;
-        $this->parser = new Parser($whitelistedTags, $blacklistedTags, $additionalCustomTags);
+        $this->parser = new Parser($configDir, $whitelistedTags, $blacklistedTags, $additionalCustomTags);
         $this->testResults = [];
     }
 
@@ -65,9 +65,9 @@ final class Reporter
         /** @var array<array-key, string> $parsedResults */
         $parsedResults = $this->parseResults();
         $parsedResults = $this->parser->afterDocBlockParsedHook($parsedResults);
-        
+
         $this->parser->groupResults($parsedResults);
-        $parseTree = $this->parser->getTestExecutionList();
+        $parseTree = $this->parser->getMergedTestExecutionList();
         $this->createJsonFiles($parseTree);
     }
 
@@ -80,10 +80,10 @@ final class Reporter
     {
         $parseTreeValues = array_values($parseTree);
         foreach ($parseTreeValues as $execution) {
-            if( $execution->getKey() != null){
+            if ($execution->getKey() != null) {
                 file_put_contents("{$this->outputDir}".DIRECTORY_SEPARATOR."{$execution->getKey()}.json", json_encode($execution, JSON_PRETTY_PRINT));
             } else {
-                file_put_contents("{$this->outputDir}".DIRECTORY_SEPARATOR."newExecution.json", json_encode($execution, JSON_PRETTY_PRINT));
+                file_put_contents("{$this->outputDir}".DIRECTORY_SEPARATOR.'newExecution.json', json_encode($execution, JSON_PRETTY_PRINT));
             }
         }
     }

@@ -22,6 +22,11 @@ class TestExecution implements JsonSerializable
     private $key;
 
     /**
+     * @var Info
+     */
+    private $info;
+
+    /**
      * @var array<array-key, Test>
      */
     private $tests = [];
@@ -40,6 +45,11 @@ class TestExecution implements JsonSerializable
     public function getKey()
     {
         return $this->key;
+    }
+
+    public function addInfo(Info $value): void
+    {
+        $this->info = $value;
     }
 
     /**
@@ -92,10 +102,13 @@ class TestExecution implements JsonSerializable
     public function jsonSerialize()
     {
         $json = [];
-        if(!empty($this->key)) {
+        if (!empty($this->key)) {
             $json['testExecutionKey'] = $this->key;
         }
-        $json['tests'] = $this->tests; 
+        if (!empty($this->info)) {
+            $json['info'] = $this->info;
+        }
+        $json['tests'] = $this->tests;
 
         return $json;
     }
