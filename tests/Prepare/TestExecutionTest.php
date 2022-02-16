@@ -83,11 +83,11 @@ class TestExecutionTest extends TestCase
      *
      * @XRAY-TESTS-testKey PHPUnitXrayReporter-27
      */
-    public function no_TestExecutionKey(): void
-    {
-        $asset = new Asset();
-        $expected = 4;
-        $actual = $asset->add(2, 2);
-        $this->assertEquals($expected, $actual);
-    }
+    // public function no_TestExecutionKey(): void
+    // {
+    //     $asset = new Asset();
+    //     $expected = 4;
+    //     $actual = $asset->add(2, 2);
+    //     $this->assertEquals($expected, $actual);
+    // }
 }

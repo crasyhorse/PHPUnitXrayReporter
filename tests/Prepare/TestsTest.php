@@ -77,13 +77,13 @@ class TestsTest extends TestCase
      * @XRAY-testExecutionKey PHPUnitXrayReporter-28
      * @XRAY-TESTS-testKey
      */
-    public function no_TestKey(): void
-    {
-        $asset = new Asset();
-        $expected = 4;
-        $actual = $asset->add(2, 2);
-        $this->assertEquals($expected, $actual);
-    }
+    // public function no_TestKey(): void
+    // {
+    //     $asset = new Asset();
+    //     $expected = 4;
+    //     $actual = $asset->add(2, 2);
+    //     $this->assertEquals($expected, $actual);
+    // }
 
     /**
      * XRAY-TESTS-defects test 1
@@ -147,7 +147,7 @@ class TestsTest extends TestCase
      * @XRAY-testExecutionKey PHPUnitXrayReporter-28
      *
      * @XRAY-TESTS-testKey PHPUnitXrayReporter-33
-     * 
+     *
      * @XRAY-TESTS-comment Something is written down in this comment tag
      * and it is more than one line!*/
     public function comment_test_2(): void
@@ -157,5 +157,4 @@ class TestsTest extends TestCase
         $actual = $asset->add(2, 2);
         $this->assertEquals($expected, $actual);
     }
-
 }
