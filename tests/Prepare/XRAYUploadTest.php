@@ -31,7 +31,7 @@ use PHPUnit\Framework\TestCase;
  * composer run test:unit-f <filter-string>
  *
  * @author Florian Weidinger
- * 
+ *
  * @group Prepare
  *
  * @since 0.1.0
@@ -47,6 +47,7 @@ class XRAYUploadTest extends TestCase
      * This test will return a PASS result and has all possible annotations we implemented.
      *
      * @test
+     * @XRAY-TESTS-testKey PRTL-5635
      * @XRAY-TESTS-comment This Test should return PASS
      * and this is second line
      *
@@ -61,7 +62,7 @@ class XRAYUploadTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
+    /*
      * Unsuccessful test.
      * This test will return a FAIL result and has all possible annotations we've implemented.
      *
