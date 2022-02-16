@@ -9,6 +9,7 @@ use Crasyhorse\PhpunitXrayReporter\Xray\Types\Info;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\Test;
 use Crasyhorse\PhpunitXrayReporter\XRAY\Types\TestExecution;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestInfo;
+use InvalidArgumentException;
 
 class BuilderHandler
 {
@@ -89,7 +90,7 @@ class BuilderHandler
      *
      * @return Test
      */
-    public function buildTest(array $result): Test
+    public function buildTest(Config $config, array $result): Test
     {
         $test = (new TestBuilder())
                 ->setName($result['name'])
@@ -116,7 +117,7 @@ class BuilderHandler
             $test = $test->setDefects($defects);
         }
 
-        $testInfo = $this->buildTestInfo($result);
+        $testInfo = $this->buildTestInfo($config, $result);
         $test = $test->setTestInfo($testInfo);
 
         return $test->build();
@@ -129,20 +130,23 @@ class BuilderHandler
      *
      * @return TestInfo
      */
-    public function buildTestInfo(array $result): TestInfo
+    public function buildTestInfo(Config $config, array $result): TestInfo
     {
         $testInfo = new TestInfoBuilder();
         if (!empty($result['XRAY-TESTINFO-projectKey'])) {
             $projectKey = $result['XRAY-TESTINFO-projectKey'];
             $testInfo = $testInfo->setProjectKey($projectKey);
+        } elseif (!empty($config->getTestExecutionKey())) {
+            $projectKey = $this->stripOfKeyNumber($config->getTestExecutionKey());
+            $testInfo = $testInfo->setProjectKey($projectKey);
+        } elseif (!empty($config->getProject())) {
+            $projectKey = $config->getProject();
+            $testInfo = $testInfo->setProjectKey($projectKey);
         } elseif (!empty($result['XRAY-testExecutionKey'])) {
             $projectKey = $this->stripOfKeyNumber($result['XRAY-testExecutionKey']);
             $testInfo = $testInfo->setProjectKey($projectKey);
-        } elseif (!empty($result['XRAY-TESTS-testKey'])) {
-            $projectKey = $this->stripOfKeyNumber($result['XRAY-TESTS-testKey']);
-            $testInfo = $testInfo->setProjectKey($projectKey);
         } else {
-            throw new InvalidArgumentException('No projectKey could be found or generated in test case: '.$result['name']);
+            throw new InvalidArgumentException('No projectKey could be found or generated for test case: '.$result['name']);
         }
 
         if (!empty($result['XRAY-TESTINFO-testType'])) {

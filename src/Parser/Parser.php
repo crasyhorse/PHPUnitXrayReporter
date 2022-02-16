@@ -200,7 +200,7 @@ class Parser
     {
         /** @var array<array-key, string> $result */
         foreach ($parsedResults as $result) {
-            $test = $this->builderHandler->buildTest($result);
+            $test = $this->builderHandler->buildTest($this->config, $result);
 
             if (array_key_exists('XRAY-testExecutionKey', $result)) {
                 $testExecutionKey = $result['XRAY-testExecutionKey'];
