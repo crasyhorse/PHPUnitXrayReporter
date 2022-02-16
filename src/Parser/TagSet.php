@@ -10,7 +10,6 @@ use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\Labels;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\ProjectKey;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\RequirementKeys;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\TestType;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\Comment;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\Defects;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\TestKey;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
@@ -76,7 +75,6 @@ final class TagSet
     final public function getCustomTags(array $additionalCustomTags = []): array
     {
         return array_merge([
-            new Comment(),
             new Defects(),
             new Definition(),
             new Labels(),

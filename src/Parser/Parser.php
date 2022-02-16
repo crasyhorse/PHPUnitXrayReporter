@@ -53,7 +53,7 @@ class Parser
     }
 
     /**
-     * Fired after the parser has finished parsing the doc blocks. Can be overriden
+     * Fired after the parser has finished parsing the doc blocks. Can be overwritten
      * by a developer to gain access to the list of parsed annotations.
      *
      * @param array<array-key, string> $meta
@@ -79,11 +79,12 @@ class Parser
     }
 
     /**
-     * Returns the merged test execution list of testExecutionsToUpdate and testExecutionToImport
+     * Returns the merged test execution list of testExecutionsToUpdate and testExecutionToImport.
      *
      * @return list<TestExecution>
      */
-    final public function getTestExecutionList() {
+    final public function getTestExecutionList()
+    {
         $allTestExecutions = [];
         if (!empty($this->testExecutionsToUpdate)) {
             $allTestExecutions = array_merge($allTestExecutions, $this->testExecutionsToUpdate);
@@ -158,7 +159,7 @@ class Parser
      * Builds the Xray type "TestExecution". If the TestExecution object has a
      * testExecutionKey attribute, it will be added to the list of updatable
      * test executions. Otherwise, it is treated as a new test executions
-     * that should be imported into Xray.
+     * that should be imported into Xray. If the annotation is given without an attribute, an exception will be thrown.
      *
      * @param array<array-key, string> $testExecution
      *
@@ -190,7 +191,8 @@ class Parser
         $test = (new TestBuilder())
                 ->setName($result['name'])
                 ->setStart($result['start'])
-                ->setFinish($result['finish']);
+                ->setFinish($result['finish'])
+                ->setComment($result['comment']);
 
         /** @var "PASS" | "FAIL" $status */
         $status = $result['status'];
@@ -203,10 +205,6 @@ class Parser
                 throw new InvalidArgumentException('XRAY-TESTS-testKey has to be set, if annotation is given. Have you forgotten it? It is not set in test case: '.$result['name']);
             }
             $test = $test->setTestKey($testKey);
-        }
-
-        if (!empty($result['XRAY-TESTS-comment'])) {
-            $test = $test->setComment($result['XRAY-TESTS-comment']);
         }
 
         if (!empty($result['XRAY-TESTS-defects'])) {
@@ -243,7 +241,7 @@ class Parser
         } else {
             throw new InvalidArgumentException('No projectKey could be found or generated in test case: '.$result['name']);
         }
-        
+
         if (!empty($result['XRAY-TESTINFO-testType'])) {
             /** @var "Generic" | "Cumcumber" | null $testType */
             $testType = $result['XRAY-TESTINFO-testType'];
@@ -361,6 +359,7 @@ class Parser
     private function stripOfKeyNumber(string $key): string
     {
         preg_match('/([0-9a-zA-Z]+)(?=-)/', $key, $matches);
+
         return $matches[0];
     }
 }
