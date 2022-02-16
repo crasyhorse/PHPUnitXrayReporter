@@ -13,6 +13,7 @@ use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\TestType;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\Defects;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\TestKey;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
+use Jasny\PhpdocParser\Tag\Summery;
 
 /**
  * Manages the list of available customs tags and also provides the list
@@ -74,13 +75,14 @@ final class TagSet
     final public function getCustomTags(array $additionalCustomTags = []): array
     {
         return array_merge([
-            new TestExecutionKey(),
             new Defects(),
-            new TestKey(),
             new Definition(),
             new Labels(),
             new ProjectKey(),
             new RequirementKeys(),
+            new Summery(),
+            new TestExecutionKey(),
+            new TestKey(),
             new TestType(),
         ], $additionalCustomTags);
     }

@@ -36,12 +36,25 @@ abstract class AbstractTestResult implements TestResult
      */
     protected $message;
 
+    /**
+     * @var string
+     */
+    protected $name;
+
     public function __construct(string $test, float $time, Carbon $start, string $message = null)
     {
         $this->test = $test;
+        $this->name = $this->extractName($test);
         $this->time = $time;
         $this->start = $start;
         $this->message = $message;
+    }
+
+    private function extractName(string $testString): string
+    {
+        preg_match('/(?<=::)([_0-9a-zA-Z]+)/', $testString, $name);
+
+        return $name[0];
     }
 
     /**
@@ -52,7 +65,9 @@ abstract class AbstractTestResult implements TestResult
      */
     public function getFinish(): string
     {
-        return $this->start->add(CarbonInterval::milliseconds($this->time))->toIso8601String();
+        $finish = $this->start->copy();
+
+        return $finish->add(CarbonInterval::milliseconds($this->time))->toIso8601String();
     }
 
     /**
@@ -61,6 +76,11 @@ abstract class AbstractTestResult implements TestResult
     public function getMessage()
     {
         return $this->message;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
     }
 
     public function getStart(): string

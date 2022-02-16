@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Crasyhorse\PhpunitXrayReporter\Xray\Types;
 
 use Crasyhorse\PhpunitXrayReporter\Reporter\Results\FailedTest;
+use Crasyhorse\PhpunitXrayReporter\Reporter\Results\SuccessfulTest;
+use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TodoTest;
 use JsonSerializable;
 
 /**
@@ -18,6 +20,11 @@ class TestExecution implements JsonSerializable
      * @var string|null
      */
     private $key;
+
+    /**
+     * @var Info
+     */
+    private $info;
 
     /**
      * @var array<array-key, Test>
@@ -40,6 +47,11 @@ class TestExecution implements JsonSerializable
         return $this->key;
     }
 
+    public function addInfo(Info $value): void
+    {
+        $this->info = $value;
+    }
+
     /**
      * Adds an Xray "Test" object if its status has changed
      * to FAIL or if it does not exist.
@@ -49,15 +61,36 @@ class TestExecution implements JsonSerializable
     public function addTest(Test $value): void
     {
         if (count($this->tests) === 0) {
-            $this->tests[$value->getTestKey()] = $value;
-        }
-
-        foreach ($this->tests as $test) {
-            if (($test->getTestKey() === $value->getTestKey() &&
-                $value->getStatus() === FailedTest::TEST_RESULT) ||
-                $test->getTestKey() !== $value->getTestKey()) {
-                $this->tests[$value->getTestKey()] = $value;
+            $this->tests[] = $value;
+        } else {
+            $counter = 0;
+            foreach ($this->tests as $test) {
+                if ($test->getTestKey() == $value->getTestKey()) {
+                    $this->decideToOverwrite($test->getStatus(), $value, $counter);
+                    $counter = -1;
+                    break;
+                }
+                ++$counter;
             }
+            if ($counter != -1) {
+                $this->tests[] = $value;
+            }
+        }
+    }
+
+    /**
+     * Decides either the in the TestExecution given Test with the same TestKey is to overwrite or not
+     * It follows the following criteria:
+     * 1) A failed test will overwrite every given test
+     * 2) A todo test (skipped or incomplete from phpunit) just overwrites a successful test
+     *    because a failure Message is more important
+     * 3) A successful test do nothing, because the given test should already have the right status.
+     */
+    private function decideToOverwrite(string $oldTestStatus, Test $value, int $index): void
+    {
+        if ($value->getStatus() == FailedTest::TEST_RESULT ||
+            ($value->getStatus() == TodoTest::TEST_RESULT && $oldTestStatus === SuccessfulTest::TEST_RESULT)) {
+            $this->tests[$index] = $value;
         }
     }
 
@@ -68,9 +101,15 @@ class TestExecution implements JsonSerializable
      */
     public function jsonSerialize()
     {
-        return [
-            'testExecutionKey' => $this->key,
-            'tests' => $this->tests,
-        ];
+        $json = [];
+        if (!empty($this->key)) {
+            $json['testExecutionKey'] = $this->key;
+        }
+        if (!empty($this->info)) {
+            $json['info'] = $this->info;
+        }
+        $json['tests'] = $this->tests;
+
+        return $json;
     }
 }

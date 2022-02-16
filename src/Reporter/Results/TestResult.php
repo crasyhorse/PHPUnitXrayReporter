@@ -13,13 +13,14 @@ namespace Crasyhorse\PhpunitXrayReporter\Reporter\Results;
  */
 interface TestResult
 {
-
     public function getFinish(): string;
 
     /**
      * @return string|null
      */
     public function getMessage();
+
+    public function getName(): string;
 
     public function getStart(): string;
 

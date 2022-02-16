@@ -14,9 +14,6 @@
     xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
 >
     <testsuites>
-        <testsuite name="Unit">
-            <directory suffix="Test.php">./tests/Unit</directory>
-        </testsuite>
         <testsuite name="Prepare">
             <directory suffix="Test.php">./tests/Prepare</directory>
         </testsuite>
@@ -39,7 +36,8 @@
     <extensions>
         <extension class="Crasyhorse\PhpunitXrayReporter\Extension">
             <arguments>
-                <string>.\tests\</string>
+                <string>.\tests\XRAYFiles</string>
+                <string>.\xray-reporterrc.json</string>
             </arguments>
         </extension>
     </extensions>

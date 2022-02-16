@@ -18,6 +18,12 @@ class ModifiedDescriptionTag extends AbstractTag {
 
     /**
      * Removes the closing PHPDoc comment consisting of an asterisk and a slash.
+     * To ensure that also multiline strings are possible, multiple regex 
+     * are handle afterwards, if the one before found nothing
+     * 1) Is there any string with following *\/
+     * 2) Is there any string with following * @ (for another annotation)
+     * 3) Is there any string with following $ for the last possible case
+     *    this method can become
      *
      * @param string $value
      *
@@ -26,8 +32,16 @@ class ModifiedDescriptionTag extends AbstractTag {
      */
     protected function stripOffClosingDocBlockComment($value)
     {
-        preg_match('/([^\*\/]*)(?!\*\/$)/', $value, $matches);
-
+        $matched = preg_match('/([^\/]*)(?=\*\/$)/', $value, $matches);
+        if (!$matched) {
+            $matched = preg_match('/([^\/]*)(?=\*[ ]*$)/', $value, $matches);
+        }
+        if (!$matched) {
+            preg_match('/([^\/]*)(?=$)/', $value, $matches);
+        }
+        
+        $matches[0] = trim(str_replace('* ', "\n", $matches[0]));
+        
         return $matches[0];
     }
 

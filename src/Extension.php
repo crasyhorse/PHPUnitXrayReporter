@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Crasyhorse\PhpunitXrayReporter\Reporter\Reporter;
 use Crasyhorse\PhpunitXrayReporter\Reporter\Results\FailedTest;
 use Crasyhorse\PhpunitXrayReporter\Reporter\Results\SuccessfulTest;
+use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TodoTest;
 use DateTimeZone;
 use PHPUnit\Runner\AfterIncompleteTestHook;
 use PHPUnit\Runner\AfterRiskyTestHook;
@@ -36,9 +37,9 @@ final class Extension implements BeforeTestHook, AfterSuccessfulTestHook, AfterT
      */
     private $reporter;
 
-    public function __construct(string $outputDir)
+    public function __construct(string $outputDir = '.'.DIRECTORY_SEPARATOR, string $configDir = '.'.DIRECTORY_SEPARATOR.'xray-reporterrc.json')
     {
-        $this->reporter = new Reporter($outputDir);
+        $this->reporter = new Reporter($outputDir, $configDir);
         $this->start = Carbon::now(new DateTimeZone('Europe/Berlin'));
     }
 
@@ -78,14 +79,20 @@ final class Extension implements BeforeTestHook, AfterSuccessfulTestHook, AfterT
 
     public function executeAfterSkippedTest(string $test, string $message, float $time): void
     {
+        $result = new TodoTest($test, $time, $this->start, $message);
+        $this->reporter->add($result);
     }
 
     public function executeAfterIncompleteTest(string $test, string $message, float $time): void
     {
+        $result = new TodoTest($test, $time, $this->start, $message);
+        $this->reporter->add($result);
     }
 
     public function executeAfterRiskyTest(string $test, string $message, float $time): void
     {
+        $result = new TodoTest($test, $time, $this->start, $message);
+        $this->reporter->add($result);
     }
 
     public function executeAfterTest(string $test, float $time): void

@@ -44,14 +44,6 @@ class TestExecutionTest extends TestCase
      * @XRAY-testExecutionKey PHPUnitXrayReporter-24 PHPUnitXrayReporter-013 PHPUnitXrayReporter-113
      *
      * @XRAY-TESTS-testKey PHPUnitXrayReporter-25
-     * @XRAY-TESTS-comment This Test should return PASS
-     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
-     *
-     * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
-     * @XRAY-TESTINFO-testType Generic
-     * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
-     * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
-     * @XRAY-TESTINFO-definition The Test sums 2+2=4 and expects 4
      */
     public function more_than_one_TestExecutionKey_space_separated(): void
     {
@@ -69,14 +61,6 @@ class TestExecutionTest extends TestCase
      * @XRAY-testExecutionKey PHPUnitXrayReporter-24,PHPUnitXrayReporter-013,PHPUnitXrayReporter-113
      *
      * @XRAY-TESTS-testKey PHPUnitXrayReporter-26
-     * @XRAY-TESTS-comment This Test should return PASS
-     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
-     *
-     * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
-     * @XRAY-TESTINFO-testType Generic
-     * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
-     * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
-     * @XRAY-TESTINFO-definition The Test sums 2+2=4 and expects 4
      */
     public function more_than_one_TestExecutionKey_comma_separated(): void
     {
@@ -95,22 +79,15 @@ class TestExecutionTest extends TestCase
      * This test uses no TestExecutionKey. An Exception should be thrown.
      *
      * @test
+     * @XRAY-testExecutionKey
      *
      * @XRAY-TESTS-testKey PHPUnitXrayReporter-27
-     * @XRAY-TESTS-comment This Test should return PASS
-     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
-     *
-     * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
-     * @XRAY-TESTINFO-testType Generic
-     * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
-     * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
-     * @XRAY-TESTINFO-definition The Test sums 2+2=4 and expects 4
      */
-    public function no_TestExecutionKey(): void
-    {
-        $asset = new Asset();
-        $expected = 4;
-        $actual = $asset->add(2, 2);
-        $this->assertEquals($expected, $actual);
-    }
+    // public function no_TestExecutionKey(): void
+    // {
+    //     $asset = new Asset();
+    //     $expected = 4;
+    //     $actual = $asset->add(2, 2);
+    //     $this->assertEquals($expected, $actual);
+    // }
 }
