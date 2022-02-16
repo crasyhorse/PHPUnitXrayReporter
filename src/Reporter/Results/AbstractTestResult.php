@@ -66,8 +66,8 @@ abstract class AbstractTestResult implements TestResult
     public function getFinish(): string
     {
         $finish = $this->start->copy();
-        
-        return $this->finish->add(CarbonInterval::milliseconds($this->time))->toIso8601String();
+
+        return $finish->add(CarbonInterval::milliseconds($this->time))->toIso8601String();
     }
 
     /**
