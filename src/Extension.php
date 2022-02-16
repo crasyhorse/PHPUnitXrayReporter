@@ -37,9 +37,9 @@ final class Extension implements BeforeTestHook, AfterSuccessfulTestHook, AfterT
      */
     private $reporter;
 
-    public function __construct(string $outputDir)
+    public function __construct(string $outputDir = '.'.DIRECTORY_SEPARATOR, string $configDir = '.'.DIRECTORY_SEPARATOR.'xray-reporterrc.json')
     {
-        $this->reporter = new Reporter($outputDir);
+        $this->reporter = new Reporter($outputDir, $configDir);
         $this->start = Carbon::now(new DateTimeZone('Europe/Berlin'));
     }
 
