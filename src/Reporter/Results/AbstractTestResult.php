@@ -53,6 +53,7 @@ abstract class AbstractTestResult implements TestResult
     private function extractName(string $testString): string
     {
         preg_match('/(?<=::)([_0-9a-zA-Z]+)/', $testString, $name);
+
         return $name[0];
     }
 
@@ -64,7 +65,9 @@ abstract class AbstractTestResult implements TestResult
      */
     public function getFinish(): string
     {
-        return $this->start->add(CarbonInterval::milliseconds($this->time))->toIso8601String();
+        $finish = $this->start->copy();
+        
+        return $this->finish->add(CarbonInterval::milliseconds($this->time))->toIso8601String();
     }
 
     /**
