@@ -21,7 +21,6 @@ use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\RequirementKeys;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\TestType;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\Defects;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\TestKey;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\Comment;
 use CrasyHorse\Tests\Unit\Tags\AdditionalCustomTag;
 use Jasny\PhpdocParser\Tag\Summery;
 use PHPUnit\Framework\TestCase;
@@ -87,7 +86,6 @@ class TagSetTest extends TestCase
         $actual = $tagSet->getCustomTags();
 
         $expected = [
-            new Comment(),
             new Defects(),
             new Definition(),
             new Labels(),
@@ -113,7 +111,6 @@ class TagSetTest extends TestCase
         $actual = $tagSet->getCustomTags([new AdditionalCustomTag()]);
 
         $expected = [
-            new Comment(),
             new Defects(),
             new Definition(),
             new Labels(),

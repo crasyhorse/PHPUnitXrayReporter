@@ -1,0 +1,14 @@
+{
+    "testExecutionKey": "PRTL-34",
+    "info": {
+        "summary": "Beispiel-Config",
+        "description": "Das Beispiel für die Beschreibung",
+        "version": "0.3.0",
+        "revision": "0.3.0",
+        "user": "Botuser",
+        "testPlanKey": "PRTL-3656",
+        "testEnvironments": [
+            "IOS", "Android"
+        ]
+    }
+}
