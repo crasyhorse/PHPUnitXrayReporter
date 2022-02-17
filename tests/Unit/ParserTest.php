@@ -167,92 +167,39 @@ class ParserTest extends TestCase
         }
     }
 
-//     public function Parsed_test_result_provider_for_errors()
-//     {
-//         return [
-//             [
-//                 new SuccessfulTest('CrasyHorse\Tests\Assets\PseudoSpec::spec5', $time, $start),
-//             ],
-//             [
-//                 new SuccessfulTest('CrasyHorse\Tests\Assets\PseudoSpec::spec6', $time, $start),
-//             ],
-//             [
-//                 new SuccessfulTest('CrasyHorse\Tests\Assets\PseudoSpec::spec7', $time, $start),
-//             ],
-    // //             'XRAY-testExecutionKey is missing' => [[[
-    // //                 'XRAY-testExecutionKey' => '',
-    // //                 'XRAY-TESTS-testKey' => 'PHPUnitXrayReporter-2',
-    // //                 'XRAY-TESTS-comment' => 'This Test should return PASS',
-    // //                 'XRAY-TESTS-defects' => [
-    // //                     'PHPUnitXrayReporter-1', 'PHPUnitXrayReporter-2',
-    // //                 ],
-    // //                 'XRAY-TESTINFO-projectKey' => 'PHPUnitXrayReporter',
-    // //                 'XRAY-TESTINFO-testType' => 'Generic',
-    // //                 'XRAY-TESTINFO-requirementKeys' => [
-    // //                     'PHPUnitXrayReporter-1', 'PHPUnitXrayReporter-2',
-    // //                 ],
-    // //                 'XRAY-TESTINFO-labels' => [
-    // //                     'workInProgress', 'Bug', 'NeedsTriage',
-    // //                 ],
-    // //                 'XRAY-TESTINFO-definition' => 'The Test sums 2+2=4 and expects 4',
-    // //                 'summery' => 'Successful test.',
-    // //                 'description' => 'Successful test.
-    // // This test will return a PASS result and has all possible annotations we implemented.',
-    // //                 'start' => '2022-02-15T07:36:34+01:00',
-    // //                 'finish' => '2022-02-15T07:36:34+01:00',
-    // //                 'comment' => 'Test has passed.',
-    // //                 'status' => 'PASS',
-    // //                 'name' => 'fully_annotated_successful_test',
-    // //             ]]],
-    // //             'XRAY-TESTS-testKey is missing' => [[[
-    // //                 'XRAY-testExecutionKey' => 'PHPUnitXrayReporter-1',
-    // //                 'XRAY-TESTS-testKey' => '',
-    // //                 'XRAY-TESTS-comment' => 'This Test should return PASS',
-    // //                 'XRAY-TESTS-defects' => [
-    // //                     'PHPUnitXrayReporter-2', 'PHPUnitXrayReporter-3',
-    // //                 ],
-    // //                 'XRAY-TESTINFO-projectKey' => 'PHPUnitXrayReporter',
-    // //                 'XRAY-TESTINFO-testType' => 'Generic',
-    // //                 'XRAY-TESTINFO-requirementKeys' => [
-    // //                     'PHPUnitXrayReporter-1', 'PHPUnitXrayReporter-2', 'PHPUnitXrayReporter-3',
-    // //                 ],
-    // //                 'XRAY-TESTINFO-labels' => [
-    // //                     'workInProgress', 'Bug', 'NeedsTriage',
-    // //                 ],
-    // //                 'XRAY-TESTINFO-definition' => 'The Test sums 2+2=4 but expects 5',
-    // //                 'summery' => 'Unsuccessful test.',
-    // //                 'description' => "Unsuccessful test.
-    // // This test will return a FAIL result and has all possible annotations we've implemented.",
-    // //                 'start' => '2022-02-15T07:36:34+01:00',
-    // //                 'finish' => '2022-02-15T07:36:34+01:00',
-    // //                 'comment' => 'Failed asserting that 4 matches expected 5.',
-    // //                 'status' => 'FAIL',
-    // //                 'name' => 'fully_annotated_unsuccessful_test',
-    // //             ]]],
-    // //             'XRAY-TESTINFO-projectKey and test(Execution)Key is missing' => [[[
-    // //                 'XRAY-TESTS-comment' => 'This Test should return PASS',
-    // //                 'XRAY-TESTS-defects' => [
-    // //                     'PHPUnitXrayReporter-2', 'PHPUnitXrayReporter-3',
-    // //                 ],
-    // //                 'XRAY-TESTINFO-testType' => 'Generic',
-    // //                 'XRAY-TESTINFO-requirementKeys' => [
-    // //                     'PHPUnitXrayReporter-1', 'PHPUnitXrayReporter-2', 'PHPUnitXrayReporter-3',
-    // //                 ],
-    // //                 'XRAY-TESTINFO-labels' => [
-    // //                     'workInProgress', 'Bug', 'NeedsTriage',
-    // //                 ],
-    // //                 'XRAY-TESTINFO-definition' => 'The Test sums 2+2=4 but expects 5',
-    // //                 'summery' => 'Unsuccessful test.',
-    // //                 'description' => "Unsuccessful test.
-    // // This test will return a FAIL result and has all possible annotations we've implemented.",
-    // //                 'start' => '2022-02-15T07:36:34+01:00',
-    // //                 'finish' => '2022-02-15T07:36:34+01:00',
-    // //                 'comment' => 'Failed asserting that 4 matches expected 5.',
-    // //                 'status' => 'FAIL',
-    // //                 'name' => 'fully_annotated_unsuccessful_test',
-    // //             ]]],
-//         ];
-//     }
+    /**
+     * @dataProvider
+     */
+    public function Parsed_test_result_provider_for_errors()
+    {
+        return [
+            'Exception because Tag is empty' => [
+                new SuccessfulTest('CrasyHorse\Tests\Assets\PseudoSpec::spec5', $time, $start),
+                new InvalidArgumentException(),
+            ],
+            'Exception because Tag is empty' => [
+                new SuccessfulTest('CrasyHorse\Tests\Assets\PseudoSpec::spec6', $time, $start),
+                new InvalidArgumentException(),
+            ],
+            'Exception because Tag is empty' => [
+                new SuccessfulTest('CrasyHorse\Tests\Assets\PseudoSpec::spec7', $time, $start),
+                new InvalidArgumentException(),
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    private function parserthrowsException_if_(TestResult $testResult, InvalidArgumentException $expected)
+    {
+        $parser = new Parser($this->configDir);
+        try {
+            $parser->parse($testResult);
+        } catch (Exception $actual) {
+            $this->assertEquals($actual, $expected);
+        }
+    }
 
     /**
      * Looks for the existence of the 'finish' field. If it exists, it will be checked against
