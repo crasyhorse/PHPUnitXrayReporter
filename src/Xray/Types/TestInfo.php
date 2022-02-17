@@ -68,7 +68,7 @@ class TestInfo implements JsonSerializable, XrayType
     public function jsonSerialize()
     {
         $json = [];
-        foreach (['summary', 'description', 'projectKey', 'testType', 'requirementKeys', 'labels', 'definition'] as $attribute) {
+        foreach (['projectKey', 'summary', 'description', 'testType', 'requirementKeys', 'labels', 'definition'] as $attribute) {
             if (!empty($this->{$attribute})) {
                 /* @psalm-suppress MixedAssignment */
                 $json[$attribute] = $this->{$attribute};

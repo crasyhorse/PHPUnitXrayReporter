@@ -3,17 +3,17 @@
 declare(strict_types=1);
 
 namespace Crasyhorse\PhpunitXrayReporter\Xray\Types;
-use JsonSerializable;
-use Crasyhorse\PhpunitXrayReporter\Xray\Types\XrayType;
+
 use Crasyhorse\PhpunitXrayReporter\Xray\Builder\TestBuilder;
+use JsonSerializable;
 
 /**
  * Represents a Xray "Test" object.
- * 
+ *
  * @author Florian Weidinger
  */
-class Test implements JsonSerializable, XrayType {
-
+class Test implements JsonSerializable, XrayType
+{
     /**
      * @var string
      */
@@ -75,7 +75,7 @@ class Test implements JsonSerializable, XrayType {
     {
         return $this->comment;
     }
-    
+
     /**
      * @return array<array-key, string>
      */
@@ -84,11 +84,11 @@ class Test implements JsonSerializable, XrayType {
         return $this->defects;
     }
 
-    public function getName() 
+    public function getName()
     {
         return $this->name;
     }
-    
+
     /**
      * @return TestInfo|null
      */
@@ -96,17 +96,17 @@ class Test implements JsonSerializable, XrayType {
     {
         return $this->testInfo;
     }
-    
+
     public function getStart(): string
     {
         return $this->start;
     }
-    
+
     public function getFinish(): string
     {
         return $this->finish;
     }
-    
+
     /**
      * @return "PASS" | "FAIL"
      */
@@ -114,7 +114,7 @@ class Test implements JsonSerializable, XrayType {
     {
         return $this->status;
     }
-    
+
     /**
      * Defines how this class is serialized into JSON.
      *
@@ -123,15 +123,15 @@ class Test implements JsonSerializable, XrayType {
     public function jsonSerialize()
     {
         $json = [];
-        foreach(['testKey', 'comment', 'defects', 'start', 'finish', 'status'] as $attribute) {
-            if(!empty($this->{$attribute})) {
-                /** @psalm-suppress MixedAssignment */
+        foreach (['testKey', 'start', 'finish', 'comment', 'status', 'defects'] as $attribute) {
+            if (!empty($this->{$attribute})) {
+                /* @psalm-suppress MixedAssignment */
                 $json[$attribute] = $this->{$attribute};
             }
         }
 
-        /** @psalm-suppress PossiblyNullReference */
-        if(!$this->getTestInfo()->isEmpty()) {
+        /* @psalm-suppress PossiblyNullReference */
+        if (!$this->getTestInfo()->isEmpty()) {
             $json['testInfo'] = $this->getTestInfo();
         }
 
