@@ -66,6 +66,11 @@ class Info implements JsonSerializable, XrayType
         $this->testEnvironments = $infoBuilder->getTestEnvironments();
     }
 
+    public function setProject($project): void
+    {
+        $this->project = $project;
+    }
+
     public function getProject(): string
     {
         return $this->project;

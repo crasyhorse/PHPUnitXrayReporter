@@ -71,11 +71,6 @@ class Config
 
     public function getProject(): string
     {
-        if (empty($this->project)) {
-            // TODO: find better Exception
-            throw new Exception('The project value in the info object of config file has to be set, if tests exist, where no testExecutionKey is given or the testExecutionKey in the config file is empty!');
-        }
-
         return $this->project;
     }
 

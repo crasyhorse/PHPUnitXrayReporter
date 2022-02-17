@@ -14,6 +14,11 @@ use InvalidArgumentException;
 class BuilderHandler
 {
     /**
+     * @var Info
+     */
+    private $info;
+
+    /**
      * Builds the Xray type "TestExecution".
      *
      * 1) If the TestExecution object has a testExecutionKey attribute, it will be added to the list of updatable
@@ -79,8 +84,9 @@ class BuilderHandler
         if (!empty($config->getTestEnvironments())) {
             $info = $info->setTestEnvironments($config->getTestEnvironments());
         }
+        $this->info = $info->build();
 
-        return $info->build();
+        return $this->info;
     }
 
     /**
@@ -125,6 +131,16 @@ class BuilderHandler
 
     /**
      * Builds the Xray type "TestInfo" object.
+     * Because projectKey is required, it tries to get the key in several ways:.
+     *
+     * 1) The projectKey is given by tag in the doc block of the PHPunit test
+     * 2) If the testExecutionKey is set in the config file, it strips of the key nummbers
+     *      and results in the projectKey
+     * 3) If 2) is not possible, the projectKey should be given in the config file as project, because
+     *      either 2) or 3) is necessary if no testExecution is given in the doc blocks of all tests
+     * 4-5) Last option is to get the projectKey either from testExecutionKey or testKey
+     *      in the doc block comment of the test. With this information, the project value of the Info object
+     *      can be filled to import this new testExecution.
      *
      * @param array<array-key,string> $result
      *
@@ -139,14 +155,19 @@ class BuilderHandler
         } elseif (!empty($config->getTestExecutionKey())) {
             $projectKey = $this->stripOfKeyNumber($config->getTestExecutionKey());
             $testInfo = $testInfo->setProjectKey($projectKey);
-        } elseif (!empty($config->getProject())) {
+        } elseif (!empty($this->info->getProject())) {
             $projectKey = $config->getProject();
+            $testInfo = $testInfo->setProjectKey($projectKey);
+        } elseif (!empty($result['XRAY-testKey'])) {
+            $projectKey = $this->stripOfKeyNumber($result['XRAY-testKey']);
+            $this->info->setProject($projectKey);
             $testInfo = $testInfo->setProjectKey($projectKey);
         } elseif (!empty($result['XRAY-testExecutionKey'])) {
             $projectKey = $this->stripOfKeyNumber($result['XRAY-testExecutionKey']);
+            $this->info->setProject($projectKey);
             $testInfo = $testInfo->setProjectKey($projectKey);
         } else {
-            throw new InvalidArgumentException('No projectKey could be found or generated for test case: '.$result['name']);
+            throw new InvalidArgumentException('No projectKey could be found or generated for test case: '.$result['name'].'\nThe project value in the info object of config file has to be set, if tests exist, where no testExecutionKey is given or the testExecutionKey in the config file is empty!');
         }
 
         if (!empty($result['XRAY-TESTINFO-testType'])) {
