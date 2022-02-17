@@ -17,6 +17,16 @@ class BuilderHandler
      * @var Info
      */
     private $info;
+    /**
+     * @var Config
+     */
+    private $config;
+
+    public function __construct($config)
+    {
+        $this->config = $config;
+        $this->info = $this->buildInfo();
+    }
 
     /**
      * Builds the Xray type "TestExecution".
@@ -32,7 +42,7 @@ class BuilderHandler
      *
      * @return void
      */
-    public function buildTestExecution(Config $config, array $testExecution, &$testExecutionsToUpdate, &$testExecutionToImport): void
+    public function buildTestExecution(array $testExecution, &$testExecutionsToUpdate, &$testExecutionToImport): void
     {
         if (array_key_exists('XRAY-testExecutionKey', $testExecution)) {
             $testExecutionKey = $testExecution['XRAY-testExecutionKey'];
@@ -42,12 +52,12 @@ class BuilderHandler
             if (empty($testExecutionsToUpdate[$testExecutionKey])) {
                 $testExecutionsToUpdate[$testExecutionKey] = new TestExecution($testExecutionKey);
             }
-        } elseif (!empty($config->getTestExecutionKey())) {
-            $testExecutionKey = $config->getTestExecutionKey();
+        } elseif (!empty($this->config->getTestExecutionKey())) {
+            $testExecutionKey = $this->config->getTestExecutionKey();
             $testExecutionsToUpdate[$testExecutionKey] = new TestExecution($testExecutionKey);
         } else {
             $testExecutionToImport = new TestExecution();
-            $testExecutionToImport->addInfo($this->buildInfo($config));
+            $testExecutionToImport->addInfo($this->buildInfo($this->config));
         }
     }
 
@@ -58,31 +68,31 @@ class BuilderHandler
      *
      * @return Info
      */
-    public function buildInfo(Config $config): Info
+    public function buildInfo(): Info
     {
         $info = (new InfoBuilder())
-            ->setProject($config->getProject());
+            ->setProject($this->config->getProject());
 
-        if (!empty($config->getSummary())) {
-            $info = $info->setSummary($config->getSummary());
+        if (!empty($this->config->getSummary())) {
+            $info = $info->setSummary($this->config->getSummary());
         }
-        if (!empty($config->getDescription())) {
-            $info = $info->setDescription($config->getDescription());
+        if (!empty($this->config->getDescription())) {
+            $info = $info->setDescription($this->config->getDescription());
         }
-        if (!empty($config->getVersion())) {
-            $info = $info->setVersion($config->getVersion());
+        if (!empty($this->config->getVersion())) {
+            $info = $info->setVersion($this->config->getVersion());
         }
-        if (!empty($config->getRevision())) {
-            $info = $info->setRevision($config->getRevision());
+        if (!empty($this->config->getRevision())) {
+            $info = $info->setRevision($this->config->getRevision());
         }
-        if (!empty($config->getUser())) {
-            $info = $info->setUser($config->getUser());
+        if (!empty($this->config->getUser())) {
+            $info = $info->setUser($this->config->getUser());
         }
-        if (!empty($config->getTestPlanKey())) {
-            $info = $info->setTestPlanKey($config->getTestPlanKey());
+        if (!empty($this->config->getTestPlanKey())) {
+            $info = $info->setTestPlanKey($this->config->getTestPlanKey());
         }
-        if (!empty($config->getTestEnvironments())) {
-            $info = $info->setTestEnvironments($config->getTestEnvironments());
+        if (!empty($this->config->getTestEnvironments())) {
+            $info = $info->setTestEnvironments($this->config->getTestEnvironments());
         }
         $this->info = $info->build();
 
@@ -96,7 +106,7 @@ class BuilderHandler
      *
      * @return Test
      */
-    public function buildTest(Config $config, array $result): Test
+    public function buildTest(array $result): Test
     {
         $test = (new TestBuilder())
                 ->setName($result['name'])
@@ -123,7 +133,7 @@ class BuilderHandler
             $test = $test->setDefects($defects);
         }
 
-        $testInfo = $this->buildTestInfo($config, $result);
+        $testInfo = $this->buildTestInfo($result);
         $test = $test->setTestInfo($testInfo);
 
         return $test->build();
@@ -138,7 +148,7 @@ class BuilderHandler
      *      and results in the projectKey
      * 3) If 2) is not possible, the projectKey should be given in the config file as project, because
      *      either 2) or 3) is necessary if no testExecution is given in the doc blocks of all tests
-     * 4-5) Last option is to get the projectKey either from testExecutionKey or testKey
+     * 4) Last option is to get the projectKey either from testExecutionKey or testKey
      *      in the doc block comment of the test. With this information, the project value of the Info object
      *      can be filled to import this new testExecution.
      *
@@ -146,17 +156,17 @@ class BuilderHandler
      *
      * @return TestInfo
      */
-    public function buildTestInfo(Config $config, array $result): TestInfo
+    public function buildTestInfo(array $result): TestInfo
     {
         $testInfo = new TestInfoBuilder();
         if (!empty($result['XRAY-TESTINFO-projectKey'])) {
             $projectKey = $result['XRAY-TESTINFO-projectKey'];
             $testInfo = $testInfo->setProjectKey($projectKey);
-        } elseif (!empty($config->getTestExecutionKey())) {
-            $projectKey = $this->stripOfKeyNumber($config->getTestExecutionKey());
+        } elseif (!empty($this->config->getTestExecutionKey())) {
+            $projectKey = $this->stripOfKeyNumber($this->config->getTestExecutionKey());
             $testInfo = $testInfo->setProjectKey($projectKey);
         } elseif (!empty($this->info->getProject())) {
-            $projectKey = $config->getProject();
+            $projectKey = $this->config->getProject();
             $testInfo = $testInfo->setProjectKey($projectKey);
         } elseif (!empty($result['XRAY-testKey'])) {
             $projectKey = $this->stripOfKeyNumber($result['XRAY-testKey']);

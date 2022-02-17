@@ -58,7 +58,7 @@ class Parser
         $tagSet = new TagSet($whitelistedTags, $blacklistedTags);
         $this->customTags = $tagSet->getCustomTags($additionalCustomTags);
         $this->config = new Config($configDir);
-        $this->builderHandler = new BuilderHandler();
+        $this->builderHandler = new BuilderHandler($this->config);
     }
 
     /**
@@ -182,7 +182,7 @@ class Parser
     {
         /** @var array<array-key, string> $testExecution */
         foreach ($parsedResults as $testExecution) {
-            $this->builderHandler->buildTestExecution($this->config, $testExecution, $this->testExecutionsToUpdate, $this->testExecutionToImport);
+            $this->builderHandler->buildTestExecution($testExecution, $this->testExecutionsToUpdate, $this->testExecutionToImport);
         }
     }
 
@@ -200,7 +200,7 @@ class Parser
     {
         /** @var array<array-key, string> $result */
         foreach ($parsedResults as $result) {
-            $test = $this->builderHandler->buildTest($this->config, $result);
+            $test = $this->builderHandler->buildTest($result);
 
             if (array_key_exists('XRAY-testExecutionKey', $result)) {
                 $testExecutionKey = $result['XRAY-testExecutionKey'];
