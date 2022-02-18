@@ -73,7 +73,7 @@ The purpose of this package is to convert annotated information from PHPunit tes
         <td>summary</td><td>summary on first line</td><td>It's the first doc block line of the test without annotation. If such line doesn't exist, the PHPunit test-method name is taken.</td>
     </tr>
     <tr>
-        <td>description</td><td>the summary + following lines without tag</td><td>It's taken from the summary plus the following lines after the summary without description. If nothing is given, it does not appear in the file. </td>
+        <td>description</td><td>the summary + following lines without tag</td><td>It's taken from the summary plus the following lines after the summary without annotation. If nothing is given, it does not appear in the file. </td>
     </tr>
     <tr>
         <td>testType</td><td>@XRAY-TESTINFO-testType Generic</td><td>One of Manual, Cucumber ore Generic. If annotation is not given, Generic is the default.</td>
@@ -88,3 +88,23 @@ The purpose of this package is to convert annotated information from PHPunit tes
         <td>definition</td><td>@XRAY-TESTINFO-definition definition text</td><td>"</td>
     </tr>
 </table>
+
+## Config file example for info object
+
+'''
+{
+    "testExecutionKey": "DEMO-1",
+    "info": {
+        "project": "DEMO",
+        "summary": "Example Config",
+        "description": "This is an example of the description in the config file.",
+        "version": "0.1.0",
+        "revision": "0.1.0.0002",
+        "user": "DemoUser",
+        "testPlanKey": "DEMO-2",
+        "testEnvironments": [
+            "IOS", "Android"
+        ]
+    }
+}
+'''
