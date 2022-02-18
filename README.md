@@ -91,7 +91,7 @@ The purpose of this package is to convert annotated information from PHPunit tes
 
 ## Config file example for info object
 
-'''
+```
 {
     "testExecutionKey": "DEMO-1",
     "info": {
@@ -107,4 +107,4 @@ The purpose of this package is to convert annotated information from PHPunit tes
         ]
     }
 }
-'''
+```
