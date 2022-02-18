@@ -64,7 +64,7 @@ class ParserTest extends TestCase
     /**
      * @test
      * @group Parser
-     * @dataProvider test_result_provider
+     * @dataProvider doc_block_correctness_result_provider
      */
     public function parser_parses_doc_block_correctly(TestResult $testResult, array $expected): void
     {
@@ -128,7 +128,7 @@ class ParserTest extends TestCase
         $config = new Config($this->configDirExceptions.'.strange_prefix');
     }
 
-    public function test_result_provider(): array
+    public function doc_block_correctness_result_provider(): array
     {
         $start = Carbon::now(new DateTimeZone('Europe/Berlin'));
         // TODO time are Milliseconds or seconds? This Test acted before like Seconds, but implementation in TestResults like milliseconds
@@ -300,15 +300,15 @@ class ParserTest extends TestCase
         );
 
         return [
-            'spec1' => [
+            'FailedTest and testExecutionKey given as annotation so info not needed' => [
                 new FailedTest('CrasyHorse\Tests\Assets\PseudoSpec::spec1', $time, $start, 'Failed asserting 2+4=6.'),
                 $testExecution1,
             ],
-            'spec2' => [
+            'TodoTest and very little information in doc block but testExecutionKey given' => [
                 new TodoTest('CrasyHorse\Tests\Assets\PseudoSpec::spec2', $time, $start, 'Failed asserting 2+4=6.'),
                 $testExecution2,
             ],
-            'spec3' => [
+            'SuccessfulTest and without testExecutionKey as annotation so info needed' => [
                 new SuccessfulTest('CrasyHorse\Tests\Assets\PseudoSpec::spec3', $time, $start),
                 $testExecution3,
             ]
@@ -389,15 +389,15 @@ class ParserTest extends TestCase
         );
 
         return [
-            'spec1' => [
+            'FailedTest and testExecutionKey given as annotation' => [
                 new FailedTest('CrasyHorse\Tests\Assets\PseudoSpec::spec1', $time, $start, 'Failed asserting 2+4=6.'),
                 $testExecution1,
             ],
-            'spec2' => [
+            'TodoTest and very little information in doc block but testExecutionKey given' => [
                 new TodoTest('CrasyHorse\Tests\Assets\PseudoSpec::spec2', $time, $start, 'Failed asserting 2+4=6.'),
                 $testExecution2,
             ],
-            'spec3' => [
+            'SuccessfulTest and without testExecutionKey as annotation so testExecutionKey from config needed' => [
                 new SuccessfulTest('CrasyHorse\Tests\Assets\PseudoSpec::spec3', $time, $start),
                 $testExecution3,
             ]

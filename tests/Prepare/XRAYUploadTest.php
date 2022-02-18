@@ -32,8 +32,6 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Florian Weidinger
  *
- * @group Prepare
- *
  * @since 0.1.0
  */
 class XRAYUploadTest extends TestCase
