@@ -1,12 +1,12 @@
 {
-    "testExecutionKey": "PRTL-34",
+    "testExecutionKey": "DEMO-690",
     "info": {
-        "summary": "Beispiel-Config",
-        "description": "Das Beispiel für die Beschreibung",
+        "project": "DEMO",
+        "summary": "example-config",
+        "description": "This is an example for description",
         "version": "0.3.0",
         "revision": "0.3.0",
         "user": "Botuser",
-        "testPlanKey": "PRTL-3656",
         "testEnvironments": [
             "IOS", "Android"
         ]

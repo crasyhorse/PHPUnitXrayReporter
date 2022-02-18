@@ -48,13 +48,9 @@ class PseudoSpec
     }
 
     /**
-     * Successful test result with Test and TestInfo objects.
-     *
      * @test
-     * @XRAY-testExecutionKey DEMO-668
      *
      * @XRAY-TESTS-testKey DEMO-123
-     * @XRAY-TESTS-comment This Test should return PASS
      * @XRAY-TESTS-defects DEMO-1,DEMO-2
      *
      * @XRAY-TESTINFO-projectKey DEMO
@@ -72,13 +68,10 @@ class PseudoSpec
      * Update test execution DEMO-669.
      * This is really cool!
      *
-     * @XRAY-testExecutionKey DEMO-669
      *
      * @XRAY-TESTS-testKey DEMO-124
-     * @XRAY-TESTS-comment This Test should return FAIL
      * @XRAY-TESTS-defects DEMO-1,DEMO-2
      *
-     * @XRAY-TESTINFO-projectKey DEMO
      * @XRAY-TESTINFO-testType Generic
      * @XRAY-TESTINFO-requirementKeys DEMO-1,DEMO-2
      * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
@@ -89,7 +82,59 @@ class PseudoSpec
         // code...
     }
 
+    /**
+     * Update test execution DEMO-670.
+     * This is really cool!
+     *
+     * @XRAY-testExecutionKey
+     *
+     * @XRAY-TESTS-testKey DEMO-124
+     * @XRAY-TESTS-defects DEMO-1,DEMO-2
+     *
+     * @XRAY-TESTINFO-projectKey DEMO
+     * @XRAY-TESTINFO-testType Generic
+     * @XRAY-TESTINFO-requirementKeys DEMO-1,DEMO-2
+     * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
+     * @XRAY-TESTINFO-definition The Test does nothing
+     */
     public function spec5(): void
+    {
+        // code
+    }
+
+    /**
+     * Update test execution DEMO-671.
+     * This is really cool!
+     *
+     * @XRAY-testExecutionKey DEMO-671
+     *
+     * @XRAY-TESTS-testKey
+     * @XRAY-TESTS-defects DEMO-1,DEMO-2
+     *
+     * @XRAY-TESTINFO-projectKey DEMO
+     * @XRAY-TESTINFO-testType Generic
+     * @XRAY-TESTINFO-requirementKeys DEMO-1,DEMO-2
+     * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
+     * @XRAY-TESTINFO-definition The Test does nothing
+     */
+    public function spec6(): void
+    {
+        // code
+    }
+
+    /**
+     * Update test execution DEMO-669.
+     * This is really cool!
+     *
+     * 
+     * @XRAY-TESTS-defects DEMO-1,DEMO-2
+     *
+     * @XRAY-TESTINFO-testType Generic
+     * @XRAY-TESTINFO-requirementKeys DEMO-1,DEMO-2
+     * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
+     * @XRAY-TESTINFO-definition The Test does nothing
+     */
+    public function spec7(): void
     {
         // code
     }
