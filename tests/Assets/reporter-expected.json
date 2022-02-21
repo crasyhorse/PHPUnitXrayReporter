@@ -1,0 +1,64 @@
+{
+    "info": {
+        "project": "DEMO",
+        "summary": "example-config",
+        "description": "This is an example for description",
+        "version": "0.3.0",
+        "revision": "0.3.0",
+        "user": "Botuser",
+        "testEnvironments": [
+            "IOS",
+            "Android"
+        ]
+    },
+    "tests": [
+        {
+            "start": "2022-02-21T15:59:31+01:00",
+            "finish": "2022-02-21T15:59:31+01:00",
+            "comment": "Failed asserting 2+4=6.",
+            "status": "FAIL",
+            "testInfo": {
+                "projectKey": "DEMO",
+                "summary": "spec8",
+                "testType": "Generic",
+                "definition": "spec8"
+            }
+        },
+        {
+            "start": "2022-02-21T15:59:31+01:00",
+            "finish": "2022-02-21T15:59:31+01:00",
+            "comment": "Test has passed.",
+            "status": "PASS",
+            "testInfo": {
+                "projectKey": "DEMO",
+                "summary": "spec9",
+                "testType": "Generic",
+                "definition": "spec9"
+            }
+        },
+        {
+            "start": "2022-02-21T15:59:31+01:00",
+            "finish": "2022-02-21T15:59:31+01:00",
+            "comment": "Failed for my country",
+            "status": "FAIL",
+            "testInfo": {
+                "projectKey": "DEMO",
+                "summary": "spec10",
+                "testType": "Generic",
+                "definition": "spec10"
+            }
+        },
+        {
+            "start": "2022-02-21T15:59:31+01:00",
+            "finish": "2022-02-21T15:59:31+01:00",
+            "comment": "Test has passed.",
+            "status": "PASS",
+            "testInfo": {
+                "projectKey": "DEMO",
+                "summary": "spec11",
+                "testType": "Generic",
+                "definition": "spec11"
+            }
+        }
+    ]
+}
