@@ -39,11 +39,13 @@
     },
     "scripts": {
         "test:all": [
-            "vendor/bin/phpunit --testsuite Prepare -c phpunit_prepare.xml  --no-coverage --color=auto",
-            "vendor/bin/phpunit --testsuite Unit --color=auto"
+            "vendor/bin/phpunit --testsuite Prepare -c phpunit_prepare.xml  --no-coverage --color=always",
+            "vendor/bin/phpunit --testsuite Unit Feature --color=always",
+            "vendor/bin/phpunit --testsuite Unit Unit --color=always"
         ],
         "test:prepare": "vendor/bin/phpunit --testsuite Prepare -c phpunit_prepare.xml --no-coverage --color=always",
-        "test:unit": "vendor/bin/phpunit --testsuite Unit",
+        "test:unit": "vendor/bin/phpunit --testsuite Unit --no-coverage --color=always",
+        "test:feature": "vendor/bin/phpunit --testsuite Feature --no-coverage --color=always",
         "test:unit-f": "vendor/bin/phpunit --testsuite Unit --filter",
         "psalm": "vendor/bin/psalm",
         "psalm-c": "vendor/bin/psalm --clear-cache",
