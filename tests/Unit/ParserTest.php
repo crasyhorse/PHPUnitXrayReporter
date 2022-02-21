@@ -5,20 +5,19 @@ declare(strict_types=1);
 namespace CrasyHorse\Tests\Unit;
 
 use Carbon\Carbon;
-use Crasyhorse\PhpunitXrayReporter\Parser\Parser;
-use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TestResult;
-use Crasyhorse\PhpunitXrayReporter\Reporter\Results\SuccessfulTest;
-use Crasyhorse\PhpunitXrayReporter\Reporter\Results\FailedTest;
-use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TodoTest;
-use DateTimeZone;
-use Exception;
-use PHPUnit\Framework\TestCase;
-use InvalidArgumentException;
 use Crasyhorse\PhpunitXrayReporter\Config;
-use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestExecution;
-use Crasyhorse\PhpunitXrayReporter\Xray\Builder\TestBuilder;
+use Crasyhorse\PhpunitXrayReporter\Parser\Parser;
+use Crasyhorse\PhpunitXrayReporter\Reporter\Results\FailedTest;
+use Crasyhorse\PhpunitXrayReporter\Reporter\Results\SuccessfulTest;
+use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TestResult;
+use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TodoTest;
 use Crasyhorse\PhpunitXrayReporter\Xray\Builder\InfoBuilder;
+use Crasyhorse\PhpunitXrayReporter\Xray\Builder\TestBuilder;
 use Crasyhorse\PhpunitXrayReporter\Xray\Builder\TestInfoBuilder;
+use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestExecution;
+use DateTimeZone;
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Florian Weidinger
@@ -41,7 +40,6 @@ class ParserTest extends TestCase
      * @var string
      */
     protected $configDirWithoutInfo;
-
 
     protected function setup(): void
     {
@@ -123,7 +121,8 @@ class ParserTest extends TestCase
      * @test
      * @group Parser
      */
-    public function config_throws_exception_if_given_path_is_false(): void {
+    public function config_throws_exception_if_given_path_is_false(): void
+    {
         $this->expectException(InvalidArgumentException::class);
         $config = new Config($this->configDirExceptions.'.strange_prefix');
     }
@@ -166,12 +165,12 @@ class ParserTest extends TestCase
                     'XRAY-testExecutionKey' => 'DEMO-667',
                     'XRAY-TESTS-testKey' => 'DEMO-123',
                     'summery' => 'Update test execution DEMO-667 with little information.',
-                    'description' => "Update test execution DEMO-667 with little information.",
+                    'description' => 'Update test execution DEMO-667 with little information.',
                     'start' => $start->toIso8601String(),
                     'status' => SuccessfulTest::TEST_RESULT,
                     'name' => 'spec2',
                     'comment' => 'Test has passed.',
-                ]
+                ],
             ],
             'Failed test result without testExecutionKey and summary' => [
                 new FailedTest('CrasyHorse\Tests\Assets\PseudoSpec::spec3', $time, $start, 'Failed asserting 2+4=6'),
@@ -193,7 +192,7 @@ class ParserTest extends TestCase
                     'status' => FailedTest::TEST_RESULT,
                     'name' => 'spec3',
                     'comment' => 'Failed asserting 2+4=6',
-                ]
+                ],
             ],
         ];
     }
@@ -203,6 +202,7 @@ class ParserTest extends TestCase
         $start = Carbon::now(new DateTimeZone('Europe/Berlin'));
         // TODO time are Milliseconds or seconds? This Test acted before like Seconds, but implementation in TestResults like milliseconds
         $time = 2000;
+
         return [
             'XRAY-testExecutionKey is missing' => [
                 new SuccessfulTest('CrasyHorse\Tests\Assets\PseudoSpec::spec5', $time, $start),
@@ -216,41 +216,8 @@ class ParserTest extends TestCase
         ];
     }
 
-<<<<<<< HEAD
-    /**
-     * @dataProvider
-     */
-    public function Parsed_test_result_provider_for_errors()
+    public function objects_with_info_data_provider()
     {
-        return [
-            'Exception because Tag is empty' => [
-                new SuccessfulTest('CrasyHorse\Tests\Assets\PseudoSpec::spec5', $time, $start),
-                new InvalidArgumentException(),
-            ],
-            'Exception because Tag is empty' => [
-                new SuccessfulTest('CrasyHorse\Tests\Assets\PseudoSpec::spec6', $time, $start),
-                new InvalidArgumentException(),
-            ],
-            'Exception because Tag is empty' => [
-                new SuccessfulTest('CrasyHorse\Tests\Assets\PseudoSpec::spec7', $time, $start),
-                new InvalidArgumentException(),
-            ],
-        ];
-    }
-
-    /**
-     * @test
-     */
-    private function parserthrowsException_if_(TestResult $testResult, InvalidArgumentException $expected)
-    {
-        $parser = new Parser($this->configDir);
-        try {
-            $parser->parse($testResult);
-        } catch (Exception $actual) {
-            $this->assertEquals($actual, $expected);
-        }
-=======
-    public function objects_with_info_data_provider() {
         $start = Carbon::now(new DateTimeZone('Europe/Berlin'));
         // TODO time are Milliseconds or seconds? This Test acted before like Seconds, but implementation in TestResults like milliseconds
         $time = 0;
@@ -279,7 +246,7 @@ class ParserTest extends TestCase
                     (new TestInfoBuilder())
                         ->setProjectKey('DEMO')
                         ->setTestType('Generic')
-                        ->setRequirementKeys(['DEMO-1','DEMO-2'])
+                        ->setRequirementKeys(['DEMO-1', 'DEMO-2'])
                         ->setLabels(['workInProgress', 'Bug', 'NeedsTriage'])
                         ->setDefinition('The Test does nothing')
                         ->setSummary('Update test execution DEMO-666.')
@@ -324,7 +291,7 @@ class ParserTest extends TestCase
                     (new TestInfoBuilder())
                         ->setProjectKey('DEMO')
                         ->setTestType('Generic')
-                        ->setRequirementKeys(['DEMO-1','DEMO-2', 'DEMO-3'])
+                        ->setRequirementKeys(['DEMO-1', 'DEMO-2', 'DEMO-3'])
                         ->setLabels(['workInProgress', 'demo'])
                         ->setDefinition('Let\'s test')
                         ->setSummary('spec3')
@@ -345,12 +312,12 @@ class ParserTest extends TestCase
             'SuccessfulTest and without testExecutionKey as annotation so info needed' => [
                 new SuccessfulTest('CrasyHorse\Tests\Assets\PseudoSpec::spec3', $time, $start),
                 $testExecution3,
-            ]
+            ],
         ];
     }
 
-    public function objects_without_info_data_provider() {
-
+    public function objects_without_info_data_provider()
+    {
         $start = Carbon::now(new DateTimeZone('Europe/Berlin'));
         // TODO time are Milliseconds or seconds? This Test acted before like Seconds, but implementation in TestResults like milliseconds
         $time = 0;
@@ -369,7 +336,7 @@ class ParserTest extends TestCase
                     (new TestInfoBuilder())
                         ->setProjectKey('DEMO')
                         ->setTestType('Generic')
-                        ->setRequirementKeys(['DEMO-1','DEMO-2'])
+                        ->setRequirementKeys(['DEMO-1', 'DEMO-2'])
                         ->setLabels(['workInProgress', 'Bug', 'NeedsTriage'])
                         ->setDefinition('The Test does nothing')
                         ->setSummary('Update test execution DEMO-666.')
@@ -413,7 +380,7 @@ class ParserTest extends TestCase
                     (new TestInfoBuilder())
                         ->setProjectKey('DEMO')
                         ->setTestType('Generic')
-                        ->setRequirementKeys(['DEMO-1','DEMO-2', 'DEMO-3'])
+                        ->setRequirementKeys(['DEMO-1', 'DEMO-2', 'DEMO-3'])
                         ->setLabels(['workInProgress', 'demo'])
                         ->setDefinition('Let\'s test')
                         ->setSummary('spec3')
@@ -434,9 +401,8 @@ class ParserTest extends TestCase
             'SuccessfulTest and without testExecutionKey as annotation so testExecutionKey from config needed' => [
                 new SuccessfulTest('CrasyHorse\Tests\Assets\PseudoSpec::spec3', $time, $start),
                 $testExecution3,
-            ]
+            ],
         ];
->>>>>>> e706bdd4ea110af17124a9d67e20866b591c3592
     }
 
     /**

@@ -1,5 +1,5 @@
-PHP-Unit Xray Reporter [![Release](https://img.shields.io/github/v/release/crasyhorse/PHPUnitXrayReporter)](https://github.com/crasyhorse/PHPUnitXrayReporter/releases/latest) [![Downloads](https://img.shields.io/github/downloads/crasyhorse/PHPUnitXrayReporter/total)](https://github.com/crasyhorse/PHPUnitXrayReporter)
-=========
+# PHP-Unit Xray Reporter [![Release](https://img.shields.io/github/v/release/crasyhorse/PHPUnitXrayReporter)](https://github.com/crasyhorse/PHPUnitXrayReporter/releases/latest) [![Downloads](https://img.shields.io/github/downloads/crasyhorse/PHPUnitXrayReporter/total)](https://github.com/crasyhorse/PHPUnitXrayReporter)
+
 
 The purpose of this package is to convert annotated information from PHPunit tests doc blocks to JSON files. These are then used to import or update test executions in XRAY - Jira. It take use of the amazing package [Jasny PHPDoc parser](https://github.com/jasny/phpdoc-parser#jasny-phpdoc-parser).
 
@@ -89,9 +89,33 @@ The purpose of this package is to convert annotated information from PHPunit tes
     </tr>
 </table>
 
-## Config file example for info object
+## Configuration 
 
+### Phpunit XML
+
+Add this inside your Phpunit Configurationfile
+
+```xml
+   <extensions>
+        <extension class="Crasyhorse\PhpunitXrayReporter\Extension">
+            <arguments>
+                <string>.\tests\XRAYFiles</string>
+                <string>.\xray-reporterrc.json</string>
+            </arguments>
+        </extension>
+    </extensions>
 ```
+
+
+
+It is needed that you create an runtime configuration file with this name **xray-reporterrc.json**
+//IS this NAME really required=?
+
+in your project directory.
+
+### Example xray-reporterrc.json 
+
+```json
 {
     "testExecutionKey": "DEMO-1",
     "info": {
@@ -108,3 +132,6 @@ The purpose of this package is to convert annotated information from PHPunit tes
     }
 }
 ```
+
+The Fields description, version, revision, user. testPlanKey and testEnvironments can be left empty.
+
