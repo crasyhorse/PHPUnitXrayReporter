@@ -119,7 +119,7 @@ This example uses each possible tag.
     } 
 ```
 
-this in combination with the config file below results in the file **DEMO-4.json**:
+this in combination with the config file [xray-reporterrc.json](https://gitea.sysz.dom/Packages/PHPUnitXrayReporter/src/branch/feature/PUXR-3_ReadMe#example-xray-reporterrc-json) below results in the file **DEMO-4.json**:
 ```json
 {
     "testExecutionKey": "DEMO-4",
