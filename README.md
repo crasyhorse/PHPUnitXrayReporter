@@ -85,7 +85,7 @@ The purpose of this package is to convert annotated information from PHPunit tes
         <td>labels</td><td>@XRAY-TESTINFO-labels lable-1,label2,...</td><td>"</td>
     </tr>
     <tr>
-        <td>definition</td><td>@XRAY-TESTINFO-definition definition text</td><td>"</td>
+        <td>definition</td><td>@XRAY-TESTINFO-definition definition text</td><td>This field defines the test and should be unique! According to the XRAY documentation, this makes it an important component if the testKey is not specified. By the definition the text can be assigned namely to an already existing test, or on basis of this field a completely new test can be created. The field is obtained like the summary from the annotation or otherwise the test name.</td>
     </tr>
 </table>
 
@@ -108,10 +108,8 @@ Add this inside your Phpunit Configurationfile
 
 
 
-It is needed that you create an runtime configuration file with this name **xray-reporterrc.json**
-//IS this NAME really required=?
-
-in your project directory.
+The first argument is needed and defines the directory to store the generated json files. 
+The second one ist optional. It defines the path to the configuration file for the reporter. The default path is **xray-reporterrc.json**.
 
 ### Example xray-reporterrc.json 
 
@@ -133,5 +131,6 @@ in your project directory.
 }
 ```
 
-The Fields description, version, revision, user. testPlanKey and testEnvironments can be left empty.
+The Fields summary, description, version, revision, user. testPlanKey and testEnvironments can be left empty.
+Ideally one of project or testExecution should be given
 
