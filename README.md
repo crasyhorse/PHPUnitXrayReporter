@@ -89,7 +89,7 @@ The purpose of this package is to convert annotated information from PHPunit tes
     </tr>
 </table>
 
-### Example
+### Example with resulting json
 
 This example uses each possible tag.
 
@@ -99,15 +99,15 @@ This example uses each possible tag.
      * This test will return a PASS result and has all possible annotations we implemented.
      *
      * @test
-     * @XRAY-testExecutionKey PHPUnitXrayReporter-1
+     * @XRAY-testExecutionKey DEMO-4
      *
-     * @XRAY-TESTS-testKey PHPUnitXrayReporter-2
+     * @XRAY-TESTS-testKey DEMO-105
      * @XRAY-TESTS-comment This Test should return PASS
-     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
+     * @XRAY-TESTS-defects DEMO-67,DEMO-68
      *
-     * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
+     * @XRAY-TESTINFO-projectKey DEMO
      * @XRAY-TESTINFO-testType Generic
-     * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
+     * @XRAY-TESTINFO-requirementKeys DEMO-66,DEMO-45
      * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
      * @XRAY-TESTINFO-definition The Test sums 2+2=4 and expects 4
      */
@@ -118,6 +118,42 @@ This example uses each possible tag.
         $actual = $asset->add(2, 2);
         $this->assertEquals($expected, $actual);
     } 
+```
+
+this results in the file **DEMO-4.json**:
+```json
+{
+    "testExecutionKey": "DEMO-4",
+    "tests": [
+        {
+            "testKey": "DEMO-105",
+            "start": "2022-02-21T17:08:25+01:00",
+            "finish": "2022-02-21T17:08:25+01:00",
+            "comment": "Test has passed.",
+            "status": "PASS",
+            "defects": [
+                "DEMO-67",
+                "DEMO-68"
+            ],
+            "testInfo": {
+                "projectKey": "DEMO",
+                "summary": "Successful test.",
+                "description": "Successful test.\nThis test will return a PASS result and has all possible annotations we implemented.",
+                "testType": "Generic",
+                "requirementKeys": [
+                    "DEMO-66",
+                    "DEMO-45"
+                ],
+                "labels": [
+                    "workInProgress",
+                    "Bug",
+                    "NeedsTriage"
+                ],
+                "definition": "The Test sums 2+2=4 and expects 4"
+            }
+        }
+    ]
+}
 ```
 
 ## Configuration
@@ -165,3 +201,10 @@ The second one ist optional. It defines the path to the configuration file for t
 The Fields summary, description, version, revision, user. testPlanKey and testEnvironments can be left empty.
 Ideally one of project or testExecution should be given
 
+## Installation
+
+To install the Extension to your project simply run 
+
+```bash
+composer2 require crasyhorse/phpunit-xray-reporter:dev-dev -W
+```
