@@ -43,6 +43,7 @@ class ParserTest extends TestCase
 
     protected function setup(): void
     {
+        // setup different config directories for different tests
         $this->configDirExceptions = '.';
         foreach (['tests', 'Assets', 'xray-reporterrc_parsertest_exceptions.json'] as $pathPart) {
             $this->configDirExceptions = $this->configDirExceptions.DIRECTORY_SEPARATOR.$pathPart;

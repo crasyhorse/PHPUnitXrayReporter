@@ -68,7 +68,6 @@ class PseudoSpec
      * Update test execution DEMO-669.
      * This is really cool!
      *
-     *
      * @XRAY-TESTS-testKey DEMO-124
      * @XRAY-TESTS-defects DEMO-1,DEMO-2
      *
@@ -126,7 +125,6 @@ class PseudoSpec
      * Update test execution DEMO-669.
      * This is really cool!
      *
-     * 
      * @XRAY-TESTS-defects DEMO-1,DEMO-2
      *
      * @XRAY-TESTINFO-testType Generic
@@ -135,6 +133,38 @@ class PseudoSpec
      * @XRAY-TESTINFO-definition The Test does nothing
      */
     public function spec7(): void
+    {
+        // code
+    }
+
+    /**
+     * @test
+     */
+    public function spec8(): void
+    {
+        // code
+    }
+
+    /**
+     * @test
+     */
+    public function spec9(): void
+    {
+        // code
+    }
+
+    /**
+     * @test
+     */
+    public function spec10(): void
+    {
+        // code
+    }
+
+    /**
+     * @test
+     */
+    public function spec11(): void
     {
         // code
     }
