@@ -102,7 +102,6 @@ This example uses each possible tag.
      * @XRAY-testExecutionKey DEMO-4
      *
      * @XRAY-TESTS-testKey DEMO-105
-     * @XRAY-TESTS-comment This Test should return PASS
      * @XRAY-TESTS-defects DEMO-67,DEMO-68
      *
      * @XRAY-TESTINFO-projectKey DEMO
