@@ -119,7 +119,7 @@ This example uses each possible tag.
     } 
 ```
 
-this results in the file **DEMO-4.json**:
+this in combination with the config file below results in the file **DEMO-4.json**:
 ```json
 {
     "testExecutionKey": "DEMO-4",
@@ -229,7 +229,7 @@ The second one ist optional. It defines the path to the configuration file for t
 
 ```json
 {
-    "testExecutionKey": "DEMO-1",
+    "testExecutionKey": "DEMO-4",
     "info": {
         "project": "DEMO",
         "summary": "Example Config",
