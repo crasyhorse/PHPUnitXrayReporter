@@ -206,8 +206,8 @@ class BuilderHandler
             $testInfo = $testInfo->setDefinition($definition);
         }
 
-        if (!empty($result['summery'])) {
-            $summary = $result['summery'];
+        if (!empty($result['summary'])) {
+            $summary = $result['summary'];
             $testInfo = $testInfo->setSummary($summary);
         } else {
             $summary = $result['name'];

@@ -18,11 +18,11 @@ use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\Definition;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\Labels;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\ProjectKey;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\RequirementKeys;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\Summary;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\TestType;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\Defects;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\TestKey;
 use CrasyHorse\Tests\Unit\Tags\AdditionalCustomTag;
-use Jasny\PhpdocParser\Tag\Summery;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -91,7 +91,7 @@ class TagSetTest extends TestCase
             new Labels(),
             new ProjectKey(),
             new RequirementKeys(),
-            new Summery(),
+            new Summary(),
             new TestExecutionKey(),
             new TestKey(),
             new TestType(),
@@ -116,7 +116,7 @@ class TagSetTest extends TestCase
             new Labels(),
             new ProjectKey(),
             new RequirementKeys(),
-            new Summery(),
+            new Summary(),
             new TestExecutionKey(),
             new TestKey(),
             new TestType(),

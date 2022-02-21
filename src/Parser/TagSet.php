@@ -9,11 +9,11 @@ use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\Definition;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\Labels;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\ProjectKey;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\RequirementKeys;
+use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\Summary;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\TestType;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\Defects;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\TestKey;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
-use Jasny\PhpdocParser\Tag\Summery;
 
 /**
  * Manages the list of available customs tags and also provides the list
@@ -80,7 +80,7 @@ final class TagSet
             new Labels(),
             new ProjectKey(),
             new RequirementKeys(),
-            new Summery(),
+            new Summary(),
             new TestExecutionKey(),
             new TestKey(),
             new TestType(),

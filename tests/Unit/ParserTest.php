@@ -151,7 +151,7 @@ class ParserTest extends TestCase
                         'workInProgress', 'Bug', 'NeedsTriage',
                     ],
                     'XRAY-TESTINFO-definition' => 'The Test does nothing',
-                    'summery' => 'Update test execution DEMO-666.',
+                    'summary' => 'Update test execution DEMO-666.',
                     'description' => "Update test execution DEMO-666.\nThis test will return a PASS result and has all possible annotations we implemented.",
                     'start' => $start->toIso8601String(),
                     'status' => SuccessfulTest::TEST_RESULT,
@@ -164,7 +164,7 @@ class ParserTest extends TestCase
                 [
                     'XRAY-testExecutionKey' => 'DEMO-667',
                     'XRAY-TESTS-testKey' => 'DEMO-123',
-                    'summery' => 'Update test execution DEMO-667 with little information.',
+                    'summary' => 'Update test execution DEMO-667 with little information.',
                     'description' => 'Update test execution DEMO-667 with little information.',
                     'start' => $start->toIso8601String(),
                     'status' => SuccessfulTest::TEST_RESULT,
