@@ -155,6 +155,54 @@ this results in the file **DEMO-4.json**:
 }
 ```
 
+If the testExecutionKey is not given in the config file and the test doc block, the info object to create a new test execution is added to the json file **newExecution.json** (No test execution could be assigned.) like below:
+```json
+{
+    "info": {
+        "project": "DEMO",
+        "summary": "Example Config",
+        "description": "This is an example of the description in the config file.",
+        "version": "0.1.0",
+        "revision": "0.1.0.0002",
+        "user": "DemoUser",
+        "testPlanKey": "DEMO-2",
+        "testEnvironments": [
+            "IOS",
+            "Android"
+        ]
+    },
+    "tests": [
+        {
+            "testKey": "DEMO-105",
+            "start": "2022-02-21T17:13:03+01:00",
+            "finish": "2022-02-21T17:13:03+01:00",
+            "comment": "Test has passed.",
+            "status": "PASS",
+            "defects": [
+                "DEMO-67",
+                "DEMO-68"
+            ],
+            "testInfo": {
+                "projectKey": "DEMO",
+                "summary": "Successful test.",
+                "description": "Successful test.\nThis test will return a PASS result and has all possible annotations we implemented.",
+                "testType": "Generic",
+                "requirementKeys": [
+                    "DEMO-66",
+                    "DEMO-45"
+                ],
+                "labels": [
+                    "workInProgress",
+                    "Bug",
+                    "NeedsTriage"
+                ],
+                "definition": "The Test sums 2+2=4 and expects 4"
+            }
+        }
+    ]
+}
+```
+
 ## Configuration
 
 ### Phpunit XML
