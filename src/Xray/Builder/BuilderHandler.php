@@ -201,6 +201,9 @@ class BuilderHandler
         if (!empty($result['XRAY-TESTINFO-definition'])) {
             $definition = $result['XRAY-TESTINFO-definition'];
             $testInfo = $testInfo->setDefinition($definition);
+        } else {
+            $definition = $result['name'];
+            $testInfo = $testInfo->setDefinition($definition);
         }
 
         if (!empty($result['summery'])) {

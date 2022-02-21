@@ -65,7 +65,7 @@ class TestExecution implements JsonSerializable
         } else {
             $counter = 0;
             foreach ($this->tests as $test) {
-                if ($test->getTestKey() == $value->getTestKey()) {
+                if ($test->getName() == $value->getName()) {
                     $this->decideToOverwrite($test->getStatus(), $value, $counter);
                     $counter = -1;
                     break;
