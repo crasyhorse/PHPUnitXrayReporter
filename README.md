@@ -89,7 +89,38 @@ The purpose of this package is to convert annotated information from PHPunit tes
     </tr>
 </table>
 
-## Configuration 
+### Example
+
+This example uses each possible tag.
+
+```php
+   /**
+     * Successful test.
+     * This test will return a PASS result and has all possible annotations we implemented.
+     *
+     * @test
+     * @XRAY-testExecutionKey PHPUnitXrayReporter-1
+     *
+     * @XRAY-TESTS-testKey PHPUnitXrayReporter-2
+     * @XRAY-TESTS-comment This Test should return PASS
+     * @XRAY-TESTS-defects PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
+     *
+     * @XRAY-TESTINFO-projectKey PHPUnitXrayReporter
+     * @XRAY-TESTINFO-testType Generic
+     * @XRAY-TESTINFO-requirementKeys PHPUnitXrayReporter-1,PHPUnitXrayReporter-2
+     * @XRAY-TESTINFO-labels workInProgress,Bug,NeedsTriage
+     * @XRAY-TESTINFO-definition The Test sums 2+2=4 and expects 4
+     */
+    public function fully_annotated_successful_test(): void
+    {
+        $asset = new Asset();
+        $expected = 4;
+        $actual = $asset->add(2, 2);
+        $this->assertEquals($expected, $actual);
+    } 
+```
+
+## Configuration
 
 ### Phpunit XML
 
