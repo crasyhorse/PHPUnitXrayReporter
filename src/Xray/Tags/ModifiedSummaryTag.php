@@ -33,7 +33,7 @@ class ModifiedSummaryTag extends Summery
 
     private function cutOfAllAfterAnnotation($value): string
     {
-        preg_match('/(?<=\/\*\*)([^@]*)(?=\*\s@)/', $value, $matches);
+        preg_match('/(?<=\/\*\*)([^@]*)/', $value, $matches);
 
         return $matches[0];
     }
