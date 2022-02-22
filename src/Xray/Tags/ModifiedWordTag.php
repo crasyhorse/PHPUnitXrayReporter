@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Crasyhorse\PhpunitXrayReporter\Xray\Tags;
 
 use Jasny\PhpdocParser\Tag\WordTag;
-use Jasny\PhpdocParser\PhpdocException;
 use function Jasny\str_before;
 
-class ModifiedWordTag extends WordTag {
+class ModifiedWordTag extends WordTag
+{
     /**
-     * Must be overwritten because otherwise the word behind the Tag is fully taken 
+     * Must be overwritten because otherwise the word behind the Tag is fully taken
      * until a space is given. In this project this behavior is not desired. In comma
      * separated words, just the first one should be taken.
      *
@@ -18,12 +18,13 @@ class ModifiedWordTag extends WordTag {
      *
      * @return non-empty-array<array-key, array<array-key, mixed>|mixed>
      * @psalm-suppress PossiblyInvalidCast
-     * @psalm-suppress PossiblyInvalidArgument 
+     * @psalm-suppress PossiblyInvalidArgument
      */
     public function process(array $notations, string $value): array
     {
         if ($value === '') {
             $notations[$this->name] = $this->default;
+
             return $notations;
         }
 
@@ -44,7 +45,7 @@ class ModifiedWordTag extends WordTag {
      * @param string $value
      *
      * @return string|string[]|null
-     * @psalm-suppress PossiblyInvalidArgument 
+     * @psalm-suppress PossiblyInvalidArgument
      */
     protected function stripOffCommaSeparatedStrings($value)
     {

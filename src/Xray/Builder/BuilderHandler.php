@@ -29,39 +29,6 @@ class BuilderHandler
     }
 
     /**
-     * Builds the Xray type "TestExecution".
-     *
-     * 1) If the TestExecution object has a testExecutionKey attribute, it will be added to the list of updatable
-     * test executions.
-     * 2) If not and the TestExecutionKey is specified in the config, it will take this key and create a new TestExecution.
-     * 3) Otherwise, it is treated as a new test executions that should be imported into Xray and gets the info object.
-     *
-     * If the annotation is given without an attribute, an exception will be thrown.
-     *
-     * @param array<array-key, string> $testExecution
-     *
-     * @return void
-     */
-    public function buildTestExecution(array $testExecution, &$testExecutionsToUpdate, &$testExecutionToImport): void
-    {
-        if (array_key_exists('XRAY-testExecutionKey', $testExecution)) {
-            $testExecutionKey = $testExecution['XRAY-testExecutionKey'];
-            if (empty($testExecutionKey)) {
-                throw new InvalidArgumentException('XRAY-testExecutionKey has to be set, if annotation is given. Have you forgotten it? It is not set in test case: '.$testExecution['name']);
-            }
-            if (empty($testExecutionsToUpdate[$testExecutionKey])) {
-                $testExecutionsToUpdate[$testExecutionKey] = new TestExecution($testExecutionKey);
-            }
-        } elseif (!empty($this->config->getTestExecutionKey())) {
-            $testExecutionKey = $this->config->getTestExecutionKey();
-            $testExecutionsToUpdate[$testExecutionKey] = new TestExecution($testExecutionKey);
-        } else {
-            $testExecutionToImport = new TestExecution();
-            $testExecutionToImport->addInfo($this->buildInfo($this->config));
-        }
-    }
-
-    /**
      * Builds the XRAY type "info" object.
      *
      * @param Config
@@ -71,7 +38,7 @@ class BuilderHandler
     public function buildInfo(): Info
     {
         $info = (new InfoBuilder())
-            ->setProject($this->config->getProject());
+        ->setProject($this->config->getProject());
 
         if (!empty($this->config->getSummary())) {
             $info = $info->setSummary($this->config->getSummary());
@@ -137,6 +104,39 @@ class BuilderHandler
         $test = $test->setTestInfo($testInfo);
 
         return $test->build();
+    }
+
+    /**
+     * Builds the Xray type "TestExecution".
+     *
+     * 1) If the TestExecution object has a testExecutionKey attribute, it will be added to the list of updatable
+     * test executions.
+     * 2) If not and the TestExecutionKey is specified in the config, it will take this key and create a new TestExecution.
+     * 3) Otherwise, it is treated as a new test executions that should be imported into Xray and gets the info object.
+     *
+     * If the annotation is given without an attribute, an exception will be thrown.
+     *
+     * @param array<array-key, string> $testExecution
+     *
+     * @return void
+     */
+    public function buildTestExecution(array $testExecution, &$testExecutionsToUpdate, &$testExecutionToImport): void
+    {
+        if (array_key_exists('XRAY-testExecutionKey', $testExecution)) {
+            $testExecutionKey = $testExecution['XRAY-testExecutionKey'];
+            if (empty($testExecutionKey)) {
+                throw new InvalidArgumentException('XRAY-testExecutionKey has to be set, if annotation is given. Have you forgotten it? It is not set in test case: '.$testExecution['name']);
+            }
+            if (empty($testExecutionsToUpdate[$testExecutionKey])) {
+                $testExecutionsToUpdate[$testExecutionKey] = new TestExecution($testExecutionKey);
+            }
+        } elseif (!empty($this->config->getTestExecutionKey())) {
+            $testExecutionKey = $this->config->getTestExecutionKey();
+            $testExecutionsToUpdate[$testExecutionKey] = new TestExecution($testExecutionKey);
+        } else {
+            $testExecutionToImport = new TestExecution();
+            $testExecutionToImport->addInfo($this->buildInfo($this->config));
+        }
     }
 
     /**

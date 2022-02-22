@@ -16,6 +16,16 @@ use Carbon\Carbon;
 abstract class AbstractTestResult implements TestResult
 {
     /**
+     * @var string|null
+     */
+    protected $message;
+
+    /**
+     * @var string
+     */
+    protected $name;
+
+    /**
      * @var Carbon
      */
     protected $start;
@@ -30,16 +40,6 @@ abstract class AbstractTestResult implements TestResult
      */
     protected $time;
 
-    /**
-     * @var string|null
-     */
-    protected $message;
-
-    /**
-     * @var string
-     */
-    protected $name;
-
     public function __construct(string $test, float $time, Carbon $start, string $message = null)
     {
         $this->test = $test;
@@ -47,13 +47,6 @@ abstract class AbstractTestResult implements TestResult
         $this->time = $time * 1000; // converting to milliseconds for better usage of carbon
         $this->start = $start;
         $this->message = $message;
-    }
-
-    private function extractName(string $testString): string
-    {
-        preg_match('/(?<=::)([_0-9a-zA-Z]+)/', $testString, $name);
-
-        return $name[0];
     }
 
     /**
@@ -96,5 +89,15 @@ abstract class AbstractTestResult implements TestResult
     public function getTime(): float
     {
         return $this->time;
+    }
+
+    /**
+     * Takes hole PHPUnit test case string and extract the method name of the test.
+     */
+    private function extractName(string $testString): string
+    {
+        preg_match('/(?<=::)([_0-9a-zA-Z]+)/', $testString, $name);
+
+        return $name[0];
     }
 }

@@ -15,7 +15,7 @@ use ReflectionException;
 use ReflectionMethod;
 
 /**
- * Encapsulates jasny/phpdoc-parser.
+ * Encapsulates jasny/phpdoc-parser and performs transformation of parsed data into objects.
  *
  * @author Florian Weidinger
  *
@@ -23,6 +23,16 @@ use ReflectionMethod;
  */
 class Parser
 {
+    /**
+     * @var BuilderHandler
+     */
+    private $builderHandler;
+
+    /**
+     * @var Config
+     */
+    private $config;
+
     /**
      * @var array<array-key, XrayTag>
      */
@@ -37,16 +47,6 @@ class Parser
      * @var TestExecution[]
      */
     private $testExecutionsToUpdate = [];
-
-    /**
-     * @var Config
-     */
-    private $config;
-
-    /**
-     * @var BuilderHandler
-     */
-    private $builderHandler;
 
     /**
      * @param array<array-key, string>  $whitelistedTags      Allow additional tags like @test or @dataProvider
@@ -88,7 +88,8 @@ class Parser
     }
 
     /**
-     * Returns the merged test execution list of testExecutionsToUpdate and testExecutionToImport.
+     * Returns the merged test execution list of testExecutionsToUpdate (test executions with testExecutionKey)
+     * and testExecutionToImport (test execution without a testExecutionKey attribute).
      *
      * @return list<TestExecution>
      */
@@ -167,26 +168,6 @@ class Parser
     }
 
     /**
-     * Walks over the array of parsed results and creates the list of test executions
-     * (parse tree). The BuilderHandler acts like this for every doc block:.
-     *
-     * 1) If testExecutionKey (TEKey) is given in the doc block comment of the PHPunit test, an TE is created with this exact key.
-     * 2) Otherwise if the TEKey is given in the config file for this extension, an TE is created with the TEKey from the config.
-     * 3) Else, a TE without a Key is created. This special TE is the only one who gets the Info Object.
-     *
-     * @param array<array-key, string> $parsedResults
-     *
-     * @return void
-     */
-    private function groupByTestExecutions(array $parsedResults): void
-    {
-        /** @var array<array-key, string> $testExecution */
-        foreach ($parsedResults as $testExecution) {
-            $this->builderHandler->buildTestExecution($testExecution, $this->testExecutionsToUpdate, $this->testExecutionToImport);
-        }
-    }
-
-    /**
      * Fills the testExecutions with the related tests. The prevention of the doubling of iterations
      * is handled in the addTest()-method of TestExecution object.
      *
@@ -217,6 +198,26 @@ class Parser
                     $this->testExecutionToImport->addTest($test);
                 }
             }
+        }
+    }
+
+    /**
+     * Walks over the array of parsed results and creates the list of test executions
+     * (parse tree). The BuilderHandler acts like this for every doc block:.
+     *
+     * 1) If testExecutionKey (TEKey) is given in the doc block comment of the PHPunit test, an TE is created with this exact key.
+     * 2) Otherwise if the TEKey is given in the config file for this extension, an TE is created with the TEKey from the config.
+     * 3) Else, a TE without a Key is created. This special TE is the only one who gets the Info Object.
+     *
+     * @param array<array-key, string> $parsedResults
+     *
+     * @return void
+     */
+    private function groupByTestExecutions(array $parsedResults): void
+    {
+        /** @var array<array-key, string> $testExecution */
+        foreach ($parsedResults as $testExecution) {
+            $this->builderHandler->buildTestExecution($testExecution, $this->testExecutionsToUpdate, $this->testExecutionToImport);
         }
     }
 
