@@ -67,8 +67,10 @@ class ValidateReportFilesTest extends TestCase
         $this->XRAYFilesDirectory = dirname(__DIR__, 1).DIRECTORY_SEPARATOR.'XRAYFiles';
         $filelist = scandir($this->XRAYFilesDirectory);
         //remove . and ..
-        unset($filelist[0]);
-        unset($filelist[1]);
+        unset($filelist[array_search('.', $filelist)]);
+        unset($filelist[array_search('..', $filelist)]);
+        unset($filelist[array_search('.gitignore', $filelist)]);
+        unset($filelist[array_search('.gitkeep', $filelist)]);
 
         $testdata = [];
         foreach ($filelist as $file) {
