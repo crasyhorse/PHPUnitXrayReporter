@@ -70,11 +70,7 @@ class TestExecutionTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    // TODO Felix ist der Meinung, wir sollten für testKey und testExecutionKey
-    // auch Default Werte bereitstellen, da XRAY ohne einfach neue Tickets anlegt.
-    // Ist für uns vielleicht nicht sinnvoll, aber für mögliche andere Extension-Nutzer
-
-    /**
+    /*
      * No TestExecutionKey
      * This test uses no TestExecutionKey. An Exception should be thrown.
      *

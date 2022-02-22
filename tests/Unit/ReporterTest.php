@@ -57,14 +57,12 @@ class ReporterTest extends TestCase
         $actual = file_get_contents($this->outputDir.DIRECTORY_SEPARATOR.'newExecution.json');
         unlink($this->outputDir.DIRECTORY_SEPARATOR.'newExecution.json');
 
-        // TODO Change
         $this->assertEquals($expected, $actual);
     }
 
     public function no_testKey_data_provider()
     {
         $start = Carbon::now(new DateTimeZone('Europe/Berlin'));
-        // TODO time are Milliseconds or seconds? This Test acted before like Seconds, but implementation in TestResults like milliseconds
         $time = 0;
 
         return [

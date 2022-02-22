@@ -131,8 +131,7 @@ class ParserTest extends TestCase
     public function doc_block_correctness_result_provider(): array
     {
         $start = Carbon::now(new DateTimeZone('Europe/Berlin'));
-        // TODO time are Milliseconds or seconds? This Test acted before like Seconds, but implementation in TestResults like milliseconds
-        $time = 2000;
+        $time = 2;
 
         return [
             'Successful test result including TestInfo object.' => [
@@ -201,8 +200,7 @@ class ParserTest extends TestCase
     public function Parsed_test_result_provider_for_errors()
     {
         $start = Carbon::now(new DateTimeZone('Europe/Berlin'));
-        // TODO time are Milliseconds or seconds? This Test acted before like Seconds, but implementation in TestResults like milliseconds
-        $time = 2000;
+        $time = 2;
 
         return [
             'XRAY-testExecutionKey is missing' => [
@@ -220,7 +218,6 @@ class ParserTest extends TestCase
     public function objects_with_info_data_provider()
     {
         $start = Carbon::now(new DateTimeZone('Europe/Berlin'));
-        // TODO time are Milliseconds or seconds? This Test acted before like Seconds, but implementation in TestResults like milliseconds
         $time = 0;
 
         $info = (new InfoBuilder())
@@ -321,7 +318,6 @@ class ParserTest extends TestCase
     public function objects_without_info_data_provider()
     {
         $start = Carbon::now(new DateTimeZone('Europe/Berlin'));
-        // TODO time are Milliseconds or seconds? This Test acted before like Seconds, but implementation in TestResults like milliseconds
         $time = 0;
 
         $testExecution1 = new TestExecution('DEMO-666');
