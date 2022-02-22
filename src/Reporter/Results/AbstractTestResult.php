@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Crasyhorse\PhpunitXrayReporter\Reporter\Results;
 
 use Carbon\Carbon;
-use Carbon\CarbonInterval;
 
 /**
  * Represents the result of a test run.
@@ -45,7 +44,7 @@ abstract class AbstractTestResult implements TestResult
     {
         $this->test = $test;
         $this->name = $this->extractName($test);
-        $this->time = $time;
+        $this->time = $time * 1000; // converting to milliseconds for better usage of carbon
         $this->start = $start;
         $this->message = $message;
     }
@@ -66,8 +65,9 @@ abstract class AbstractTestResult implements TestResult
     public function getFinish(): string
     {
         $finish = $this->start->copy();
+        $finish->addMilliseconds($this->time);
 
-        return $finish->add(CarbonInterval::milliseconds($this->time))->toIso8601String();
+        return $finish->toIso8601String();
     }
 
     /**
