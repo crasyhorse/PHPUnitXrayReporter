@@ -7,7 +7,7 @@ namespace Crasyhorse\PhpunitXrayReporter\Xray\Builder;
 use Crasyhorse\PhpunitXrayReporter\Config;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\Info;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\Test;
-use Crasyhorse\PhpunitXrayReporter\XRAY\Types\TestExecution;
+use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestExecution;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestInfo;
 use InvalidArgumentException;
 
