@@ -190,8 +190,9 @@ class Parser
                 $testExecutionKey = $result['XRAY-testExecutionKey'];
                 $testExecution = $this->testExecutionsToUpdate[$testExecutionKey];
                 $testExecution->addTest($test);
-            } elseif (!empty($this->config->getTestExecutionKey())) {
-                $testExecutionKey = $this->config->getTestExecutionKey();
+            } elseif (!empty($this->config->get('testExecutionKey'))) {
+                /** @var string $testExecutionKey */
+                $testExecutionKey = $this->config->get('testExecutionKey');
                 $testExecution = $this->testExecutionsToUpdate[$testExecutionKey];
                 $testExecution->addTest($test);
             } else {

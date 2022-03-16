@@ -37,36 +37,37 @@ class BuilderHandler
      */
     public function buildInfo()
     {
-        $info = (new InfoBuilder())
-            ->setProject($this->config->getProject());
+        /** @var string */
+        $project = $this->config->get('info.project');
+        $info = (new InfoBuilder())->setProject($project);
 
-        if (!empty($this->config->getSummary())) {
-            $info = $info->setSummary($this->config->getSummary());
-        }
-
-        if (!empty($this->config->getDescription())) {
-            $info = $info->setDescription($this->config->getDescription());
-        }
-
-        if (!empty($this->config->getVersion())) {
-            $info = $info->setVersion($this->config->getVersion());
-        }
-
-        if (!empty($this->config->getRevision())) {
-            $info = $info->setRevision($this->config->getRevision());
-        }
-
-        if (!empty($this->config->getUser())) {
-            $info = $info->setUser($this->config->getUser());
-        }
-
-        if (!empty($this->config->getTestPlanKey())) {
-            $info = $info->setTestPlanKey($this->config->getTestPlanKey());
-        }
-
-        if (!empty($this->config->getTestEnvironments())) {
-            $info = $info->setTestEnvironments($this->config->getTestEnvironments());
-        }
+        /** @var string */
+        $summary = $this->config->get('info.summary');
+        $info = $info->setSummary($summary);
+        
+        /** @var string */
+        $description = $this->config->get('info.description');
+        $info = $info->setDescription($description);
+        
+        /** @var string */
+        $version = $this->config->get('info.version');
+        $info = $info->setVersion($version);
+        
+        /** @var string */
+        $revision = $this->config->get('info.revision');
+        $info = $info->setRevision($revision);
+        
+        /** @var string */
+        $user = $this->config->get('info.user');
+        $info = $info->setUser($user);
+        
+        /** @var string */
+        $testPlanKey = $this->config->get('info.testPlanKey');
+        $info = $info->setTestPlanKey($testPlanKey);
+        
+        /** @var array<array-key, string> */
+        $testEnvironments = $this->config->get('info.testEnvironments');
+        $info = $info->setTestEnvironments($testEnvironments);
 
         $this->info = $info->build();
 
@@ -135,12 +136,12 @@ class BuilderHandler
             if (empty($testExecutionKey)) {
                 throw new InvalidArgumentException('XRAY-testExecutionKey has to be set, if annotation is given. Have you forgotten it? It is not set in test case: '.$testExecution['name']);
             }
-
             if (empty($testExecutionsToUpdate[$testExecutionKey])) {
                 $testExecutionsToUpdate[$testExecutionKey] = new TestExecution($testExecutionKey);
             }
-        } elseif (!empty($this->config->getTestExecutionKey())) {
-            $testExecutionKey = $this->config->getTestExecutionKey();
+        } elseif (!empty($this->config->get('testExecutionKey'))) {
+            /** @var string $testExecutionKey */
+            $testExecutionKey = $this->config->get('testExecutionKey');
             $testExecutionsToUpdate[$testExecutionKey] = new TestExecution($testExecutionKey);
         } else {
             $testExecutionToImport = new TestExecution();
@@ -171,11 +172,14 @@ class BuilderHandler
         if (!empty($result['XRAY-TESTINFO-projectKey'])) {
             $projectKey = $result['XRAY-TESTINFO-projectKey'];
             $testInfo = $testInfo->setProjectKey($projectKey);
-        } elseif (!empty($this->config->getTestExecutionKey())) {
-            $projectKey = $this->stripOfKeyNumber($this->config->getTestExecutionKey());
+        } elseif (!empty($this->config->get('testExecutionKey'))) {
+            /** @var string $testExecutionKey */
+            $testExecutionKey = $this->config->get('testExecutionKey');
+            $projectKey = $this->stripOfKeyNumber($testExecutionKey);
             $testInfo = $testInfo->setProjectKey($projectKey);
         } elseif (!empty($this->info->getProject())) {
-            $projectKey = $this->config->getProject();
+            /** @var string $projectKey */
+            $projectKey = $this->config->get('info.project');
             $testInfo = $testInfo->setProjectKey($projectKey);
         } elseif (!empty($result['XRAY-testKey'])) {
             $projectKey = $this->stripOfKeyNumber($result['XRAY-testKey']);
