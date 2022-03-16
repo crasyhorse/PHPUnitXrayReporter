@@ -5,6 +5,7 @@
  * you can change this configuration by importing this file.
  */
 $config = new PhpCsFixer\Config();
+
 return $config
     ->setRules([
         // There MUST be one blank line after the namespace declaration.
@@ -67,6 +68,8 @@ return $config
         'ordered_class_elements' => true,
         // Ordering `use` statements.
         'ordered_imports' => true,
+        // Docblocks should only be used on structural elements.
+        'phpdoc_to_comment' => false,
         // There should be one or no space before colon, and one space after it in return type declarations, according to configuration.
         'return_type_declaration' => true,
         // Cast `(boolean)` and `(integer)` should be written as `(bool)` and `(int)`, `(double)` and `(real)` as `(float)`, `(binary)` as `(string)`.
