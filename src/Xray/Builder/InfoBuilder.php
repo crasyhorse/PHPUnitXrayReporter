@@ -53,7 +53,10 @@ class InfoBuilder implements Builder
         return $this->project;
     }
 
-    public function setProject(string $project): self
+    /**
+     * @return $this
+     */
+    public function setProject(string $project)
     {
         $this->project = $project;
 
@@ -65,7 +68,10 @@ class InfoBuilder implements Builder
         return $this->summary;
     }
 
-    public function setSummary(string $summary): self
+    /**
+     * @return $this
+     */
+    public function setSummary(string $summary)
     {
         $this->summary = $summary;
 
@@ -77,7 +83,10 @@ class InfoBuilder implements Builder
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    /**
+     * @return $this
+     */
+    public function setDescription(string $description)
     {
         $this->description = $description;
 
@@ -89,7 +98,10 @@ class InfoBuilder implements Builder
         return $this->version;
     }
 
-    public function setVersion(string $version): self
+    /**
+     * @return $this
+     */
+    public function setVersion(string $version)
     {
         $this->version = $version;
 
@@ -101,7 +113,10 @@ class InfoBuilder implements Builder
         return $this->revision;
     }
 
-    public function setRevision(string $revision): self
+    /**
+     * @return $this
+     */
+    public function setRevision(string $revision)
     {
         $this->revision = $revision;
 
@@ -113,7 +128,10 @@ class InfoBuilder implements Builder
         return $this->user;
     }
 
-    public function setUser(string $user): self
+    /**
+     * @return $this
+     */
+    public function setUser(string $user)
     {
         $this->user = $user;
 
@@ -125,7 +143,10 @@ class InfoBuilder implements Builder
         return $this->testPlanKey;
     }
 
-    public function setTestPlanKey(string $testPlanKey): self
+    /**
+     * @return $this
+     */
+    public function setTestPlanKey(string $testPlanKey)
     {
         $this->testPlanKey = $testPlanKey;
 
@@ -142,8 +163,9 @@ class InfoBuilder implements Builder
 
     /**
      * @param array<string> $testEnvironments
+     * @return $this
      */
-    public function setTestEnvironments($testEnvironments): self
+    public function setTestEnvironments($testEnvironments)
     {
         $this->testEnvironments = $testEnvironments;
 

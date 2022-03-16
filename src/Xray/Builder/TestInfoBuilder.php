@@ -43,17 +43,15 @@ class TestInfoBuilder implements Builder
      */
     private $definition = '';
 
-    public function __construct()
-    {
-        // Intentionally left blank
-    }
-
     public function getSummary(): string
     {
         return $this->summary;
     }
 
-    public function setSummary(string $summary): self
+    /**
+     * @return $this
+     */
+    public function setSummary(string $summary)
     {
         $this->summary = $summary;
 
@@ -65,7 +63,10 @@ class TestInfoBuilder implements Builder
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    /**
+     * @return $this
+     */
+    public function setDescription(string $description)
     {
         $this->description = $description;
 
@@ -77,7 +78,10 @@ class TestInfoBuilder implements Builder
         return $this->projectKey;
     }
 
-    public function setProjectKey(string $projectKey): self
+    /**
+     * @return $this
+     */
+    public function setProjectKey(string $projectKey)
     {
         $this->projectKey = $projectKey;
 
@@ -94,8 +98,9 @@ class TestInfoBuilder implements Builder
 
     /**
      * @param "Generic" | "Cumcumber" | null $testType
+     * @return $this
      */
-    public function setTestType($testType): self
+    public function setTestType($testType)
     {
         $this->testType = $testType;
 
@@ -112,8 +117,9 @@ class TestInfoBuilder implements Builder
 
     /**
      * @param array<array-key, string> $requirementKeys
+     * @return $this
      */
-    public function setRequirementKeys($requirementKeys): self
+    public function setRequirementKeys($requirementKeys)
     {
         $this->requirementKeys = $requirementKeys;
 
@@ -130,8 +136,9 @@ class TestInfoBuilder implements Builder
 
     /**
      * @param array<array-key,string> $labels
+     * @return $this
      */
-    public function setLabels($labels): self
+    public function setLabels($labels)
     {
         $this->labels = $labels;
 
@@ -143,7 +150,10 @@ class TestInfoBuilder implements Builder
         return $this->definition;
     }
 
-    public function setDefinition(string $definition): self
+    /**
+     * @return $this
+     */
+    public function setDefinition(string $definition)
     {
         $this->definition = $definition;
 

@@ -54,7 +54,10 @@ class TestBuilder implements Builder
         return $this->testKey;
     }
 
-    public function setTestKey(string $testKey): self
+    /**
+     * @return $this
+     */
+    public function setTestKey(string $testKey)
     {
         $this->testKey = $testKey;
 
@@ -66,7 +69,10 @@ class TestBuilder implements Builder
         return $this->comment;
     }
 
-    public function setComment(string $comment): self
+    /**
+     * @return $this
+     */
+    public function setComment(string $comment)
     {
         $this->comment = $comment;
 
@@ -83,8 +89,9 @@ class TestBuilder implements Builder
 
     /**
      * @param array<array-key, string> $defects
+     * @return $this
      */
-    public function setDefects($defects): self
+    public function setDefects($defects)
     {
         $this->defects = $defects;
 
@@ -99,7 +106,10 @@ class TestBuilder implements Builder
         return $this->testInfo;
     }
 
-    public function setTestInfo(TestInfo $testInfo): self
+    /**
+     * @return $this
+     */
+    public function setTestInfo(TestInfo $testInfo)
     {
         $this->testInfo = $testInfo;
 
@@ -111,7 +121,10 @@ class TestBuilder implements Builder
         return $this->start;
     }
 
-    public function setStart(string $start): self
+    /**
+     * @return $this
+     */
+    public function setStart(string $start)
     {
         $this->start = $start;
 
@@ -123,7 +136,10 @@ class TestBuilder implements Builder
         return $this->finish;
     }
 
-    public function setFinish(string $finish): self
+    /**
+     * @return $this
+     */
+    public function setFinish(string $finish)
     {
         $this->finish = $finish;
 
@@ -140,8 +156,9 @@ class TestBuilder implements Builder
 
     /**
      * @param "PASS" | "FAIL" | "TODO" $status
+     * @return $this
      */
-    public function setStatus($status): self
+    public function setStatus($status)
     {
         $this->status = $status;
 
@@ -156,7 +173,10 @@ class TestBuilder implements Builder
         return $this->name;
     }
 
-    public function setName(string $name): self
+    /**
+     * @return $this
+     */
+    public function setName(string $name)
     {
         $this->name = $name;
 
