@@ -10,7 +10,7 @@ use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestExecution;
 
 /**
- * Processes test results and the meta information for the annotations.
+ * Processes test results and the meta information from the annotations.
  *
  * @author Florian Weidinger
  *
