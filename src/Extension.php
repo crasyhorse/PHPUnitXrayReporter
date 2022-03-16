@@ -21,6 +21,8 @@ use PHPUnit\Runner\AfterTestWarningHook;
 use PHPUnit\Runner\BeforeTestHook;
 
 /**
+ * This is the PHPUnit Xray reporter itself.
+ * 
  * @author Florian Weidinger
  *
  * @since 0.1.0
@@ -37,6 +39,10 @@ final class Extension implements BeforeTestHook, AfterSuccessfulTestHook, AfterT
      */
     private $reporter;
 
+    /**
+     * @param string $outputDir Defines where to put the generated JSON files. Has to be set via phpunit.xml.
+     * @param string $configDir Location of the configuration file. Has to be set via phpunit.xml.
+     */
     public function __construct(string $outputDir = '.'.DIRECTORY_SEPARATOR, string $configDir = '.'.DIRECTORY_SEPARATOR.'xray-reporterrc.json')
     {
         $this->reporter = new Reporter($outputDir, $configDir);
