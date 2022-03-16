@@ -45,12 +45,12 @@ class Test implements JsonSerializable, XrayType
     private $finish;
 
     /**
-     * @var "PASS" | "FAIL"
+     * @var "PASS" | "FAIL" | "TODO"
      */
     private $status;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $name;
 
@@ -84,6 +84,9 @@ class Test implements JsonSerializable, XrayType
         return $this->defects;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName()
     {
         return $this->name;
@@ -108,7 +111,7 @@ class Test implements JsonSerializable, XrayType
     }
 
     /**
-     * @return "PASS" | "FAIL"
+     * @return "PASS" | "FAIL" | "TODO"
      */
     public function getStatus()
     {
@@ -118,19 +121,19 @@ class Test implements JsonSerializable, XrayType
     /**
      * Defines how this class is serialized into JSON.
      *
-     * @return mixed
+     * @psalm-suppress PossiblyNullReference
+     *
+     * @return array<array-key, mixed>
      */
     public function jsonSerialize()
     {
         $json = [];
         foreach (['testKey', 'start', 'finish', 'comment', 'status', 'defects'] as $attribute) {
             if (!empty($this->{$attribute})) {
-                /* @psalm-suppress MixedAssignment */
-                $json[$attribute] = $this->{$attribute};
+                $json[$attribute] = (string) $this->{$attribute};
             }
         }
 
-        /* @psalm-suppress PossiblyNullReference */
         if (!$this->getTestInfo()->isEmpty()) {
             $json['testInfo'] = $this->getTestInfo();
         }

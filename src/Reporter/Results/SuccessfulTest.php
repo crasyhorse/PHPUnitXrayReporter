@@ -18,14 +18,15 @@ final class SuccessfulTest extends AbstractTestResult
     /**
      * @var string
      */
-    const TEST_RESULT = 'PASS';
+    public const TEST_RESULT = 'PASS';
 
     public function __construct(string $test, float $time, Carbon $start)
     {
         parent::__construct($test, $time, $start);
     }
 
-    final public function getStatus(): string {
+    final public function getStatus(): string
+    {
         return self::TEST_RESULT;
     }
 }

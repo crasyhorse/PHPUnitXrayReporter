@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Crasyhorse\PhpunitXrayReporter\Xray\Builder;
 
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestInfo;
-use Crasyhorse\PhpunitXrayReporter\Xray\Types\XrayType;
 
 class TestInfoBuilder implements Builder
 {
@@ -156,7 +155,7 @@ class TestInfoBuilder implements Builder
      *
      * @return TestInfo
      */
-    public function build(): TestInfo
+    public function build()
     {
         return new TestInfo($this);
     }

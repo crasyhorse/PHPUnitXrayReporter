@@ -49,6 +49,7 @@ class Parser
     private $testExecutionsToUpdate = [];
 
     /**
+     * @param string                    $configDir            Location of the configuration file
      * @param array<array-key, string>  $whitelistedTags      Allow additional tags like @test or @dataProvider
      * @param array<array-key, string>  $blacklistedTags      Remove tags like @param or @return
      * @param array<array-key, XrayTag> $additionalCustomTags Additional Tags of type XrayTag
@@ -78,9 +79,9 @@ class Parser
      * Fired after the parser has finished creating the parse tree with all test executions.
      * Can be overriden by a developer to gain access to the parse tree.
      *
-     * @param list<TestExecution> $parseTree
+     * @param array<array-key,TestExecution> $parseTree
      *
-     * @return list<TestExecution>
+     * @return array<array-key,TestExecution>
      */
     public function afterParseTreeCreatedHook($parseTree)
     {
@@ -91,7 +92,7 @@ class Parser
      * Returns the merged test execution list of testExecutionsToUpdate (test executions with testExecutionKey)
      * and testExecutionToImport (test execution without a testExecutionKey attribute).
      *
-     * @return list<TestExecution>
+     * @return array<array-key,TestExecution>
      */
     final public function getMergedTestExecutionList()
     {
@@ -112,8 +113,6 @@ class Parser
      *
      * @return TestExecution|null
      */
-    // TODO If $this->testExecutionToImport is null, an error will be thrown. It is much saver to call getMergedTestExecutionList()
-    // to get every testExecution to generate the different json files
     final public function getTestExecutionToImport()
     {
         return $this->testExecutionToImport;
@@ -122,7 +121,7 @@ class Parser
     /**
      * Returns the list of test executions (parse Tree).
      *
-     * @return list<TestExecution>|null
+     * @return array<array-key,TestExecution>|null
      */
     final public function getTestExecutionsToUpdate()
     {
@@ -137,7 +136,7 @@ class Parser
      *
      * @return void
      */
-    final public function groupResults(array $parsedResults): void
+    final public function groupResults($parsedResults): void
     {
         $this->groupByTestExecutions($parsedResults);
         $this->fillTestExecutions($parsedResults);
@@ -145,6 +144,8 @@ class Parser
 
     /**
      * Parses the doc block of a method and finds all defined annotations with it's corresponding value.
+     *
+     * @param TestResult $result The result of a single PHPUnit spec
      *
      * @return array
      */
@@ -175,9 +176,11 @@ class Parser
      * 2) Otherwise if the TEKey is given in the config file for this extension, this TEKey corresponding TE is filled.
      * 3) Else, the TE to import is filled
      *
+     * @param array<array-key, string> $parsedResults The list of parsed/processed test results
+     *
      * @return void
      */
-    private function fillTestExecutions(array $parsedResults): void
+    private function fillTestExecutions($parsedResults): void
     {
         /** @var array<array-key, string> $result */
         foreach ($parsedResults as $result) {
@@ -185,12 +188,10 @@ class Parser
 
             if (array_key_exists('XRAY-testExecutionKey', $result)) {
                 $testExecutionKey = $result['XRAY-testExecutionKey'];
-                /** @var TestExecution $testExecution */
                 $testExecution = $this->testExecutionsToUpdate[$testExecutionKey];
                 $testExecution->addTest($test);
             } elseif (!empty($this->config->getTestExecutionKey())) {
                 $testExecutionKey = $this->config->getTestExecutionKey();
-                /** @var TestExecution $testExecution */
                 $testExecution = $this->testExecutionsToUpdate[$testExecutionKey];
                 $testExecution->addTest($test);
             } else {

@@ -9,6 +9,7 @@ use Crasyhorse\PhpunitXrayReporter\Xray\Types\Info;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\Test;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestExecution;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestInfo;
+use Crasyhorse\PhpunitXrayReporter\Xray\Types\XrayType;
 use InvalidArgumentException;
 
 class BuilderHandler
@@ -17,12 +18,13 @@ class BuilderHandler
      * @var Info
      */
     private $info;
+
     /**
      * @var Config
      */
     private $config;
 
-    public function __construct($config)
+    public function __construct(Config $config)
     {
         $this->config = $config;
         $this->info = $this->buildInfo();
@@ -31,36 +33,41 @@ class BuilderHandler
     /**
      * Builds the XRAY type "info" object.
      *
-     * @param Config
-     *
      * @return Info
      */
-    public function buildInfo(): Info
+    public function buildInfo()
     {
         $info = (new InfoBuilder())
-        ->setProject($this->config->getProject());
+            ->setProject($this->config->getProject());
 
         if (!empty($this->config->getSummary())) {
             $info = $info->setSummary($this->config->getSummary());
         }
+
         if (!empty($this->config->getDescription())) {
             $info = $info->setDescription($this->config->getDescription());
         }
+
         if (!empty($this->config->getVersion())) {
             $info = $info->setVersion($this->config->getVersion());
         }
+
         if (!empty($this->config->getRevision())) {
             $info = $info->setRevision($this->config->getRevision());
         }
+
         if (!empty($this->config->getUser())) {
             $info = $info->setUser($this->config->getUser());
         }
+
         if (!empty($this->config->getTestPlanKey())) {
             $info = $info->setTestPlanKey($this->config->getTestPlanKey());
         }
+
         if (!empty($this->config->getTestEnvironments())) {
             $info = $info->setTestEnvironments($this->config->getTestEnvironments());
         }
+
         $this->info = $info->build();
 
         return $this->info;
@@ -69,11 +76,11 @@ class BuilderHandler
     /**
      * Builds the Xray type "Test" object.
      *
-     * @param array<array-key, string> $result
+     * @param array<array-key, string> $result A single PHPUnit test result
      *
      * @return Test
      */
-    public function buildTest(array $result): Test
+    public function buildTest(array $result)
     {
         $test = (new TestBuilder())
                 ->setName($result['name'])
@@ -81,7 +88,7 @@ class BuilderHandler
                 ->setFinish($result['finish'])
                 ->setComment($result['comment']);
 
-        /** @var "PASS" | "FAIL" $status */
+        /** @var "PASS" | "FAIL"  | "TODO" $status */
         $status = $result['status'];
 
         $test = $test->setStatus($status);
@@ -117,16 +124,18 @@ class BuilderHandler
      * If the annotation is given without an attribute, an exception will be thrown.
      *
      * @param array<array-key, string> $testExecution
-     *
-     * @return void
+     * @param array<array-key, TestExecution> $testExecutionsToUpdate
+     * @param TestExecution|null $testExecutionToImport
      */
     public function buildTestExecution(array $testExecution, &$testExecutionsToUpdate, &$testExecutionToImport): void
     {
         if (array_key_exists('XRAY-testExecutionKey', $testExecution)) {
             $testExecutionKey = $testExecution['XRAY-testExecutionKey'];
+
             if (empty($testExecutionKey)) {
                 throw new InvalidArgumentException('XRAY-testExecutionKey has to be set, if annotation is given. Have you forgotten it? It is not set in test case: '.$testExecution['name']);
             }
+
             if (empty($testExecutionsToUpdate[$testExecutionKey])) {
                 $testExecutionsToUpdate[$testExecutionKey] = new TestExecution($testExecutionKey);
             }
@@ -135,7 +144,7 @@ class BuilderHandler
             $testExecutionsToUpdate[$testExecutionKey] = new TestExecution($testExecutionKey);
         } else {
             $testExecutionToImport = new TestExecution();
-            $testExecutionToImport->addInfo($this->buildInfo($this->config));
+            $testExecutionToImport->addInfo($this->buildInfo());
         }
     }
 
@@ -156,7 +165,7 @@ class BuilderHandler
      *
      * @return TestInfo
      */
-    public function buildTestInfo(array $result): TestInfo
+    public function buildTestInfo(array $result)
     {
         $testInfo = new TestInfoBuilder();
         if (!empty($result['XRAY-TESTINFO-projectKey'])) {
@@ -224,8 +233,6 @@ class BuilderHandler
 
     /**
      * Strips off the number behind the testExecutionKey or testKey. Afterwards the projectKey will be returned.
-     *
-     * @return string
      */
     private function stripOfKeyNumber(string $key): string
     {

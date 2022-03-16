@@ -108,8 +108,8 @@ final class TagSet
     private function applyBlackListToAllowedTags(array $allowedTags, array $blacklistedTags): array
     {
         return array_values(
-                    array_diff($allowedTags, $blacklistedTags)
-                );
+            array_diff($allowedTags, $blacklistedTags)
+        );
     }
 
     /**
@@ -148,10 +148,11 @@ final class TagSet
     private function setAllowedTags(): array
     {
         return $this->applyBlackListToAllowedTags(
-                    $this->applyWhiteListToAllowedTags(
-                        $this->getTagList(), $this->whitelistedTags
+            $this->applyWhiteListToAllowedTags(
+                        $this->getTagList(),
+                        $this->whitelistedTags
                     ),
-                    $this->blacklistedTags
-                );
+            $this->blacklistedTags
+        );
     }
 }

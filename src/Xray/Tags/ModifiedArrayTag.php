@@ -27,10 +27,13 @@ class ModifiedArrayTag extends ArrayTag
 
             return $notations;
         }
+
         $itemString = $this->stripParentheses($value);
+
         if (str_contains($itemString, '*')) {
             $itemString = $this->stripOffClosingDocBlockComment($itemString);
         }
+
         $items = $this->splitValue($itemString);
 
         try {
@@ -58,7 +61,7 @@ class ModifiedArrayTag extends ArrayTag
      */
     protected function stripOffClosingDocBlockComment($value)
     {
-        $matched = preg_match('/([^\/]*)(?=\*)/', $value, $matches);
+        preg_match('/([^\/]*)(?=\*)/', $value, $matches);
 
         $matches[0] = trim($matches[0]);
 

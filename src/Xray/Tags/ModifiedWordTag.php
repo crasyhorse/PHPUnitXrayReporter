@@ -27,11 +27,9 @@ class ModifiedWordTag extends WordTag
 
             return $notations;
         }
-
-        $matches = [];
-        $quoted = in_array($value[0], ['"', '\''], true) &&
-            preg_match('/^(?|"((?:[^"]+|\\\\.)*)"|\'((?:[^\']+|\\\\.)*)\')/', $value, $matches);
-
+        $matched = preg_match('/^(?|"((?:[^"]+|\\\\.)*)"|\'((?:[^\']+|\\\\.)*)\')/', $value, $matches);
+        $quoted = in_array($value[0], ['"', '\''], true) && $matched;
+            
         $word = $quoted ? $matches[1] : str_before($value, ' ');
         $word = $this->stripOffCommaSeparatedStrings($word);
         $notations[$this->name] = $word;

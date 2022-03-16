@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Crasyhorse\PhpunitXrayReporter;
 
-use Exception;
 use InvalidArgumentException;
 
 /**
+ * Makes the contents of the configuration file accessible to the extension.
+ *
  * @author Paul Friedemann
  *
  * @since 0.1.0
@@ -59,7 +60,7 @@ class Config
      */
     private $testEnvironments;
 
-    public function __construct($configDir)
+    public function __construct(string $configDir)
     {
         $this->readJsonFile($configDir);
     }
@@ -104,27 +105,37 @@ class Config
         return $this->testPlanKey;
     }
 
-    public function getTestEnvironments(): array
+    /**
+     * @return array<string>
+     */
+    public function getTestEnvironments()
     {
         return $this->testEnvironments;
     }
 
-    private function readJsonFile($configDir): void
+    private function readJsonFile(string $configDir): void
     {
         if (file_exists($configDir)) {
-            $json_content = json_decode(file_get_contents($configDir));
+            /** @var object $jsonContent */
+            $jsonContent = json_decode(file_get_contents($configDir));
         } else {
-            // TODO: This Exception only shows the Message without any hint or stack trace
             throw new InvalidArgumentException('The needed config file could not be found on the given path: '.$configDir);
         }
-        $this->testExecutionKey = $json_content->{'testExecutionKey'} ?? '';
-        $this->project = $json_content->{'info'}->{'project'} ?? '';
-        $this->summary = $json_content->{'info'}->{'summary'} ?? '';
-        $this->description = $json_content->{'info'}->{'description'} ?? '';
-        $this->version = $json_content->{'info'}->{'version'} ?? '';
-        $this->revision = $json_content->{'info'}->{'revision'} ?? '';
-        $this->user = $json_content->{'info'}->{'user'} ?? '';
-        $this->testPlanKey = $json_content->{'info'}->{'testPlanKey'} ?? '';
-        $this->testEnvironments = $json_content->{'info'}->{'testEnvironments'} ?? '';
+
+        $this->testExecutionKey = (string) ($jsonContent->testExecutionKey ?? '');
+
+        /** @var object */
+        $info = $jsonContent->info;
+
+        $this->project = (string) ($info->project ?? '');
+        $this->summary = (string) ($info->summary ?? '');
+        $this->description = (string) ($info->description ?? '');
+        $this->version = (string) ($info->version ?? '');
+        $this->revision = (string) ($info->revision ?? '');
+        $this->user = (string) ($info->user ?? '');
+        $this->testPlanKey = (string) ($info->testPlanKey ?? '');
+
+        /** @var array<array-key,string> */
+        $this->testEnvironments = ($info->testEnvironments ?? '');
     }
 }

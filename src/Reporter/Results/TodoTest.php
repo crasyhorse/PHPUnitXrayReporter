@@ -18,14 +18,18 @@ final class TodoTest extends AbstractTestResult
     /**
      * @var string
      */
-    const TEST_RESULT = 'TODO';
+    public const TEST_RESULT = 'TODO';
 
     public function __construct(string $test, float $time, Carbon $start, string $message)
     {
         parent::__construct($test, $time, $start, $message);
     }
 
-    final public function getStatus(): string {
+    /**
+     * @return "PASS" | "FAIL" | "TODO"
+     */
+    final public function getStatus()
+    {
         return self::TEST_RESULT;
     }
 }

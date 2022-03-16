@@ -63,21 +63,25 @@ class TestInfo implements JsonSerializable, XrayType
     /**
      * Defines how this class is serialized into JSON.
      *
-     * @return mixed
+     * @return array<array-key, mixed>
      */
     public function jsonSerialize()
     {
         $json = [];
         foreach (['projectKey', 'summary', 'description', 'testType', 'requirementKeys', 'labels', 'definition'] as $attribute) {
             if (!empty($this->{$attribute})) {
-                /* @psalm-suppress MixedAssignment */
-                $json[$attribute] = $this->{$attribute};
+                $json[$attribute] = (string) $this->{$attribute};
             }
         }
 
         return $json;
     }
 
+    /**
+     * Returns true if all attributes of the TestInfo object are empty.
+     *
+     * @return bool
+     */
     public function isEmpty(): bool
     {
         return empty($this->projectKey) &&

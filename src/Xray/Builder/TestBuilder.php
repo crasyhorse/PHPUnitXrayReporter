@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Crasyhorse\PhpunitXrayReporter\Xray\Builder;
 
-use Crasyhorse\PhpunitXrayReporter\Xray\Types\XrayType;
-use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestInfo;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\Test;
+use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestInfo;
 
-class TestBuilder implements Builder {
-
+class TestBuilder implements Builder
+{
     /**
      * @var string
      */
@@ -41,19 +40,14 @@ class TestBuilder implements Builder {
     private $finish = '';
 
     /**
-     * @var "PASS" | "FAIL"
+     * @var "PASS" | "FAIL" | "TODO"
      */
     private $status = 'FAIL';
 
     /**
      * @var string|null
      */
-    
     private $name = null;
-
-    public function __construct(){
-        // Intentionally left blank
-    }
 
     public function getTestKey(): string
     {
@@ -63,6 +57,7 @@ class TestBuilder implements Builder {
     public function setTestKey(string $testKey): self
     {
         $this->testKey = $testKey;
+
         return $this;
     }
 
@@ -70,10 +65,11 @@ class TestBuilder implements Builder {
     {
         return $this->comment;
     }
-    
+
     public function setComment(string $comment): self
     {
         $this->comment = $comment;
+
         return $this;
     }
 
@@ -84,13 +80,14 @@ class TestBuilder implements Builder {
     {
         return $this->defects;
     }
-    
+
     /**
      * @param array<array-key, string> $defects
      */
     public function setDefects($defects): self
     {
         $this->defects = $defects;
+
         return $this;
     }
 
@@ -101,10 +98,11 @@ class TestBuilder implements Builder {
     {
         return $this->testInfo;
     }
-    
+
     public function setTestInfo(TestInfo $testInfo): self
     {
         $this->testInfo = $testInfo;
+
         return $this;
     }
 
@@ -112,10 +110,11 @@ class TestBuilder implements Builder {
     {
         return $this->start;
     }
-    
+
     public function setStart(string $start): self
     {
         $this->start = $start;
+
         return $this;
     }
 
@@ -123,54 +122,54 @@ class TestBuilder implements Builder {
     {
         return $this->finish;
     }
-    
+
     public function setFinish(string $finish): self
     {
         $this->finish = $finish;
+
         return $this;
     }
 
     /**
-     * @return "PASS" | "FAIL"
+     * @return "PASS" | "FAIL" | "TODO"
      */
     public function getStatus()
     {
         return $this->status;
     }
-    
+
     /**
-     * @param "PASS" | "FAIL" $status
+     * @param "PASS" | "FAIL" | "TODO" $status
      */
     public function setStatus($status): self
     {
         $this->status = $status;
+
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getName()
     {
         return $this->name;
     }
-    
-    /**
-     * @param string
-     */
-    public function setName($name): self
+
+    public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
     /**
      * Builds a class of type XrayType.
-     * 
+     *
      * @return Test
      */
-    public function build(): Test {
+    public function build(): Test
+    {
         return new Test($this);
     }
-
 }

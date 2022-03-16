@@ -66,7 +66,7 @@ class Info implements JsonSerializable, XrayType
         $this->testEnvironments = $infoBuilder->getTestEnvironments();
     }
 
-    public function setProject($project): void
+    public function setProject(string $project): void
     {
         $this->project = $project;
     }
@@ -86,12 +86,12 @@ class Info implements JsonSerializable, XrayType
         return $this->description;
     }
 
-    public function getVersion()
+    public function getVersion(): string
     {
         return $this->version;
     }
 
-    public function getRevision()
+    public function getRevision(): string
     {
         return $this->revision;
     }
@@ -117,15 +117,14 @@ class Info implements JsonSerializable, XrayType
     /**
      * Defines how this class is serialized into JSON.
      *
-     * @return mixed
+     * @return array<array-key, string>
      */
     public function jsonSerialize()
     {
         $json = [];
         foreach (['project', 'summary', 'description', 'version', 'revision', 'user', 'testPlanKey', 'testEnvironments'] as $attribute) {
             if (!empty($this->{$attribute})) {
-                /* @psalm-suppress MixedAssignment */
-                $json[$attribute] = $this->{$attribute};
+                $json[$attribute] = (string) $this->{$attribute};
             }
         }
 

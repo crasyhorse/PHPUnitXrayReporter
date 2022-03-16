@@ -18,14 +18,15 @@ final class FailedTest extends AbstractTestResult
     /**
      * @var string
      */
-    const TEST_RESULT = 'FAIL';
+    public const TEST_RESULT = 'FAIL';
 
     public function __construct(string $test, float $time, Carbon $start, string $message)
     {
         parent::__construct($test, $time, $start, $message);
     }
 
-    final public function getStatus(): string {
+    final public function getStatus(): string
+    {
         return self::TEST_RESULT;
     }
 }

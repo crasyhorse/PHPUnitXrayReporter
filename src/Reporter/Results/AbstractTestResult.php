@@ -58,7 +58,7 @@ abstract class AbstractTestResult implements TestResult
     public function getFinish(): string
     {
         $finish = $this->start->copy();
-        $finish->addMilliseconds($this->time);
+        $finish->addMilliseconds(intval(round($this->time)));
 
         return $finish->toIso8601String();
     }

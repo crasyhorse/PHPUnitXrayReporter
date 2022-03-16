@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Crasyhorse\PhpunitXrayReporter\Xray\Builder;
 
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\Info;
-use Crasyhorse\PhpunitXrayReporter\Xray\Types\XrayType;
 
 class InfoBuilder implements Builder
 {
@@ -48,11 +47,6 @@ class InfoBuilder implements Builder
      * @var array<string>
      */
     private $testEnvironments = [];
-
-    public function __construct()
-    {
-        // Intentionally left blank
-    }
 
     public function getProject(): string
     {
@@ -119,7 +113,7 @@ class InfoBuilder implements Builder
         return $this->user;
     }
 
-    public function setUser($user): self
+    public function setUser(string $user): self
     {
         $this->user = $user;
 
@@ -131,7 +125,7 @@ class InfoBuilder implements Builder
         return $this->testPlanKey;
     }
 
-    public function setTestPlanKey($testPlanKey): self
+    public function setTestPlanKey(string $testPlanKey): self
     {
         $this->testPlanKey = $testPlanKey;
 
@@ -161,7 +155,7 @@ class InfoBuilder implements Builder
      *
      * @return Info
      */
-    public function build(): Info
+    public function build()
     {
         return new Info($this);
     }
