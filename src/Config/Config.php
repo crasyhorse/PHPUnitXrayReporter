@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Crasyhorse\PhpunitXrayReporter;
+namespace Crasyhorse\PhpunitXrayReporter\Config;
 
 use Adbar\Dot;
 use CrasyHorse\PhpunitXrayReporter\Exceptions\InvalidConfigurationException;
@@ -32,7 +32,8 @@ class Config
     public function __construct(string $configFileLocation)
     {
         $configuration = $this->readConfigurationFile($configFileLocation);
-        $this->configuration = $this->validate($configuration);
+        // $this->configuration = $this->validate($configuration);
+        $this->configuration = $configuration;
     }
 
     /**

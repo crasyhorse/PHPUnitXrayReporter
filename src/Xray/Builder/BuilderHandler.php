@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Crasyhorse\PhpunitXrayReporter\Xray\Builder;
 
-use Crasyhorse\PhpunitXrayReporter\Config;
+use Crasyhorse\PhpunitXrayReporter\Config\Config;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\Info;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\Test;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestExecution;
 use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestInfo;
-use Crasyhorse\PhpunitXrayReporter\Xray\Types\XrayType;
 use InvalidArgumentException;
 
 class BuilderHandler

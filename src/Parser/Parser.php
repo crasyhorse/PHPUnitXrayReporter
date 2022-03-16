@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Crasyhorse\PhpunitXrayReporter\Parser;
 
-use Crasyhorse\PhpunitXrayReporter\Config;
+use Crasyhorse\PhpunitXrayReporter\Config\Config;
 use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TestResult;
 use Crasyhorse\PhpunitXrayReporter\Xray\Builder\BuilderHandler;
 use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
