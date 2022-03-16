@@ -4,138 +4,107 @@ declare(strict_types=1);
 
 namespace Crasyhorse\PhpunitXrayReporter;
 
-use InvalidArgumentException;
+use Adbar\Dot;
+use CrasyHorse\PhpunitXrayReporter\Exceptions\InvalidConfigurationException;
+use CrasyHorse\PhpunitXrayReporter\Exceptions\InvalidArgumentException;
+use Opis\JsonSchema\Errors\ErrorFormatter;
+use Opis\JsonSchema\Helper;
+use Opis\JsonSchema\Validator;
 
 /**
- * Makes the contents of the configuration file accessible to the extension.
+ * This is the configuration object. It includes a json-schema for validation purposes.
  *
  * @author Paul Friedemann
+ * @author Florian Weidinger
  *
  * @since 0.1.0
  */
 class Config
 {
     /**
-     * @var string
+     * @var array
      */
-    private $testExecutionKey;
+    private $configuration;
 
     /**
-     * @var string
+     * @param string $configFileLocation Location of the configuration file. Has to be set via phpunit.xml.
      */
-    private $project;
-
-    /**
-     * @var string
-     */
-    private $summary;
-
-    /**
-     * @var string
-     */
-    private $description;
-
-    /**
-     * @var string
-     */
-    private $version;
-
-    /**
-     * @var string
-     */
-    private $revision;
-
-    /**
-     * @var string
-     */
-    private $user;
-
-    /**
-     * @var string
-     */
-    private $testPlanKey;
-
-    /**
-     * @var array<string>
-     */
-    private $testEnvironments;
-
-    public function __construct(string $configDir)
+    public function __construct(string $configFileLocation)
     {
-        $this->readJsonFile($configDir);
-    }
-
-    public function getTestExecutionKey(): string
-    {
-        return $this->testExecutionKey;
-    }
-
-    public function getProject(): string
-    {
-        return $this->project;
-    }
-
-    public function getSummary(): string
-    {
-        return $this->summary;
-    }
-
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
-    public function getVersion(): string
-    {
-        return $this->version;
-    }
-
-    public function getRevision(): string
-    {
-        return $this->revision;
-    }
-
-    public function getUser(): string
-    {
-        return $this->user;
-    }
-
-    public function getTestPlanKey(): string
-    {
-        return $this->testPlanKey;
+        $configuration = $this->readConfigurationFile($configFileLocation);
+        $this->configuration = $this->validate($configuration);
     }
 
     /**
-     * @return array<string>
+     * Wrapper for Dot::get to return the configuration.
+     *
+     * @param string|null $name The name of the configuration object to return. If
+     * no name is given, the complete configuration object will be returned.
+     *
+     * @return array|string|null
      */
-    public function getTestEnvironments()
+    public function get(string $name = null)
     {
-        return $this->testEnvironments;
+        $dot = new Dot($this->configuration);
+
+        /** @var array|string|null */
+        return $dot->get($name);
     }
 
-    private function readJsonFile(string $configDir): void
+    /**
+     * Validates the configuration object.
+     *
+     * @param array $configuration
+     *
+     * @return array
+     * @throws \CrasyHorse\PhpunitXrayReporter\Exceptions\InvalidConfigurationException
+     */
+    private function validate(array $configuration): array
     {
-        if (file_exists($configDir)) {
-            /** @var object $jsonContent */
-            $jsonContent = json_decode(file_get_contents($configDir));
-        } else {
-            throw new InvalidArgumentException('The needed config file could not be found on the given path: '.$configDir);
+        $validator = new Validator();
+        $resolver = $validator->resolver();
+
+        /** @var \Opis\JsonSchema\Resolvers\SchemaResolver $resolver */
+        $resolver->registerFile(
+            'https://github.com/crasyhorse/PHPUnitXrayReporter/configSchema.json',
+            __DIR__ . DIRECTORY_SEPARATOR . 'configSchema.json'
+        );
+
+        /** @var object $data */
+        $data = Helper::toJSON($configuration);
+        $result = $validator->validate(
+            $data,
+            'https://github.com/crasyhorse/PHPUnitXrayReporter/configSchema.json'
+        );
+
+        if (!$result->isValid()) {
+            $formatter = new ErrorFormatter();
+
+            /** @var \Opis\JsonSchema\Errors\ValidationError $validationErrors */
+            $validationErrors = $result->error();
+            $formattedValidationErrors = $formatter->formatFlat($validationErrors);
+
+            throw new InvalidConfigurationException($formattedValidationErrors);
         }
 
-        $this->testExecutionKey = (string) ($jsonContent->testExecutionKey ?? '');
+        return $configuration;
+    }
 
-        /** @var object */
-        $info = $jsonContent->info;
-
-        $this->project = (string) ($info->project ?? '');
-        $this->summary = (string) ($info->summary ?? '');
-        $this->description = (string) ($info->description ?? '');
-        $this->version = (string) ($info->version ?? '');
-        $this->revision = (string) ($info->revision ?? '');
-        $this->user = (string) ($info->user ?? '');
-        $this->testPlanKey = (string) ($info->testPlanKey ?? '');
-
-        /** @var array<array-key,string> */
-        $this->testEnvironments = ($info->testEnvironments ?? '');
+    /**
+     * Reads the configuration file and returns the decoded array.
+     *
+     * @param string $configFileLocation Location of the configuration file. Has to be set via phpunit.xml.
+     *
+     * @return array
+     * @throws \CrasyHorse\PhpunitXrayReporter\Exceptions\InvalidArgumentException
+     */
+    private function readConfigurationFile(string $configFileLocation): array
+    {
+        if (file_exists($configFileLocation)) {
+            /** @var array */
+            return json_decode(file_get_contents($configFileLocation), true);
+        } else {
+            throw new InvalidArgumentException('The needed config file could not be found on the given path: '.$configFileLocation);
+        }
     }
 }
