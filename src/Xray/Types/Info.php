@@ -124,7 +124,8 @@ class Info implements JsonSerializable, XrayType
         $json = [];
         foreach (['project', 'summary', 'description', 'version', 'revision', 'user', 'testPlanKey', 'testEnvironments'] as $attribute) {
             if (!empty($this->{$attribute})) {
-                $json[$attribute] = (string) $this->{$attribute};
+                /** @var string|array */
+                $json[$attribute] = $this->{$attribute};
             }
         }
 

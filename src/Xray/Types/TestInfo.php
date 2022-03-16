@@ -70,7 +70,8 @@ class TestInfo implements JsonSerializable, XrayType
         $json = [];
         foreach (['projectKey', 'summary', 'description', 'testType', 'requirementKeys', 'labels', 'definition'] as $attribute) {
             if (!empty($this->{$attribute})) {
-                $json[$attribute] = (string) $this->{$attribute};
+                /** @var string|array */
+                $json[$attribute] = $this->{$attribute};
             }
         }
 

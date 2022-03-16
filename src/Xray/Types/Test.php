@@ -130,7 +130,8 @@ class Test implements JsonSerializable, XrayType
         $json = [];
         foreach (['testKey', 'start', 'finish', 'comment', 'status', 'defects'] as $attribute) {
             if (!empty($this->{$attribute})) {
-                $json[$attribute] = (string) $this->{$attribute};
+                /** @var string|array */
+                $json[$attribute] = $this->{$attribute};
             }
         }
 
