@@ -8,7 +8,7 @@ use Crasyhorse\PhpunitXrayReporter\Xray\Builder\TestInfoBuilder;
 use JsonSerializable;
 
 /**
- * Represents a Xray "TestInfo" object.
+ * Represents an Xray "TestInfo" object.
  *
  * @author Florian Weidinger
  */
