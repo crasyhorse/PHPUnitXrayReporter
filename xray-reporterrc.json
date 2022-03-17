@@ -1,12 +1,12 @@
 {
     "info": {
-        "project": "PRTL",
+        "project": "DEMO",
         "summary": "Beispiel-Config",
         "description": "Das Beispiel für die Beschreibung",
         "version": "0.3.0",
         "revision": "0.3.0",
         "user": "Botuser",
-        "testPlanKey": "PRTL-365635",
+        "testPlanKey": "DEMO-365635",
         "testEnvironments": [
             "IOS", "Android"
         ]
