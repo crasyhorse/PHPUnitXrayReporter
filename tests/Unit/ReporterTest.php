@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CrasyHorse\Tests\Unit;
 
 use Carbon\Carbon;
-use Crasyhorse\PhpunitXrayReporter\Reporter\Reporter;
-use Crasyhorse\PhpunitXrayReporter\Reporter\Results\FailedTest;
-use Crasyhorse\PhpunitXrayReporter\Reporter\Results\SuccessfulTest;
+use CrasyHorse\PhpunitXrayReporter\Reporter\Reporter;
+use CrasyHorse\PhpunitXrayReporter\Reporter\Results\FailedTest;
+use CrasyHorse\PhpunitXrayReporter\Reporter\Results\SuccessfulTest;
 use DateTimeZone;
 use PHPUnit\Framework\TestCase;
 

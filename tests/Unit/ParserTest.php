@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace CrasyHorse\Tests\Unit;
 
 use Carbon\Carbon;
-use Crasyhorse\PhpunitXrayReporter\Config;
-use Crasyhorse\PhpunitXrayReporter\Parser\Parser;
-use Crasyhorse\PhpunitXrayReporter\Reporter\Results\FailedTest;
-use Crasyhorse\PhpunitXrayReporter\Reporter\Results\SuccessfulTest;
-use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TestResult;
-use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TodoTest;
-use Crasyhorse\PhpunitXrayReporter\Xray\Builder\InfoBuilder;
-use Crasyhorse\PhpunitXrayReporter\Xray\Builder\TestBuilder;
-use Crasyhorse\PhpunitXrayReporter\Xray\Builder\TestInfoBuilder;
-use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestExecution;
+use CrasyHorse\PhpunitXrayReporter\Config\Config;
+use CrasyHorse\PhpunitXrayReporter\Parser\Parser;
+use CrasyHorse\PhpunitXrayReporter\Reporter\Results\FailedTest;
+use CrasyHorse\PhpunitXrayReporter\Reporter\Results\SuccessfulTest;
+use CrasyHorse\PhpunitXrayReporter\Reporter\Results\TestResult;
+use CrasyHorse\PhpunitXrayReporter\Reporter\Results\TodoTest;
+use CrasyHorse\PhpunitXrayReporter\Xray\Builder\InfoBuilder;
+use CrasyHorse\PhpunitXrayReporter\Xray\Builder\TestBuilder;
+use CrasyHorse\PhpunitXrayReporter\Xray\Builder\TestInfoBuilder;
+use CrasyHorse\PhpunitXrayReporter\Xray\Types\TestExecution;
 use DateTimeZone;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -85,7 +85,7 @@ class ParserTest extends TestCase
         $parser = new Parser($this->configDirWithInfo);
         $actual = $parser->parse($testResult);
         $parser->groupResults([$actual]);
-        $actual = array_values($parser->getMergedTestExecutionList())[0];
+        $actual = array_values($parser->getTestExecutions())[0];
 
         $this->assertEquals($expected, $actual);
     }
@@ -100,7 +100,7 @@ class ParserTest extends TestCase
         $parser = new Parser($this->configDirWithoutInfo);
         $actual = $parser->parse($testResult);
         $parser->groupResults([$actual]);
-        $actual = array_values($parser->getMergedTestExecutionList())[0];
+        $actual = array_values($parser->getTestExecutions())[0];
 
         $this->assertEquals($expected, $actual);
     }
