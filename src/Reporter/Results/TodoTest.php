@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Crasyhorse\PhpunitXrayReporter\Reporter\Results;
+namespace CrasyHorse\PhpunitXrayReporter\Reporter\Results;
 
 use Carbon\Carbon;
 

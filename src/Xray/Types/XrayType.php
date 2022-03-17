@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Crasyhorse\PhpunitXrayReporter\Xray\Types;
+namespace CrasyHorse\PhpunitXrayReporter\Xray\Types;
 
 /**
  * Identifies a class that represents an XRay-JSON type.

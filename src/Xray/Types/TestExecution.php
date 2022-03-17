@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Crasyhorse\PhpunitXrayReporter\Xray\Types;
+namespace CrasyHorse\PhpunitXrayReporter\Xray\Types;
 
-use Crasyhorse\PhpunitXrayReporter\Reporter\Results\FailedTest;
-use Crasyhorse\PhpunitXrayReporter\Reporter\Results\SuccessfulTest;
-use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TodoTest;
+use CrasyHorse\PhpunitXrayReporter\Reporter\Results\FailedTest;
+use CrasyHorse\PhpunitXrayReporter\Reporter\Results\SuccessfulTest;
+use CrasyHorse\PhpunitXrayReporter\Reporter\Results\TodoTest;
 use JsonSerializable;
 
 /**
@@ -32,7 +32,7 @@ class TestExecution implements JsonSerializable, XrayType
     private $tests = [];
 
     /**
-     * @param array<array-key, Test> $tests
+     * @param string|null $key A Jira issue key representing a test execution ticket
      */
     public function __construct(string $key = null)
     {

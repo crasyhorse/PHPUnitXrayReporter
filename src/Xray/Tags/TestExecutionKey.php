@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Crasyhorse\PhpunitXrayReporter\Xray\Tags;
+namespace CrasyHorse\PhpunitXrayReporter\Xray\Tags;
 
 /**
  * Represents the XrayTag that correlats with the XrayType TestExecutionKey.

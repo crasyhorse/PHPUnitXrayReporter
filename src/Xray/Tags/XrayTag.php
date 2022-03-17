@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Crasyhorse\PhpunitXrayReporter\Xray\Tags;
+namespace CrasyHorse\PhpunitXrayReporter\Xray\Tags;
 
 /**
  * Identifies a class that represents an XRay tag.

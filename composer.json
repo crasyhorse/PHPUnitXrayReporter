@@ -11,7 +11,7 @@
     }],
     "autoload": {
         "psr-4": {
-            "Crasyhorse\\PhpunitXrayReporter\\": "src/"
+            "CrasyHorse\\PhpunitXrayReporter\\": "src/"
         }
     },
     "autoload-dev": {

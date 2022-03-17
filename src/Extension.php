@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Crasyhorse\PhpunitXrayReporter;
+namespace CrasyHorse\PhpunitXrayReporter;
 
 use Carbon\Carbon;
-use Crasyhorse\PhpunitXrayReporter\Reporter\Reporter;
-use Crasyhorse\PhpunitXrayReporter\Reporter\Results\FailedTest;
-use Crasyhorse\PhpunitXrayReporter\Reporter\Results\SuccessfulTest;
-use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TodoTest;
+use CrasyHorse\PhpunitXrayReporter\Reporter\Reporter;
+use CrasyHorse\PhpunitXrayReporter\Reporter\Results\FailedTest;
+use CrasyHorse\PhpunitXrayReporter\Reporter\Results\SuccessfulTest;
+use CrasyHorse\PhpunitXrayReporter\Reporter\Results\TodoTest;
 use DateTimeZone;
 use PHPUnit\Runner\AfterIncompleteTestHook;
 use PHPUnit\Runner\AfterRiskyTestHook;

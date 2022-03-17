@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Crasyhorse\PhpunitXrayReporter\Parser;
+namespace CrasyHorse\PhpunitXrayReporter\Parser;
 
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestExecutionKey;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\Definition;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\Labels;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\ProjectKey;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\RequirementKeys;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\Summary;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo\TestType;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\Defects;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\Tests\TestKey;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
+use CrasyHorse\PhpunitXrayReporter\Xray\Tags\TestExecutionKey;
+use CrasyHorse\PhpunitXrayReporter\Xray\Tags\TestInfo\Definition;
+use CrasyHorse\PhpunitXrayReporter\Xray\Tags\TestInfo\Labels;
+use CrasyHorse\PhpunitXrayReporter\Xray\Tags\TestInfo\ProjectKey;
+use CrasyHorse\PhpunitXrayReporter\Xray\Tags\TestInfo\RequirementKeys;
+use CrasyHorse\PhpunitXrayReporter\Xray\Tags\TestInfo\Summary;
+use CrasyHorse\PhpunitXrayReporter\Xray\Tags\TestInfo\TestType;
+use CrasyHorse\PhpunitXrayReporter\Xray\Tags\Tests\Defects;
+use CrasyHorse\PhpunitXrayReporter\Xray\Tags\Tests\TestKey;
+use CrasyHorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
 
 /**
  * Manages the list of available customs tags and also provides the list

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Crasyhorse\PhpunitXrayReporter\Xray\Builder;
+namespace CrasyHorse\PhpunitXrayReporter\Xray\Builder;
 
-use Crasyhorse\PhpunitXrayReporter\Xray\Types\Test;
-use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestInfo;
+use CrasyHorse\PhpunitXrayReporter\Xray\Types\Test;
+use CrasyHorse\PhpunitXrayReporter\Xray\Types\TestInfo;
 
 class TestBuilder implements Builder
 {

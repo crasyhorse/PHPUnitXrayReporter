@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Crasyhorse\PhpunitXrayReporter\Xray\Types;
+namespace CrasyHorse\PhpunitXrayReporter\Xray\Types;
 
-use Crasyhorse\PhpunitXrayReporter\Xray\Builder\InfoBuilder;
+use CrasyHorse\PhpunitXrayReporter\Xray\Builder\InfoBuilder;
 use JsonSerializable;
 
 /**

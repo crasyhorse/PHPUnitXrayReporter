@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Crasyhorse\PhpunitXrayReporter\Xray\Tags\TestInfo;
+namespace CrasyHorse\PhpunitXrayReporter\Xray\Tags\TestInfo;
 
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\ModifiedWordTag;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
+use CrasyHorse\PhpunitXrayReporter\Xray\Tags\ModifiedWordTag;
+use CrasyHorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
 
 /**
  * Represents the XrayTag that correlats with the XrayType TestType.

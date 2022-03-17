@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Crasyhorse\PhpunitXrayReporter\Config;
+namespace CrasyHorse\PhpunitXrayReporter\Config;
 
 use Adbar\Dot;
 use CrasyHorse\PhpunitXrayReporter\Exceptions\InvalidConfigurationException;

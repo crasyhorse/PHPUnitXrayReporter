@@ -34,7 +34,7 @@
         </report>
     </coverage>
     <extensions>
-        <extension class="Crasyhorse\PhpunitXrayReporter\Extension">
+        <extension class="CrasyHorse\PhpunitXrayReporter\Extension">
             <arguments>
                 <string>.\tests\XRAYFiles</string>
                 <string>.\xray-reporterrc.json</string>

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Crasyhorse\PhpunitXrayReporter\Reporter;
+namespace CrasyHorse\PhpunitXrayReporter\Reporter;
 
-use Crasyhorse\PhpunitXrayReporter\Parser\Parser;
-use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TestResult;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
-use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestExecution;
+use CrasyHorse\PhpunitXrayReporter\Parser\Parser;
+use CrasyHorse\PhpunitXrayReporter\Reporter\Results\TestResult;
+use CrasyHorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
+use CrasyHorse\PhpunitXrayReporter\Xray\Types\TestExecution;
 
 /**
  * Processes test results and the meta information from the annotations.
