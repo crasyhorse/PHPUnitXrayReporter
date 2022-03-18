@@ -22,9 +22,19 @@ class ModifiedSummaryTag extends Summery
     public function process(array $notations, string $value): array
     {
         $value = $this->cutOfAllAfterAnnotation($value);
-        preg_match('/(?=\s*)([^@\s\/*][^\r\n]*)/', $value, $matches);
-        $notations['summary'] = $matches[0];
+        preg_match_all('/(?=\s*)([^@\s\/*][^\r\n]*)/', $value, $matches);
 
+        if (array_key_exists(0, $matches[0]))
+        {
+            $notations['summary'] = $matches[0][0];
+
+            if (array_key_exists(1, $matches[0]))
+            {
+                $notations['description'] = $matches[0][1];
+            } else {
+                $notations['description'] = $matches[0][0];
+            }
+        }
         return $notations;
     }
 
