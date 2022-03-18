@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Crasyhorse\PhpunitXrayReporter\Xray\Builder;
+namespace CrasyHorse\PhpunitXrayReporter\Xray\Builder;
 
-use Crasyhorse\PhpunitXrayReporter\Config\Config;
-use Crasyhorse\PhpunitXrayReporter\Xray\Types\Info;
-use Crasyhorse\PhpunitXrayReporter\Xray\Types\Test;
-use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestExecution;
-use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestInfo;
-use InvalidArgumentException;
+use Adbar\Dot;
+use CrasyHorse\PhpunitXrayReporter\Config\Config;
+use CrasyHorse\PhpunitXrayReporter\Xray\Types\Info;
+use CrasyHorse\PhpunitXrayReporter\Xray\Types\Test;
+use CrasyHorse\PhpunitXrayReporter\Xray\Types\TestExecution;
+use CrasyHorse\PhpunitXrayReporter\Xray\Types\TestInfo;
+use CrasyHorse\PhpunitXrayReporter\Exceptions\InvalidArgumentException;
 
 class BuilderHandler
 {
@@ -95,9 +96,11 @@ class BuilderHandler
 
         if (array_key_exists('XRAY-TESTS-testKey', $result)) {
             $testKey = $result['XRAY-TESTS-testKey'];
+
             if (empty($testKey)) {
                 throw new InvalidArgumentException('XRAY-TESTS-testKey has to be set, if annotation is given. Have you forgotten it? It is not set in test case: '.$result['name']);
             }
+            
             $test = $test->setTestKey($testKey);
         }
 
@@ -116,36 +119,31 @@ class BuilderHandler
     /**
      * Builds the Xray type "TestExecution".
      *
-     * 1) If the TestExecution object has a testExecutionKey attribute, it will be added to the list of updatable
-     * test executions.
-     * 2) If not and the TestExecutionKey is specified in the config, it will take this key and create a new TestExecution.
-     * 3) Otherwise, it is treated as a new test executions that should be imported into Xray and gets the info object.
-     *
      * If the annotation is given without an attribute, an exception will be thrown.
      *
-     * @param array<array-key, string> $testExecution
-     * @param array<array-key, TestExecution> $testExecutionsToUpdate
-     * @param TestExecution|null $testExecutionToImport
+     * @param array<array-key, string> $data Parsed data of the @XRAY-testExecutionKey annotation
+     * 
+     * @return TestExecution|null
+     * @throws InvalidArgumentException
      */
-    public function buildTestExecution(array $testExecution, &$testExecutionsToUpdate, &$testExecutionToImport): void
+    public function buildTestExecution(array $data)
     {
-        if (array_key_exists('XRAY-testExecutionKey', $testExecution)) {
-            $testExecutionKey = $testExecution['XRAY-testExecutionKey'];
+        $testExecutionDot = new Dot($data);
 
-            if (empty($testExecutionKey)) {
-                throw new InvalidArgumentException('XRAY-testExecutionKey has to be set, if annotation is given. Have you forgotten it? It is not set in test case: '.$testExecution['name']);
-            }
-            if (empty($testExecutionsToUpdate[$testExecutionKey])) {
-                $testExecutionsToUpdate[$testExecutionKey] = new TestExecution($testExecutionKey);
-            }
-        } elseif (!empty($this->config->get('testExecutionKey'))) {
-            /** @var string $testExecutionKey */
-            $testExecutionKey = $this->config->get('testExecutionKey');
-            $testExecutionsToUpdate[$testExecutionKey] = new TestExecution($testExecutionKey);
-        } else {
-            $testExecutionToImport = new TestExecution();
-            $testExecutionToImport->addInfo($this->buildInfo());
+        /** @var string $testExecutionKey */
+        $testExecutionKey = $testExecutionDot->get('XRAY-testExecutionKey') ?? $this->config->get('testExecutionKey');
+
+        if ($testExecutionDot->has('XRAY-testExecutionKey') && $testExecutionDot->isEmpty('XRAY-testExecutionKey')) {
+            /** @var string $name */
+            $name = $testExecutionDot->get('name');
+            throw new InvalidArgumentException("XRAY-testExecutionKey has to be set, if annotation is given. Have you forgotten it? It is not set in test case: {$name}");
         }
+        
+        if (empty($testExecutionKey)) {
+            return null;
+        }
+        
+        return new TestExecution($testExecutionKey);
     }
 
     /**
@@ -168,63 +166,24 @@ class BuilderHandler
     public function buildTestInfo(array $result)
     {
         $testInfo = new TestInfoBuilder();
-        if (!empty($result['XRAY-TESTINFO-projectKey'])) {
-            $projectKey = $result['XRAY-TESTINFO-projectKey'];
+        $projectKey = $this->computeProjectKey($result);
+
+        if ($projectKey) {
             $testInfo = $testInfo->setProjectKey($projectKey);
-        } elseif (!empty($this->config->get('testExecutionKey'))) {
-            /** @var string $testExecutionKey */
-            $testExecutionKey = $this->config->get('testExecutionKey');
-            $projectKey = $this->stripOfKeyNumber($testExecutionKey);
-            $testInfo = $testInfo->setProjectKey($projectKey);
-        } elseif (!empty($this->info->getProject())) {
-            /** @var string $projectKey */
-            $projectKey = $this->config->get('info.project');
-            $testInfo = $testInfo->setProjectKey($projectKey);
-        } elseif (!empty($result['XRAY-testKey'])) {
-            $projectKey = $this->stripOfKeyNumber($result['XRAY-testKey']);
+        } else {
+            throw new InvalidArgumentException("No projectKey could be found or generated for test case: {$result['name']}\nThe project value in the info object of config file has to be set, if tests exist, where no testExecutionKey is given or the testExecutionKey in the config file is empty!");
+        }
+
+        if($this->info) {
             $this->info->setProject($projectKey);
-            $testInfo = $testInfo->setProjectKey($projectKey);
-        } elseif (!empty($result['XRAY-testExecutionKey'])) {
-            $projectKey = $this->stripOfKeyNumber($result['XRAY-testExecutionKey']);
-            $this->info->setProject($projectKey);
-            $testInfo = $testInfo->setProjectKey($projectKey);
-        } else {
-            throw new InvalidArgumentException('No projectKey could be found or generated for test case: '.$result['name'].'\nThe project value in the info object of config file has to be set, if tests exist, where no testExecutionKey is given or the testExecutionKey in the config file is empty!');
         }
 
-        if (!empty($result['XRAY-TESTINFO-testType'])) {
-            /** @var "Generic" | "Cumcumber" | null $testType */
-            $testType = $result['XRAY-TESTINFO-testType'];
-            $testInfo = $testInfo->setTestType($testType);
-        }
+        $testInfo = $testInfo->setTestType($result['XRAY-TESTINFO-testType']);
+        $testInfo = $testInfo->setRequirementKeys($result['XRAY-TESTINFO-requirementKeys']);
+        $testInfo = $testInfo->setLabels($result['XRAY-TESTINFO-labels']);
+        $testInfo = $testInfo->setDefinition($result);
+        $testInfo = $testInfo->setSummary($result);
 
-        if (!empty($result['XRAY-TESTINFO-requirementKeys'])) {
-            /** @var array<array-key, string> $requirementKeys */
-            $requirementKeys = $result['XRAY-TESTINFO-requirementKeys'];
-            $testInfo = $testInfo->setRequirementKeys($requirementKeys);
-        }
-
-        if (!empty($result['XRAY-TESTINFO-labels'])) {
-            /** @var array<array-key, string> $labels */
-            $labels = $result['XRAY-TESTINFO-labels'];
-            $testInfo = $testInfo->setLabels($labels);
-        }
-
-        if (!empty($result['XRAY-TESTINFO-definition'])) {
-            $definition = $result['XRAY-TESTINFO-definition'];
-            $testInfo = $testInfo->setDefinition($definition);
-        } else {
-            $definition = $result['name'];
-            $testInfo = $testInfo->setDefinition($definition);
-        }
-
-        if (!empty($result['summary'])) {
-            $summary = $result['summary'];
-            $testInfo = $testInfo->setSummary($summary);
-        } else {
-            $summary = $result['name'];
-            $testInfo = $testInfo->setSummary($summary);
-        }
 
         if (!empty($result['description'])) {
             $description = $result['description'];
@@ -236,11 +195,36 @@ class BuilderHandler
 
     /**
      * Strips off the number behind the testExecutionKey or testKey. Afterwards the projectKey will be returned.
+     * 
+     * @param string|null $key A Jira issue key
+     * 
+     * @return string|null
      */
-    private function stripOfKeyNumber(string $key): string
+    private function stripOfKeyNumber($key)
     {
-        preg_match('/([0-9a-zA-Z]+)(?=-)/', $key, $matches);
+        $subject = $key ?? '';
+        preg_match('/([0-9a-zA-Z]+)(?=-)/', $subject, $matches);
 
-        return $matches[0];
+        if (count($matches) > 0) {
+            return $matches[0];
+        }
+
+        return null;
+    }
+
+    /**
+     * Uses different approaches to compute the projectKey attribute.
+     * 
+     * @param array<array-key,mixed> $result The test results
+     * 
+     * @return string
+     */
+    private function computeProjectKey(array $result): string
+    {
+        return $result['XRAY-TESTINFO-projectKey'] ?? 
+            $this->stripOfKeyNumber($this->config->get('testExecutionKey')) ?? 
+            $this->config->get('info.project') ??
+            $this->stripOfKeyNumber($result['XRAY-testKey']) ??
+            $this->stripOfKeyNumber($result['XRAY-testExecutionKey']);
     }
 }

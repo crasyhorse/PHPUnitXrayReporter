@@ -49,11 +49,21 @@ class TestInfoBuilder implements Builder
     }
 
     /**
+     * 
+     * @param array<array-key,mixed>|string $result A PHPUnit test result
      * @return $this
      */
-    public function setSummary(string $summary)
+    public function setSummary($result)
     {
-        $this->summary = $summary;
+        if (is_string($result)) {
+            $this->summary = $result;
+        }
+        
+        if (is_array($result)) {
+            $summary = $result['summary'] ?? $result['name'];
+            
+            $this->summary = $summary;
+        }
 
         return $this;
     }
@@ -102,7 +112,9 @@ class TestInfoBuilder implements Builder
      */
     public function setTestType($testType)
     {
-        $this->testType = $testType;
+        if ($testType) {
+            $this->testType = $testType;
+        }
 
         return $this;
     }
@@ -121,7 +133,9 @@ class TestInfoBuilder implements Builder
      */
     public function setRequirementKeys($requirementKeys)
     {
-        $this->requirementKeys = $requirementKeys;
+        if ($requirementKeys) {
+            $this->requirementKeys = $requirementKeys;
+        }
 
         return $this;
     }
@@ -140,7 +154,9 @@ class TestInfoBuilder implements Builder
      */
     public function setLabels($labels)
     {
-        $this->labels = $labels;
+        if ($labels) {
+            $this->labels = $labels;
+        }
 
         return $this;
     }
@@ -151,11 +167,21 @@ class TestInfoBuilder implements Builder
     }
 
     /**
+     * 
+     * @param array<array-key,mixed>|string $result A PHPUnit test result
      * @return $this
      */
-    public function setDefinition(string $definition)
+    public function setDefinition($result)
     {
-        $this->definition = $definition;
+        if (is_string($result)) {
+            $this->definition = $result;
+        }
+        
+        if (is_array($result)) {
+            $definition = $result['definition'] ?? $result['name'];
+            
+            $this->definition = $definition;
+        }
 
         return $this;
     }

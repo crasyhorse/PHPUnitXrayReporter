@@ -9,9 +9,9 @@ use CrasyHorse\PhpunitXrayReporter\Xray\Types\Info;
 class InfoBuilder implements Builder
 {
     /**
-     * @var string
+     * @var string|null
      */
-    private $project = '';
+    private $project = null;
 
     /**
      * @var string
@@ -39,24 +39,29 @@ class InfoBuilder implements Builder
     private $user = '';
 
     /**
-     * @var string
+     * @var string|null
      */
-    private $testPlanKey = '';
+    private $testPlanKey = null;
 
     /**
      * @var array<string>
      */
     private $testEnvironments = [];
 
-    public function getProject(): string
+    /**
+     * @return string|null
+     */
+    public function getProject()
     {
         return $this->project;
     }
 
     /**
+     * @param string|null $project The project key. This is, e. g. DEMO-101 -> DEMO
+     * 
      * @return $this
      */
-    public function setProject(string $project)
+    public function setProject($project)
     {
         $this->project = $project;
 
@@ -138,15 +143,20 @@ class InfoBuilder implements Builder
         return $this;
     }
 
-    public function getTestPlanKey(): string
+    /**
+     * @return string|null
+     */
+    public function getTestPlanKey()
     {
         return $this->testPlanKey;
     }
 
     /**
+     * @param string|null $testPlanKey A Jira ticket number representing a test plan ticket.
+     * 
      * @return $this
      */
-    public function setTestPlanKey(string $testPlanKey)
+    public function setTestPlanKey($testPlanKey)
     {
         $this->testPlanKey = $testPlanKey;
 
