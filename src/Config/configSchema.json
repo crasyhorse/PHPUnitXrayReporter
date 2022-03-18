@@ -1,0 +1,8 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://github.com/crasyhorse/PHPUnitXrayReporter/configSchema.json",
+    "title": "PHP-Unit test reporter for the Atlassian Jira plugin Xray",
+    "description": "JSON schema for PHPUnitXrayReporter configuration",
+    "type": "object",
+    "additionalProperties": false,
+}
