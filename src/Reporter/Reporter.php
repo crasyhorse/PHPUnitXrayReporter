@@ -48,6 +48,8 @@ final class Reporter
     /**
      * Add a new test result to $testResults.
      *
+     * @param TestResult $testResult A single TestResult object
+     * 
      * @return void
      */
     final public function add(TestResult $testResult): void
@@ -67,24 +69,30 @@ final class Reporter
         $parsedResults = $this->parser->afterDocBlockParsedHook($parsedResults);
 
         $this->parser->groupResults($parsedResults);
-        $parseTree = $this->parser->getMergedTestExecutionList();
+        $parseTree = $this->parser->getTestExecutions();
         $this->createJsonFiles($parseTree);
     }
 
     /**
      * Creates the JSON-Files for the Xray API.
      *
-     * @param array<TestExecution> $parseTree
+     * @param array<array-key,TestExecution> $parseTree A list of objects of type TestExecution representing the 
+     * results of a single test run.
+     * 
+     * @return void
      */
     private function createJsonFiles($parseTree): void
     {
         $parseTreeValues = array_values($parseTree);
+        $outputPath = $this->outputDir . DIRECTORY_SEPARATOR;
+        $filename = 'newExecution.json';
+        
         foreach ($parseTreeValues as $execution) {
-            if ($execution->getKey() != null) {
-                file_put_contents("{$this->outputDir}".DIRECTORY_SEPARATOR."{$execution->getKey()}.json", json_encode($execution, JSON_PRETTY_PRINT));
-            } else {
-                file_put_contents("{$this->outputDir}".DIRECTORY_SEPARATOR.'newExecution.json', json_encode($execution, JSON_PRETTY_PRINT));
+            if ($execution->getKey()) {
+                $filename = "{$execution->getKey()}.json";
             }
+
+            file_put_contents("{$outputPath}{$filename}", json_encode($execution, JSON_PRETTY_PRINT));
         }
     }
 
