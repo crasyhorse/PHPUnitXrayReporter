@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Crasyhorse\PhpunitXrayReporter\Parser;
+namespace CrasyHorse\PhpunitXrayReporter\Parser;
 
-use Crasyhorse\PhpunitXrayReporter\Config\Config;
-use Crasyhorse\PhpunitXrayReporter\Reporter\Results\TestResult;
-use Crasyhorse\PhpunitXrayReporter\Xray\Builder\BuilderHandler;
-use Crasyhorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
-use Crasyhorse\PhpunitXrayReporter\Xray\Types\TestExecution;
+use Adbar\Dot;
+use CrasyHorse\PhpunitXrayReporter\Config\Config;
+use CrasyHorse\PhpunitXrayReporter\Exceptions\InvalidArgumentException;
+use CrasyHorse\PhpunitXrayReporter\Reporter\Results\TestResult;
+use CrasyHorse\PhpunitXrayReporter\Xray\Builder\BuilderHandler;
+use CrasyHorse\PhpunitXrayReporter\Xray\Tags\XrayTag;
+use CrasyHorse\PhpunitXrayReporter\Xray\Types\TestExecution;
 use Jasny\PhpdocParser\PhpdocParser;
 use Jasny\PhpdocParser\Set\PhpDocumentor;
 use ReflectionException;
@@ -66,13 +68,13 @@ class Parser
      * Fired after the parser has finished parsing the doc blocks. Can be overwritten
      * by a developer to gain access to the list of parsed annotations.
      *
-     * @param array<array-key, string> $meta
+     * @param array<array-key, string> $parsedResults The list of parsed test results
      *
      * @return array<array-key, string>
      */
-    public function afterDocBlockParsedHook($meta)
+    public function afterDocBlockParsedHook($parsedResults)
     {
-        return $meta;
+        return $parsedResults;
     }
 
     /**
@@ -94,17 +96,14 @@ class Parser
      *
      * @return array<array-key,TestExecution>
      */
-    final public function getMergedTestExecutionList()
+    final public function getTestExecutions()
     {
         $mergedTestExecutions = [];
-        if (!empty($this->testExecutionsToUpdate)) {
-            $mergedTestExecutions = array_merge($mergedTestExecutions, $this->testExecutionsToUpdate);
-        }
-        if (!empty($this->testExecutionToImport)) {
-            $mergedTestExecutions[] = $this->testExecutionToImport;
-        }
+        $dot = new Dot($mergedTestExecutions);
+        $dot->mergeRecursive($this->testExecutionsToUpdate);
+        $dot->mergeRecursive([$this->testExecutionToImport]);
 
-        return $mergedTestExecutions;
+        return $dot->all();
     }
 
     /**
@@ -157,14 +156,13 @@ class Parser
             $tags = PhpDocumentor::tags()->with($this->customTags);
             $parser = new PhpdocParser($tags);
 
-            $meta = $parser->parse($docBlock);
-            $meta = $this->readTestResult($result, $meta);
+            $parsedAnnotations = $parser->parse($docBlock);
+            $parsedAnnotations = $this->addTestResult($result, $parsedAnnotations);
 
-            return $meta;
+            return $parsedAnnotations;
         } catch (ReflectionException $e) {
-            trigger_error($e->__toString(), E_USER_WARNING);
-
-            return [];
+            trigger_error($e->getMessage(), E_USER_ERROR);
+            die();
         }
     }
 
@@ -184,21 +182,24 @@ class Parser
     {
         /** @var array<array-key, string> $result */
         foreach ($parsedResults as $result) {
-            $test = $this->builderHandler->buildTest($result);
+            try {
+                $test = $this->builderHandler->buildTest($result);
+                $dotResult = new Dot($result);
 
-            if (array_key_exists('XRAY-testExecutionKey', $result)) {
-                $testExecutionKey = $result['XRAY-testExecutionKey'];
-                $testExecution = $this->testExecutionsToUpdate[$testExecutionKey];
-                $testExecution->addTest($test);
-            } elseif (!empty($this->config->get('testExecutionKey'))) {
-                /** @var string $testExecutionKey */
-                $testExecutionKey = $this->config->get('testExecutionKey');
-                $testExecution = $this->testExecutionsToUpdate[$testExecutionKey];
-                $testExecution->addTest($test);
-            } else {
-                if (!empty($this->testExecutionToImport)) {
+                /** @var string|null $testExecutionKey */
+                $testExecutionKey = $dotResult->get('XRAY-testExecutionKey') ?? $this->config->get('testExecutionKey');
+
+                if ($testExecutionKey) {
+                    /** @var string $testExecutionKey */
+                    $testExecution = $this->testExecutionsToUpdate[$testExecutionKey];
+                    $testExecution->addTest($test);
+                } elseif (!empty($this->testExecutionToImport)) {
                     $this->testExecutionToImport->addTest($test);
                 }
+            } catch (InvalidArgumentException $e)
+            {
+                trigger_error($e->getMessage(), E_USER_ERROR);
+                die();
             }
         }
     }
@@ -207,8 +208,10 @@ class Parser
      * Walks over the array of parsed results and creates the list of test executions
      * (parse tree). The BuilderHandler acts like this for every doc block:.
      *
-     * 1) If testExecutionKey (TEKey) is given in the doc block comment of the PHPunit test, an TE is created with this exact key.
-     * 2) Otherwise if the TEKey is given in the config file for this extension, an TE is created with the TEKey from the config.
+     * 1) If testExecutionKey (TEKey) is given in the doc block comment of the PHPunit test,
+     *    an TE is created with this exact key.
+     * 2) Otherwise if the TEKey is given in the config file for this extension, an TE is
+     *    created with the TEKey from the config.
      * 3) Else, a TE without a Key is created. This special TE is the only one who gets the Info Object.
      *
      * @param array<array-key, string> $parsedResults
@@ -217,30 +220,49 @@ class Parser
      */
     private function groupByTestExecutions(array $parsedResults): void
     {
-        /** @var array<array-key, string> $testExecution */
-        foreach ($parsedResults as $testExecution) {
-            $this->builderHandler->buildTestExecution($testExecution, $this->testExecutionsToUpdate, $this->testExecutionToImport);
+        /** @var array<array-key, string> $result */
+        foreach ($parsedResults as $result) {
+            try {
+                $testExecution = $this->builderHandler->buildTestExecution($result);
+
+                if ($testExecution) {
+                    /** @var string $key */
+                    $key = $testExecution->getKey();
+                    $this->testExecutionsToUpdate[$key] = $testExecution;
+                } else {
+                    $this->testExecutionToImport = new TestExecution();
+                    $this->testExecutionToImport->addInfo($this->builderHandler->buildInfo());
+                }
+            } catch (InvalidArgumentException $e) {
+                trigger_error($e->getMessage(), E_USER_ERROR);
+                die();
+            }
         }
     }
 
     /**
      * Reads the attributes from the test result and adds them to the $meta object.
      *
+     * @param TestResult $result The encapsulated result of a PHPUnit spec.
+     * @param array<array-key, mixed> $parsedAnnotations Informations from XRAY-Annotations
+     *
      * @return array
      */
-    private function readTestResult(TestResult $result, array $meta): array
+    private function addTestResult(TestResult $result, $parsedAnnotations): array
     {
-        $meta['start'] = $result->getStart();
-        $meta['finish'] = $result->getFinish();
-        $meta['comment'] = $result->getMessage() ?? 'Test has passed.';
-        $meta['status'] = $result->getStatus();
-        $meta['name'] = $result->getName();
+        $parsedAnnotations['start'] = $result->getStart();
+        $parsedAnnotations['finish'] = $result->getFinish();
+        $parsedAnnotations['comment'] = $result->getMessage() ?? 'Test has passed.';
+        $parsedAnnotations['status'] = $result->getStatus();
+        $parsedAnnotations['name'] = $result->getName();
 
-        return $meta;
+        return $parsedAnnotations;
     }
 
     /**
      * Strips off the "with data set ..." string from the test name.
+     *
+     * @param string $test The textual representation of a PHPUnit spec
      *
      * @return string
      */
