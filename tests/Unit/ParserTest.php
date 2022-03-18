@@ -16,8 +16,8 @@ use CrasyHorse\PhpunitXrayReporter\Xray\Builder\TestBuilder;
 use CrasyHorse\PhpunitXrayReporter\Xray\Builder\TestInfoBuilder;
 use CrasyHorse\PhpunitXrayReporter\Xray\Types\TestExecution;
 use DateTimeZone;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use CrasyHorse\PhpunitXrayReporter\Exceptions\InvalidArgumentException;
 
 /**
  * @author Florian Weidinger
@@ -85,6 +85,7 @@ class ParserTest extends TestCase
         $parser = new Parser($this->configDirWithInfo);
         $actual = $parser->parse($testResult);
         $parser->groupResults([$actual]);
+        // var_dump($actual);
         $actual = array_values($parser->getTestExecutions())[0];
 
         $this->assertEquals($expected, $actual);
@@ -112,8 +113,10 @@ class ParserTest extends TestCase
      */
     public function parser_throw_exception_if_testKey_or_testExecutionKey_tag_given_without_value(TestResult $testResult): void
     {
-        $parser = new Parser($this->configDirExceptions);
         $this->expectException(InvalidArgumentException::class);
+        $this->expectError();
+
+        $parser = new Parser($this->configDirExceptions);
         $parsedResults = $parser->parse($testResult);
         $result = $parser->groupResults([$parsedResults]);
     }
@@ -134,7 +137,7 @@ class ParserTest extends TestCase
         $time = 2;
 
         return [
-            'Successful test result including TestInfo object.' => [
+            'Successful test result including TestInfo object (spec1).' => [
                 new SuccessfulTest('CrasyHorse\Tests\Assets\PseudoSpec::spec1', $time, $start),
                 [
                     'XRAY-testExecutionKey' => 'DEMO-666',
@@ -152,14 +155,14 @@ class ParserTest extends TestCase
                     ],
                     'XRAY-TESTINFO-definition' => 'The Test does nothing',
                     'summary' => 'Update test execution DEMO-666.',
-                    'description' => "Update test execution DEMO-666.\nThis test will return a PASS result and has all possible annotations we implemented.",
+                    'description' => "This test will return a PASS result and has all possible annotations we implemented.",
                     'start' => $start->toIso8601String(),
                     'status' => SuccessfulTest::TEST_RESULT,
                     'name' => 'spec1',
                     'comment' => 'Test has passed.',
                 ],
             ],
-            'Successful test result with little information' => [
+            'Successful test result with little information (spec2).' => [
                 new SuccessfulTest('CrasyHorse\Tests\Assets\PseudoSpec::spec2', $time, $start),
                 [
                     'XRAY-testExecutionKey' => 'DEMO-667',
@@ -172,7 +175,7 @@ class ParserTest extends TestCase
                     'comment' => 'Test has passed.',
                 ],
             ],
-            'Failed test result without testExecutionKey and summary' => [
+            'Failed test result without testExecutionKey and summary (spec3).' => [
                 new FailedTest('CrasyHorse\Tests\Assets\PseudoSpec::spec3', $time, $start, 'Failed asserting 2+4=6'),
                 [
                     'XRAY-TESTS-testKey' => 'DEMO-123',
@@ -248,7 +251,7 @@ class ParserTest extends TestCase
                         ->setLabels(['workInProgress', 'Bug', 'NeedsTriage'])
                         ->setDefinition('The Test does nothing')
                         ->setSummary('Update test execution DEMO-666.')
-                        ->setDescription("Update test execution DEMO-666.\nThis test will return a PASS result and has all possible annotations we implemented.")
+                        ->setDescription("This test will return a PASS result and has all possible annotations we implemented.")
                         ->build()
                 )
                 ->build()
@@ -300,15 +303,15 @@ class ParserTest extends TestCase
         );
 
         return [
-            'FailedTest and testExecutionKey given as annotation so info not needed' => [
+            'Failed test and testExecutionKey given as annotation so info not needed' => [
                 new FailedTest('CrasyHorse\Tests\Assets\PseudoSpec::spec1', $time, $start, 'Failed asserting 2+4=6.'),
                 $testExecution1,
             ],
-            'TodoTest and very little information in doc block but testExecutionKey given' => [
+            'Todo test and very little information in doc block but testExecutionKey given' => [
                 new TodoTest('CrasyHorse\Tests\Assets\PseudoSpec::spec2', $time, $start, 'Failed asserting 2+4=6.'),
                 $testExecution2,
             ],
-            'SuccessfulTest and without testExecutionKey as annotation so info needed' => [
+            'Successful test and without testExecutionKey as annotation so info needed' => [
                 new SuccessfulTest('CrasyHorse\Tests\Assets\PseudoSpec::spec3', $time, $start),
                 $testExecution3,
             ],
@@ -338,7 +341,7 @@ class ParserTest extends TestCase
                         ->setLabels(['workInProgress', 'Bug', 'NeedsTriage'])
                         ->setDefinition('The Test does nothing')
                         ->setSummary('Update test execution DEMO-666.')
-                        ->setDescription("Update test execution DEMO-666.\nThis test will return a PASS result and has all possible annotations we implemented.")
+                        ->setDescription("This test will return a PASS result and has all possible annotations we implemented.")
                         ->build()
                 )
                 ->build()

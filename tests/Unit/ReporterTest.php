@@ -35,7 +35,7 @@ class ReporterTest extends TestCase
             $this->configDir = $this->configDir.DIRECTORY_SEPARATOR.$pathPart;
         }
         $this->outputDir = '.';
-        foreach (['tests', 'Outputs'] as $pathPart) {
+        foreach (['tests', 'XRAYFiles'] as $pathPart) {
             $this->outputDir = $this->outputDir.DIRECTORY_SEPARATOR.$pathPart;
         }
     }
