@@ -2,13 +2,21 @@
     "name": "crasyhorse/phpunit-xray-reporter",
     "description": "PHP-Unit test reporter for the Atlassian Jira plugin Xray",
     "version": "0.1.0",
-    "keywords": ["Atlassian","Jira","Xray","PHPUnit","Reporter"],
+    "keywords": [
+        "Atlassian",
+        "Jira",
+        "Xray",
+        "PHPUnit",
+        "Reporter"
+    ],
     "type": "library",
     "license": "MIT",
-    "authors": [{
-        "name": "Florian Weidinger",
-        "email": "CrasyHorse@gmx.net"
-    }],
+    "authors": [
+        {
+            "name": "Florian Weidinger",
+            "email": "CrasyHorse@gmx.net"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "CrasyHorse\\PhpunitXrayReporter\\": "src/"
@@ -22,7 +30,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url":  "https://github.com/crasyhorse/PHPUnitXrayReporter.git"
+            "url": "https://github.com/crasyhorse/PHPUnitXrayReporter.git"
         }
     ],
     "require": {
@@ -40,9 +48,9 @@
     },
     "scripts": {
         "test:all": [
-            "vendor/bin/phpunit --testsuite Prepare -c phpunit_prepare.xml  --no-coverage --color=always",
-            "vendor/bin/phpunit --testsuite Unit Feature --color=always",
-            "vendor/bin/phpunit --testsuite Unit Unit --color=always"
+            "@test:prepare",
+            "@test:unit",
+            "@test:feature"
         ],
         "test:prepare": "vendor/bin/phpunit --testsuite Prepare -c phpunit_prepare.xml --no-coverage --color=always",
         "test:unit": "vendor/bin/phpunit --testsuite Unit --no-coverage --color=always",
