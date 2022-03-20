@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CrasyHorse\PhpunitXrayReporter\Config;
 
 use Adbar\Dot;
-use CrasyHorse\PhpunitXrayReporter\Exceptions\InvalidConfigurationException;
 use CrasyHorse\PhpunitXrayReporter\Exceptions\InvalidArgumentException;
+use CrasyHorse\PhpunitXrayReporter\Exceptions\InvalidConfigurationException;
 use Opis\JsonSchema\Errors\ErrorFormatter;
 use Opis\JsonSchema\Helper;
 use Opis\JsonSchema\Validator;
@@ -101,11 +101,31 @@ class Config
      */
     private function readConfigurationFile(string $configFileLocation): array
     {
-        if (file_exists($configFileLocation)) {
+        $realPath = $this->convertPath($configFileLocation);
+
+        if (file_exists($realPath)) {
             /** @var array */
-            return json_decode(file_get_contents($configFileLocation), true);
+            return json_decode(file_get_contents($realPath), true);
         } else {
-            throw new InvalidArgumentException('The needed config file could not be found on the given path: '.$configFileLocation);
+            throw new InvalidArgumentException('The needed config file could not be found on the given path: '.$realPath);
         }
+    }
+
+    /**
+     * Converts a Windows path into a Linux path and vice versa.
+     *
+     * @param string $configFileLocation Location of the configuration file.
+     *
+     * @return string
+     */
+    private function convertPath(string $configFileLocation): string
+    {
+        if (str_contains($configFileLocation, '\\')) {
+            $realPath = str_replace('\\', DIRECTORY_SEPARATOR, $configFileLocation);
+        } else {
+            $realPath = str_replace('/', DIRECTORY_SEPARATOR, $configFileLocation);
+        }
+
+        return $realPath;
     }
 }
