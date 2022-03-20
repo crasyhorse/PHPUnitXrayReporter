@@ -49,7 +49,7 @@ class TestInfoBuilder implements Builder
     }
 
     /**
-     * 
+     *
      * @param array<array-key,mixed>|string $result A PHPUnit test result
      * @return $this
      */
@@ -58,10 +58,11 @@ class TestInfoBuilder implements Builder
         if (is_string($result)) {
             $this->summary = $result;
         }
-        
+
         if (is_array($result)) {
+            /** @var string $summary */
             $summary = $result['summary'] ?? $result['name'];
-            
+
             $this->summary = $summary;
         }
 
@@ -167,7 +168,7 @@ class TestInfoBuilder implements Builder
     }
 
     /**
-     * 
+     *
      * @param array<array-key,mixed>|string $result A PHPUnit test result
      * @return $this
      */
@@ -176,10 +177,11 @@ class TestInfoBuilder implements Builder
         if (is_string($result)) {
             $this->definition = $result;
         }
-        
+
         if (is_array($result)) {
+            /** @var string $definition */
             $definition = $result['definition'] ?? $result['name'];
-            
+
             $this->definition = $definition;
         }
 

@@ -7,6 +7,7 @@ namespace CrasyHorse\PhpunitXrayReporter\Xray\Types;
 use CrasyHorse\PhpunitXrayReporter\Reporter\Results\FailedTest;
 use CrasyHorse\PhpunitXrayReporter\Reporter\Results\SuccessfulTest;
 use CrasyHorse\PhpunitXrayReporter\Reporter\Results\TodoTest;
+use CrasyHorse\PhpunitXrayReporter\Xray\Types\XrayType;
 use JsonSerializable;
 
 /**

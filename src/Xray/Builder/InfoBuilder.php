@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CrasyHorse\PhpunitXrayReporter\Xray\Builder;
 
+use CrasyHorse\PhpunitXrayReporter\Xray\Builder\Builder;
 use CrasyHorse\PhpunitXrayReporter\Xray\Types\Info;
 
 class InfoBuilder implements Builder
@@ -58,7 +59,7 @@ class InfoBuilder implements Builder
 
     /**
      * @param string|null $project The project key. This is, e. g. DEMO-101 -> DEMO
-     * 
+     *
      * @return $this
      */
     public function setProject($project)
@@ -153,7 +154,7 @@ class InfoBuilder implements Builder
 
     /**
      * @param string|null $testPlanKey A Jira ticket number representing a test plan ticket.
-     * 
+     *
      * @return $this
      */
     public function setTestPlanKey($testPlanKey)

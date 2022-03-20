@@ -98,12 +98,14 @@ class Parser
      */
     final public function getTestExecutions()
     {
-        $mergedTestExecutions = [];
-        $dot = new Dot($mergedTestExecutions);
+        $array = [];
+        $dot = new Dot($array);
         $dot->mergeRecursive($this->testExecutionsToUpdate);
         $dot->mergeRecursive([$this->testExecutionToImport]);
 
-        return $dot->all();
+        /** @var array<array-key,TestExecution> $mergedTestExecutions */
+        $mergedTestExecutions = $dot->all();
+        return $mergedTestExecutions;
     }
 
     /**
@@ -162,7 +164,6 @@ class Parser
             return $parsedAnnotations;
         } catch (ReflectionException $e) {
             trigger_error($e->getMessage(), E_USER_ERROR);
-            die();
         }
     }
 
@@ -196,10 +197,8 @@ class Parser
                 } elseif (!empty($this->testExecutionToImport)) {
                     $this->testExecutionToImport->addTest($test);
                 }
-            } catch (InvalidArgumentException $e)
-            {
+            } catch (InvalidArgumentException $e) {
                 trigger_error($e->getMessage(), E_USER_ERROR);
-                die();
             }
         }
     }
@@ -235,7 +234,6 @@ class Parser
                 }
             } catch (InvalidArgumentException $e) {
                 trigger_error($e->getMessage(), E_USER_ERROR);
-                die();
             }
         }
     }

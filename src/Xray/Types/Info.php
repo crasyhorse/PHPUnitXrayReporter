@@ -15,7 +15,7 @@ use JsonSerializable;
 class Info implements JsonSerializable, XrayType
 {
     /**
-     * @var string
+     * @var string|null
      */
     private $project;
 
@@ -45,7 +45,7 @@ class Info implements JsonSerializable, XrayType
     private $user;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $testPlanKey;
 
@@ -71,7 +71,10 @@ class Info implements JsonSerializable, XrayType
         $this->project = $project;
     }
 
-    public function getProject(): string
+    /**
+     * @return string|null
+     */
+    public function getProject()
     {
         return $this->project;
     }
@@ -101,7 +104,10 @@ class Info implements JsonSerializable, XrayType
         return $this->user;
     }
 
-    public function getTestPlanKey(): string
+    /**
+     * @return string|null
+     */
+    public function getTestPlanKey()
     {
         return $this->testPlanKey;
     }
@@ -117,7 +123,7 @@ class Info implements JsonSerializable, XrayType
     /**
      * Defines how this class is serialized into JSON.
      *
-     * @return array<array-key, string>
+     * @return array<array-key, mixed>
      */
     public function jsonSerialize()
     {

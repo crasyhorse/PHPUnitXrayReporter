@@ -49,7 +49,7 @@ final class Reporter
      * Add a new test result to $testResults.
      *
      * @param TestResult $testResult A single TestResult object
-     * 
+     *
      * @return void
      */
     final public function add(TestResult $testResult): void
@@ -76,17 +76,17 @@ final class Reporter
     /**
      * Creates the JSON-Files for the Xray API.
      *
-     * @param array<array-key,TestExecution> $parseTree A list of objects of type TestExecution representing the 
+     * @param array<array-key,TestExecution> $parseTree A list of objects of type TestExecution representing the
      * results of a single test run.
-     * 
+     *
      * @return void
      */
     private function createJsonFiles($parseTree): void
     {
         $parseTreeValues = array_values($parseTree);
-        $outputPath = $this->outputDir . DIRECTORY_SEPARATOR;
+        $outputPath = $this->convertPath($this->outputDir . DIRECTORY_SEPARATOR);
         $filename = 'newExecution.json';
-        
+
         foreach ($parseTreeValues as $execution) {
             if ($execution->getKey()) {
                 $filename = "{$execution->getKey()}.json";
@@ -109,5 +109,25 @@ final class Reporter
         }
 
         return $parsedResults;
+    }
+
+    /**
+     * Converts a Windows path into a Linux path and vice versa.
+     *
+     * @param string $configFileLocation Location of the configuration file.
+     *
+     * @return string
+     */
+    private function convertPath(string $configFileLocation): string
+    {
+        // $realPath = '';
+
+        if (str_contains($configFileLocation, '\\')) {
+            $realPath = str_replace('\\', DIRECTORY_SEPARATOR, $configFileLocation);
+        } else {
+            $realPath = str_replace('/', DIRECTORY_SEPARATOR, $configFileLocation);
+        }
+
+        return $realPath;
     }
 }
