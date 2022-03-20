@@ -15,8 +15,6 @@ class InvalidArgumentException extends Exception
 {
     public function __construct(string $message, int $code = 0, Throwable $previous = null)
     {
-        parent::__construct('Your configuration file could not be found.', $code, $previous);
-
-        $this->message = sprintf('%s %s', parent::getMessage(), $message);
+        parent::__construct($message, $code, $previous);
     }
 }
