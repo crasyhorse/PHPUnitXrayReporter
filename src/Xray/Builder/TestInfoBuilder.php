@@ -180,7 +180,7 @@ class TestInfoBuilder implements Builder
 
         if (is_array($result)) {
             /** @var string $definition */
-            $definition = $result['definition'] ?? $result['name'];
+            $definition = $result['XRAY-TESTINFO-definition'] ?? $result['name'];
 
             $this->definition = $definition;
         }

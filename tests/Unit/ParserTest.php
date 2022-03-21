@@ -6,6 +6,7 @@ namespace CrasyHorse\Tests\Unit;
 
 use Carbon\Carbon;
 use CrasyHorse\PhpunitXrayReporter\Config\Config;
+use CrasyHorse\PhpunitXrayReporter\Exceptions\InvalidArgumentException;
 use CrasyHorse\PhpunitXrayReporter\Parser\Parser;
 use CrasyHorse\PhpunitXrayReporter\Reporter\Results\FailedTest;
 use CrasyHorse\PhpunitXrayReporter\Reporter\Results\SuccessfulTest;
@@ -17,7 +18,6 @@ use CrasyHorse\PhpunitXrayReporter\Xray\Builder\TestInfoBuilder;
 use CrasyHorse\PhpunitXrayReporter\Xray\Types\TestExecution;
 use DateTimeZone;
 use PHPUnit\Framework\TestCase;
-use CrasyHorse\PhpunitXrayReporter\Exceptions\InvalidArgumentException;
 
 /**
  * @author Florian Weidinger
@@ -85,7 +85,7 @@ class ParserTest extends TestCase
         $parser = new Parser($this->configDirWithInfo);
         $actual = $parser->parse($testResult);
         $parser->groupResults([$actual]);
-        // var_dump($actual);
+
         $actual = array_values($parser->getTestExecutions())[0];
 
         $this->assertEquals($expected, $actual);

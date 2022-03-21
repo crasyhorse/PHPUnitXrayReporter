@@ -1,7 +1,7 @@
 {
     "name": "crasyhorse/phpunit-xray-reporter",
     "description": "PHP-Unit test reporter for the Atlassian Jira plugin Xray",
-    "version": "0.1.0",
+    "version": "0.1.0-beta",
     "keywords": [
         "Atlassian",
         "Jira",
