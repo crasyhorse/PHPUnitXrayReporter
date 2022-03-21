@@ -1,0 +1,14 @@
+{
+    "testExecutionKey": "DEMO-690",
+    "info": {
+        "project": "DEMO",
+        "summary": "example-config",
+        "description": "This is an example for description",
+        "version": "0.3.0",
+        "revision": "0.3.0",
+        "user": "Botuser",
+        "testEnvironments": [
+            "IOS", "Android"
+        ]
+    }
+}
