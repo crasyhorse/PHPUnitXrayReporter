@@ -6,3 +6,4 @@
 junit.xml
 /docs/cache
 .php-cs-fixer.cache
+phpunitXrayReporter.code-workspace
